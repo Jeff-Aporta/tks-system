@@ -22,28 +22,13 @@
       <is-icon slot="start" icon="mdi:menu"></is-icon>
     </is-button>
 
-    <div class="brand-wrap" id="brandWrap">
-      <button type="button" class="brand" id="brand" aria-haspopup="listbox" aria-expanded="false" aria-controls="brandMenu" aria-label="jagudeloe — elegir paleta" title="Elegir paleta">
-        <span id="brandLead">ja</span><span class="brand__accent" id="brandAccent">gudeloe</span><span id="brandTail"></span>
-      </button>
-      <ul class="brand-menu" id="brandMenu" role="listbox" hidden aria-label="Paleta de marca">
-        <li role="option" tabindex="-1" data-palette="insoft" aria-selected="false">
-          <span class="brand-menu__swatch" aria-hidden="true"></span>
-          <span class="brand-menu__label">InSoft</span>
-          <is-icon class="brand-menu__check" icon="mdi:check" aria-hidden="true"></is-icon>
-        </li>
-        <li role="option" tabindex="-1" data-palette="contapyme" aria-selected="true">
-          <span class="brand-menu__swatch" aria-hidden="true"></span>
-          <span class="brand-menu__label">ContaPyme</span>
-          <is-icon class="brand-menu__check" icon="mdi:check" aria-hidden="true"></is-icon>
-        </li>
-        <li role="option" tabindex="-1" data-palette="agrowin" aria-selected="false">
-          <span class="brand-menu__swatch" aria-hidden="true"></span>
-          <span class="brand-menu__label">AgroWin</span>
-          <is-icon class="brand-menu__check" icon="mdi:check" aria-hidden="true"></is-icon>
-        </li>
-      </ul>
-    </div>
+    <span class="brand-lockup">
+      <span class="brand-lockup__lead">ja</span><span class="brand-lockup__accent">gudeloe</span>
+      <small class="brand-lockup__sub">tk-* demo</small>
+    </span>
+
+    <is-palette-selector id="palettePicker" class="shell-palette"
+      aria-label="Elegir paleta" storage-key="is-palette"></is-palette-selector>
 
     <is-button class="shell-icon-btn" id="fullscreenBtn" color="neutral" variant="plain" pill type="button" aria-label="Abrir preview en pantalla completa" title="Abrir preview en pantalla completa">
       <is-icon slot="start" icon="mdi:open-in-new"></is-icon>
@@ -81,27 +66,10 @@
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const shellNav = document.getElementById('shellNav');
     const frame = document.getElementById('previewFrame');
-    const brand = document.getElementById('brand');
-    const brandMenu = document.getElementById('brandMenu');
-    const brandWrap = document.getElementById('brandWrap');
-    const brandLead = document.getElementById('brandLead');
-    const brandAccent = document.getElementById('brandAccent');
-    const brandTail = document.getElementById('brandTail');
+    const palettePicker = document.getElementById('palettePicker');
     const params = new URLSearchParams(location.search);
     const themes = new Set(['light', 'dark']);
     const palettes = new Set(['insoft', 'contapyme', 'agrowin']);
-    const brands = {
-      // jagudeloe es marca propia: lead "ja" + acento "gudeloe" en color de marca.
-      insoft:    { lead: 'in',    accent: 'Soft', tail: '',    label: 'InSoft',    leadColor: '#000', accentColor: '#d71920' },
-      contapyme: { lead: 'ja',    accent: 'gudeloe', tail: '', label: 'jagudeloe', leadColor: '#000', accentColor: '#1a6eb0' },
-      agrowin:   { lead: 'ja',    accent: 'gudeloe', tail: '', label: 'jagudeloe', leadColor: '#000', accentColor: '#1a6eb0' },
-    };
-
-    const setMenuOpen = (open) => {
-      brand.setAttribute('aria-expanded', open ? 'true' : 'false');
-      brandMenu.hidden = !open;
-      brandWrap.classList.toggle('is-open', open);
-    };
 
     // --- b64url helpers (mismo patrón que AppWebcomponents/index.html) ---
     const b64urlEncode = (input) => {
@@ -239,18 +207,7 @@
         }
       }
       scheduleScrollNavToCurrent({ smooth: navSmooth });
-      for (const opt of brandMenu.querySelectorAll('[role="option"]')) {
-        opt.setAttribute('aria-selected', opt.dataset.palette === palette ? 'true' : 'false');
-      }
-      const brandData = brands[palette];
-      brandLead.textContent = brandData.lead;
-      brandTail.textContent = brandData.tail || '';
-      brandTail.style.color = brandData.leadColor;
-      brandAccent.textContent = brandData.accent;
-      brandLead.style.color = brandData.leadColor;
-      brandAccent.style.color = brandData.accentColor;
-      brand.setAttribute('aria-label', `${brandData.label} — elegir paleta`);
-      document.title = `${component.title} | ${brandData.label}`;
+      document.title = `${component.title} | ${palette}`;
       localStorage.setItem('is-theme', theme);
       localStorage.setItem('is-palette', palette);
       updateUrl();
@@ -359,37 +316,18 @@
       }
     });
 
-    frame.addEventListener('load', () => {
-      sendContext();
-      try {
-        frame.contentDocument?.addEventListener('pointerdown', () => setMenuOpen(false), { capture: true });
-      } catch { /* cross-origin */ }
-    });
-    brand.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setMenuOpen(brandMenu.hidden);
-    });
-    brandMenu.addEventListener('click', (e) => {
-      const opt = e.target.closest('[data-palette]');
-      if (!opt) return;
-      palette = opt.dataset.palette;
+    frame.addEventListener('load', sendContext);
+
+    // <is-palette-selector> aplica data-palette al <html> y persiste en
+    // localStorage por sí mismo; aquí solo sincronizamos el iframe.
+    palettePicker.addEventListener('is-palette-change', (e) => {
+      palette = e.detail.value;
       if (!palettes.has(palette)) palette = 'contapyme';
-      setMenuOpen(false);
       renderContext();
     });
-    document.addEventListener('pointerdown', (e) => {
-      if (!brandWrap.contains(e.target)) setMenuOpen(false);
-    }, true);
-    window.addEventListener('blur', () => {
-      queueMicrotask(() => {
-        if (document.activeElement === frame) setMenuOpen(false);
-      });
-    });
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        setMenuOpen(false);
-        closeDrawer();
-      }
+      if (e.key === 'Escape') closeDrawer();
     });
     themeToggle.addEventListener('theme-toggle', (e) => {
       theme = e.detail?.theme === 'light' ? 'light' : 'dark';
@@ -423,18 +361,6 @@
         roT = setTimeout(() => scrollNavToCurrent(), 40);
       }).observe(shellNav);
     }
-
-    // --- mobile: el split-panel ya no cambia de orientación; en <641px el nav
-    //     del slot=start se oculta por CSS y la navegación vive en el drawer.
-    //     Aún así, escuchamos el media query por si en el futuro hace falta
-    //     recalcular posición/scroll del nav al cruzar el breakpoint. ---
-    const mql = window.matchMedia('(max-width: 640px)');
-    const onBreakpoint = () => {
-      if (mql.matches) closeDrawer();
-      scheduleScrollNavToCurrent();
-    };
-    mql.addEventListener?.('change', onBreakpoint);
-    onBreakpoint();
   </script>
 </body>
 </html>
