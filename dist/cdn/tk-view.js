@@ -1,6 +1,7 @@
-import{css as h,define as f,html as r,rec as u}from"./_shared.js";const g=`
+import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
   :host {
     display: block;
+    position: relative;
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -9,6 +10,10 @@ import{css as h,define as f,html as r,rec as u}from"./_shared.js";const g=`
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
+  }
+  .shell {
+    position: relative;
+    min-width: 0;
   }
   .documento {
     display: grid;
@@ -25,7 +30,7 @@ import{css as h,define as f,html as r,rec as u}from"./_shared.js";const g=`
   tk-ticket-head,
   tk-block,
   tk-commits,
-  tk-tiempos {
+  tk-metrics {
     min-width: 0;
     max-width: 100%;
   }
@@ -79,39 +84,103 @@ import{css as h,define as f,html as r,rec as u}from"./_shared.js";const g=`
     line-height: 1.5;
     overflow-wrap: anywhere;
   }
-`,k=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],v=n=>{const e=Array.isArray(n.content)&&n.content.length?[...n.content]:[...n.doc?.blocks??[]],o=(n.contexts??[]).flatMap(t=>[...t.content??[]]);return[...e,...o].filter(t=>t&&typeof t=="object").sort((t,a)=>(t.sortKey??0)-(a.sortKey??0))},w=(n,e)=>{const o=u(n.payload),t=String(o.docLane??o.section??o.lane??"").trim().toLowerCase();if(t==="solicitud"||t==="evidencias"||t==="causa"||t==="solucion"||t==="verificacion"||t==="otros")return t;const a=String(o.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(a))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(a))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(a))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(a))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(a))return"solucion";const i=String(n.kind??"").toLowerCase();return i==="html"||i==="image"||i==="image-group"?e==="otros"?"evidencias":e:i==="badge"||i==="badges"?e==="otros"?"solicitud":e:i==="code"||i==="sql"||i==="cambio-bd"||i==="file-tree"?e==="otros"?"solucion":e:i==="steps"||i==="stepper"?e==="otros"?"verificacion":e:i==="table"&&e==="otros"?"evidencias":i==="markdown"||i==="md"||i==="text"?a?"otros":e:"otros"},T=n=>{let e="solicitud";return n.map(o=>{const t=w(o,e);return e=t,{b:o,lane:t}})},x=n=>{const e=[...n.rootCommits??[]];return e.length?e:(n.contexts??[]).flatMap(o=>[...o.commits??[]])};class C extends HTMLElement{static get observedAttributes(){return["embebido"]}#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),h(this.#e,g)}connectedCallback(){this.#i()}attributeChangedCallback(){this.isConnected&&this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}set json(e){const o=u(e);this.ticket=o.ticket?o.ticket:o}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);const e=this.#t;if(!e?.iticket){this.#e.append(r`
-        <div class="vacio">
-          <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
-          <p>Selecciona un tiquete para ver su documentación.</p>
-        </div>
-      `);return}const o=T(v(e)),t=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),a=x(e),i=[...e.tiempos??[]].filter(c=>Number(c.minutos??0)>0),l=k.map(({lane:c,rotulo:d})=>{const m=o.filter(s=>s.lane===c).map(s=>s.b);return m.length?r`
-        <section aria-label="${d}">
-          <h2 class="rotulo">${d}</h2>
-          ${m.map(s=>Object.assign(document.createElement("tk-block"),{bloque:s}))}
+  .fab {
+    position: sticky;
+    bottom: 1.15rem;
+    z-index: 6;
+    display: flex;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    margin: 0;
+    padding: 0 clamp(0.85rem, 0.4rem + 1.8vw, 2.5rem);
+    pointer-events: none;
+    transform: translateY(-3.4rem);
+  }
+  .fab-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.85rem;
+    height: 2.85rem;
+    margin: 0;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--is-border, #2a3038) 80%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--is-bg-elevated, #1a2129) 92%, transparent);
+    color: var(--is-text, #e6edf3);
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .fab-btn:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--is-accent, #1a6eb0) 55%, var(--is-border, #2a3038));
+    background: color-mix(in srgb, var(--is-accent, #1a6eb0) 18%, var(--is-bg-elevated, #1a2129));
+  }
+  .fab-btn:focus-visible {
+    outline: 2px solid var(--is-accent, #1a6eb0);
+    outline-offset: 2px;
+  }
+  .fab-btn is-icon {
+    font-size: 1.35rem;
+  }
+  .fab-btn[aria-pressed="true"] {
+    color: var(--is-accent, #1a6eb0);
+  }
+`,g=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],v=r=>{const e=Array.isArray(r.content)&&r.content.length?[...r.content]:[...r.doc?.blocks??[]],t=(r.contexts??[]).flatMap(i=>[...i.content??[]]);return[...e,...t].filter(i=>i&&typeof i=="object").sort((i,n)=>(i.sortKey??0)-(n.sortKey??0))},k=(r,e)=>{const t=m(r.payload),i=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(i==="solicitud"||i==="evidencias"||i==="causa"||i==="solucion"||i==="verificacion"||i==="otros")return i;const n=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(n))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(n))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(n))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(n))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(n))return"solucion";const o=String(r.kind??"").toLowerCase();return o==="html"||o==="image"||o==="image-group"?e==="otros"?"evidencias":e:o==="badge"||o==="badges"?e==="otros"?"solicitud":e:o==="code"||o==="sql"||o==="cambio-bd"||o==="file-tree"?e==="otros"?"solucion":e:o==="steps"||o==="stepper"?e==="otros"?"verificacion":e:o==="table"&&e==="otros"?"evidencias":o==="markdown"||o==="md"||o==="text"?n?"otros":e:"otros"},x=r=>{let e="solicitud";return r.map(t=>{const i=k(t,e);return e=i,{b:t,lane:i}})},w=r=>{const e=[...r.rootCommits??[]];return e.length?e:(r.contexts??[]).flatMap(t=>[...t.commits??[]])},c=r=>String(r||"").trim().toLowerCase()==="metrics"?"metrics":"doc";class T extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#o=null;#e="doc";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),p(this.#t,f)}connectedCallback(){this.#e=c(this.getAttribute("modo")),this.#i()}attributeChangedCallback(e,t,i){e==="modo"&&(this.#e=c(i)),this.isConnected&&this.#i()}get ticket(){return this.#o}set ticket(e){this.#o=e,this.isConnected&&this.#i()}set json(e){const t=m(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){const t=c(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#i())}#r=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#n(e){const t=x(v(e)),i=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),n=w(e),o=g.map(({lane:b,rotulo:l})=>{const d=t.filter(s=>s.lane===b).map(s=>s.b);return d.length?a`
+        <section aria-label="${l}">
+          <h2 class="rotulo">${l}</h2>
+          ${d.map(s=>Object.assign(document.createElement("tk-block"),{bloque:s}))}
         </section>
-      `:null}).filter(Boolean),p=a.length?r`
+      `:null}).filter(Boolean),u=n.length?a`
         <section aria-label="Commits">
           <h2 class="rotulo">Commits</h2>
-          ${Object.assign(document.createElement("tk-commits"),{commits:a})}
+          ${Object.assign(document.createElement("tk-commits"),{commits:n})}
         </section>
-      `:null,b=i.length?r`
-        <section aria-label="Tiempos InSoft">
-          <h2 class="rotulo">Tiempos InSoft</h2>
-          ${Object.assign(document.createElement("tk-tiempos"),{tiempos:i})}
-        </section>
-      `:null;this.#e.append(r`
-      <article class="documento">
-        <header class="encabezado">${t}</header>
-        ${l.length>0?l:r`
+      `:null;return a`
+      <article class="documento" data-modo="doc">
+        <header class="encabezado">${i}</header>
+        ${o.length>0?o:a`
           <is-callout color="neutral" icon="mdi:text-box-remove-outline">
             Este tiquete todavía no tiene documentación publicada.
           </is-callout>
         `}
-        ${p}
-        ${b}
+        ${u}
         <footer class="firma">
           ${e.iticket} · ${e.space==="patyia"?"PatyIA":"Clientes"} ·
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
-    `)}}f("tk-view",C);
+    `}#a(e){return a`
+      <div class="documento" data-modo="metrics">
+        ${Object.assign(document.createElement("tk-metrics"),{ticket:e})}
+      </div>
+    `}#i(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const e=this.#o;if(!e?.iticket){this.#t.append(a`
+        <div class="vacio">
+          <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
+          <p>Selecciona un tiquete para ver su documentación.</p>
+        </div>
+      `);return}const t=this.#e==="metrics",i=t?"mdi:file-document-outline":"mdi:chart-timeline-variant",n=t?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#t.append(a`
+      <div class="shell">
+        ${t?this.#a(e):this.#n(e)}
+        <div class="fab">
+          <button
+            type="button"
+            class="fab-btn"
+            aria-label="${n}"
+            title="${n}"
+            aria-pressed="${t?"true":"false"}"
+            onclick=${this.#r}
+          >
+            <is-icon icon="${i}" aria-hidden="true"></is-icon>
+          </button>
+        </div>
+      </div>
+    `)}}h("tk-view",T);

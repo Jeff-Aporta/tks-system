@@ -4,8 +4,8 @@
  * Payload:
  *   { rootLabel, paths?: string[], tree?: Nodo[], hints?: Record<string,string> }
  *
- * Acepta rutas planas o árbol anidado (como el front React). El render es
- * propio (sin <is-tree>): más fiable y se lee como árbol real.
+ * Las pistas (`hints`) se muestran como `<is-tooltip>` al hover/foco
+ * sobre el nombre del archivo (no como texto inline al lado).
  */
 
 import { blockCss, crearBloque, define, html, rec } from './_shared.js';
@@ -41,9 +41,9 @@ const CSS = /* css */ `
   }
   .fila {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.55rem;
-    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    align-items: center;
     min-width: 0;
   }
   .ico {
@@ -55,48 +55,72 @@ const CSS = /* css */ `
     min-width: 0;
     overflow-wrap: anywhere;
     word-break: break-word;
+    outline: none;
+  }
+  .nombre[tabindex] {
+    cursor: help;
+    border-bottom: 1px dotted color-mix(in srgb, var(--is-text-muted, #9aa7b4) 55%, transparent);
+  }
+  .nombre[tabindex]:hover,
+  .nombre[tabindex]:focus-visible {
+    color: var(--is-accent, #1a6eb0);
   }
   .carpeta .nombre { font-weight: 600; color: var(--is-text-soft, #c3ced9); }
-  .pista {
-    flex: 1 1 12rem;
-    min-width: 0;
-    color: var(--is-text-muted, #9aa7b4);
-    font-family: var(--is-font-sans, system-ui, sans-serif);
-    font-size: 0.92em;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
+  .carpeta .nombre[tabindex] {
+    border-bottom-color: transparent;
+    cursor: default;
   }
   .raiz {
     margin-bottom: 0.35rem;
     color: var(--is-accent, #1a6eb0);
     font-weight: 650;
   }
+  is-tooltip {
+    --max-width: 22rem;
+  }
 `;
 
 interface Nodo {
   readonly nombre: string;
+  readonly path: string;
   readonly hijos: Map<string, Nodo>;
   readonly pista?: string;
 }
 
-const nodo = (nombre: string, pista = ''): Nodo => ({
+const nodo = (nombre: string, path: string, pista = ''): Nodo => ({
   nombre,
+  path,
   hijos: new Map(),
   pista: pista || undefined,
 });
 
 const construirPaths = (paths: readonly string[], hints: Record<string, unknown>): Nodo => {
-  const raiz = nodo('');
+  const raiz = nodo('', '');
   for (const ruta of paths) {
     const partes = String(ruta).split(/[/\\]/).filter(Boolean);
     let actual = raiz;
+    const acc: string[] = [];
     partes.forEach((parte, i) => {
+      acc.push(parte);
+      const path = acc.join('/');
       if (!actual.hijos.has(parte)) {
         const esHoja = i === partes.length - 1;
         const pista = esHoja
-          ? String(hints[parte] ?? hints[ruta] ?? hints[partes.slice(0, i + 1).join('/')] ?? '')
+          ? String(hints[path] ?? hints[ruta] ?? hints[parte] ?? hints[partes.slice(0, i + 1).join('/')] ?? '')
           : '';
-        actual.hijos.set(parte, nodo(parte, pista));
+        actual.hijos.set(parte, nodo(parte, path, pista));
+      } else if (i === partes.length - 1) {
+        const prev = actual.hijos.get(parte)!;
+        const pista = String(
+          prev.pista
+            ?? hints[path]
+            ?? hints[ruta]
+            ?? hints[parte]
+            ?? '',
+        );
+        if (pista && !prev.pista) {
+          actual.hijos.set(parte, nodo(parte, path, pista));
+        }
       }
       actual = actual.hijos.get(parte)!;
     });
@@ -112,7 +136,8 @@ const leerNodoTree = (raw: unknown, hints: Record<string, unknown>, accPath: str
   const kids = Array.isArray(r.children) ? r.children : Array.isArray(r.hijos) ? r.hijos : [];
   const out = nodo(
     nombre,
-    String(r.hint ?? r.pista ?? hints[nombre] ?? hints[path] ?? ''),
+    path,
+    String(r.hint ?? r.pista ?? hints[path] ?? hints[nombre] ?? ''),
   );
   for (const child of kids) {
     const n = leerNodoTree(child, hints, path);
@@ -122,7 +147,7 @@ const leerNodoTree = (raw: unknown, hints: Record<string, unknown>, accPath: str
 };
 
 const construirTree = (tree: readonly unknown[], hints: Record<string, unknown>): Nodo => {
-  const raiz = nodo('');
+  const raiz = nodo('', '');
   for (const item of tree) {
     const n = leerNodoTree(item, hints, '');
     if (n) raiz.hijos.set(n.nombre, n);
@@ -130,15 +155,22 @@ const construirTree = (tree: readonly unknown[], hints: Record<string, unknown>)
   return raiz;
 };
 
+let tipSeq = 0;
+
 const pintar = (n: Nodo): DocumentFragment => {
   const esHoja = n.hijos.size === 0;
   const icono = esHoja ? 'mdi:file-document-outline' : 'mdi:folder-outline';
+  const tipId = n.pista ? `ft-tip-${++tipSeq}` : '';
   return html`
     <li class="nodo ${esHoja ? 'hoja' : 'carpeta'}">
       <div class="fila">
         <is-icon class="ico" icon="${icono}" aria-hidden="true"></is-icon>
-        <span class="nombre">${n.nombre}</span>
-        ${n.pista ? html`<span class="pista">${n.pista}</span>` : null}
+        ${n.pista
+          ? html`
+            <span class="nombre" id="${tipId}" tabindex="0">${n.nombre}</span>
+            <is-tooltip for="${tipId}" placement="top">${n.pista}</is-tooltip>
+          `
+          : html`<span class="nombre">${n.nombre}</span>`}
       </div>
       ${!esHoja ? html`
         <ul>
@@ -150,6 +182,7 @@ const pintar = (n: Nodo): DocumentFragment => {
 };
 
 define('tk-file-tree', crearBloque(CSS, (root, p) => {
+  tipSeq = 0;
   const hints = rec(p.hints ?? p.notes);
   const nested = rec(p.fileTree ?? {});
   const treeArr = (Array.isArray(p.tree) ? p.tree

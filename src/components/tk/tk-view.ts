@@ -2,22 +2,25 @@
  * <tk-view> — documento completo de un tiquete a partir de su JSON.
  *
  * Propiedades
- *   ticket    TkTicket        — ticket ya normalizado por la capa de datos
+ *   ticket    TkTicket
  *   embebido  boolean (attr)  — sin acciones de compartir/descargar
+ *   modo      'doc' | 'metrics' (attr) — dimensión activa
  *
- * Es el componente que se "quema" en el HTML descargable: recibe el JSON y
- * construye toda la vista. Las acciones viven en el header de <tk-app>.
+ * Dos dimensiones visuales:
+ *   - doc      — diligen cia / solución (bloques, commits)
+ *   - metrics  — estudio InSoft (KPIs, tiempos hábiles)
  *
- * Los bloques se agrupan por `docLane` en secciones con título. Un bloque sin
- * carril cae en «Detalle», nunca se descarta. Commits y tiempos InSoft van
- * al final (mismo JSON del tk: `rootCommits` / `tiempos`).
+ * Un botón flotante intercambia el modo.
  */
 
 import { css, define, html, rec } from './_shared.js';
 
+type TkVistaModo = 'doc' | 'metrics';
+
 const CSS = /* css */ `
   :host {
     display: block;
+    position: relative;
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -26,6 +29,10 @@ const CSS = /* css */ `
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
+  }
+  .shell {
+    position: relative;
+    min-width: 0;
   }
   .documento {
     display: grid;
@@ -42,7 +49,7 @@ const CSS = /* css */ `
   tk-ticket-head,
   tk-block,
   tk-commits,
-  tk-tiempos {
+  tk-metrics {
     min-width: 0;
     max-width: 100%;
   }
@@ -96,9 +103,58 @@ const CSS = /* css */ `
     line-height: 1.5;
     overflow-wrap: anywhere;
   }
+  .fab {
+    position: sticky;
+    bottom: 1.15rem;
+    z-index: 6;
+    display: flex;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    margin: 0;
+    padding: 0 clamp(0.85rem, 0.4rem + 1.8vw, 2.5rem);
+    pointer-events: none;
+    transform: translateY(-3.4rem);
+  }
+  .fab-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.85rem;
+    height: 2.85rem;
+    margin: 0;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--is-border, #2a3038) 80%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--is-bg-elevated, #1a2129) 92%, transparent);
+    color: var(--is-text, #e6edf3);
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .fab-btn:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--is-accent, #1a6eb0) 55%, var(--is-border, #2a3038));
+    background: color-mix(in srgb, var(--is-accent, #1a6eb0) 18%, var(--is-bg-elevated, #1a2129));
+  }
+  .fab-btn:focus-visible {
+    outline: 2px solid var(--is-accent, #1a6eb0);
+    outline-offset: 2px;
+  }
+  .fab-btn is-icon {
+    font-size: 1.35rem;
+  }
+  .fab-btn[aria-pressed="true"] {
+    color: var(--is-accent, #1a6eb0);
+  }
 `;
 
-/** Orden de lectura del documento. El de la BD es de escritura, no de lectura. */
 const SECCIONES: ReadonlyArray<{ lane: TkDocLane; rotulo: string }> = [
   { lane: 'solicitud', rotulo: 'Solicitud' },
   { lane: 'evidencias', rotulo: 'Evidencias' },
@@ -108,7 +164,6 @@ const SECCIONES: ReadonlyArray<{ lane: TkDocLane; rotulo: string }> = [
   { lane: 'otros', rotulo: 'Detalle' },
 ];
 
-/** Bloques del ticket: `content[]`, o `doc.blocks` en documentos antiguos. */
 const bloquesDe = (tk: TkTicket): TkBlock[] => {
   const propios = Array.isArray(tk.content) && tk.content.length
     ? [...tk.content]
@@ -170,7 +225,6 @@ const carrilDe = (b: TkBlock, sticky: TkDocLane): TkDocLane => {
     return title ? 'otros' : sticky;
   }
   if (title) return 'otros';
-  // Kinds desconocidos sin carril explícito → Detalle (no heredar sticky).
   return 'otros';
 };
 
@@ -189,10 +243,14 @@ const commitsDe = (tk: TkTicket): TkCommit[] => {
   return (tk.contexts ?? []).flatMap((c) => [...(c.commits ?? [])]);
 };
 
+const parseModo = (raw: string | null | undefined): TkVistaModo =>
+  String(raw || '').trim().toLowerCase() === 'metrics' ? 'metrics' : 'doc';
+
 class TkView extends HTMLElement {
-  static get observedAttributes(): string[] { return ['embebido']; }
+  static get observedAttributes(): string[] { return ['embebido', 'modo']; }
 
   #ticket: TkTicket | null = null;
+  #modo: TkVistaModo = 'doc';
   #root: ShadowRoot;
 
   constructor() {
@@ -201,8 +259,15 @@ class TkView extends HTMLElement {
     css(this.#root, CSS);
   }
 
-  connectedCallback(): void { this.#render(); }
-  attributeChangedCallback(): void { if (this.isConnected) this.#render(); }
+  connectedCallback(): void {
+    this.#modo = parseModo(this.getAttribute('modo'));
+    this.#render();
+  }
+
+  attributeChangedCallback(name: string, _prev: string | null, next: string | null): void {
+    if (name === 'modo') this.#modo = parseModo(next);
+    if (this.isConnected) this.#render();
+  }
 
   get ticket(): TkTicket | null { return this.#ticket; }
   set ticket(v: TkTicket | null) {
@@ -210,7 +275,6 @@ class TkView extends HTMLElement {
     if (this.isConnected) this.#render();
   }
 
-  /** Acepta el JSON tal como llega del worker o del HTML descargado. */
   set json(v: unknown) {
     const r = rec(v);
     this.ticket = (r.ticket ? r.ticket : r) as TkTicket;
@@ -219,29 +283,32 @@ class TkView extends HTMLElement {
   get embebido(): boolean { return this.hasAttribute('embebido'); }
   set embebido(v: boolean) { this.toggleAttribute('embebido', !!v); }
 
-  #render(): void {
-    while (this.#root.firstChild) this.#root.removeChild(this.#root.firstChild);
-    const tk = this.#ticket;
+  get modo(): TkVistaModo { return this.#modo; }
+  set modo(v: TkVistaModo | string) {
+    const next = parseModo(String(v));
+    if (this.#modo === next) return;
+    this.#modo = next;
+    this.setAttribute('modo', next);
+    this.dispatchEvent(new CustomEvent('tk-modo', {
+      bubbles: true,
+      composed: true,
+      detail: { modo: next },
+    }));
+    if (this.isConnected) this.#render();
+  }
 
-    if (!tk?.iticket) {
-      this.#root.append(html`
-        <div class="vacio">
-          <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
-          <p>Selecciona un tiquete para ver su documentación.</p>
-        </div>
-      `);
-      return;
-    }
+  #toggleModo = (): void => {
+    this.modo = this.#modo === 'doc' ? 'metrics' : 'doc';
+  };
 
+  #renderDoc(tk: TkTicket): DocumentFragment {
     const bloques = bloquesConCarril(bloquesDe(tk));
     const cabecera = Object.assign(document.createElement('tk-ticket-head'), { ticket: tk });
     const commits = commitsDe(tk);
-    const tiempos = [...(tk.tiempos ?? [])].filter((t) => Number(t.minutos ?? 0) > 0);
 
     const secciones = SECCIONES.map(({ lane, rotulo }) => {
       const propios = bloques.filter((x) => x.lane === lane).map((x) => x.b);
       if (!propios.length) return null;
-
       return html`
         <section aria-label="${rotulo}">
           <h2 class="rotulo">${rotulo}</h2>
@@ -259,17 +326,8 @@ class TkView extends HTMLElement {
       `
       : null;
 
-    const seccionTiempos = tiempos.length
-      ? html`
-        <section aria-label="Tiempos InSoft">
-          <h2 class="rotulo">Tiempos InSoft</h2>
-          ${Object.assign(document.createElement('tk-tiempos'), { tiempos })}
-        </section>
-      `
-      : null;
-
-    this.#root.append(html`
-      <article class="documento">
+    return html`
+      <article class="documento" data-modo="doc">
         <header class="encabezado">${cabecera}</header>
         ${secciones.length > 0 ? secciones : html`
           <is-callout color="neutral" icon="mdi:text-box-remove-outline">
@@ -277,12 +335,56 @@ class TkView extends HTMLElement {
           </is-callout>
         `}
         ${seccionCommits}
-        ${seccionTiempos}
         <footer class="firma">
           ${tk.iticket} · ${tk.space === 'patyia' ? 'PatyIA' : 'Clientes'} ·
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
+    `;
+  }
+
+  #renderMetrics(tk: TkTicket): DocumentFragment {
+    return html`
+      <div class="documento" data-modo="metrics">
+        ${Object.assign(document.createElement('tk-metrics'), { ticket: tk })}
+      </div>
+    `;
+  }
+
+  #render(): void {
+    while (this.#root.firstChild) this.#root.removeChild(this.#root.firstChild);
+    const tk = this.#ticket;
+
+    if (!tk?.iticket) {
+      this.#root.append(html`
+        <div class="vacio">
+          <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
+          <p>Selecciona un tiquete para ver su documentación.</p>
+        </div>
+      `);
+      return;
+    }
+
+    const enMetrics = this.#modo === 'metrics';
+    const fabIcon = enMetrics ? 'mdi:file-document-outline' : 'mdi:chart-timeline-variant';
+    const fabLabel = enMetrics ? 'Ver documentación' : 'Ver métricas InSoft';
+
+    this.#root.append(html`
+      <div class="shell">
+        ${enMetrics ? this.#renderMetrics(tk) : this.#renderDoc(tk)}
+        <div class="fab">
+          <button
+            type="button"
+            class="fab-btn"
+            aria-label="${fabLabel}"
+            title="${fabLabel}"
+            aria-pressed="${enMetrics ? 'true' : 'false'}"
+            onclick=${this.#toggleModo}
+          >
+            <is-icon icon="${fabIcon}" aria-hidden="true"></is-icon>
+          </button>
+        </div>
+      </div>
     `);
   }
 }

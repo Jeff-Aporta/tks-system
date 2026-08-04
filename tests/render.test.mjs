@@ -24,6 +24,7 @@ const FUENTES = [
   'tk-markdown', 'tk-html', 'tk-badges', 'tk-table', 'tk-image', 'tk-code',
   'tk-url', 'tk-cambio-bd', 'tk-steps', 'tk-file-tree', 'tk-timeline',
   'tk-sequence', 'tk-stepper', 'tk-chart', 'tk-diagram', 'tk-block',
+  'tk-commits', 'tk-tiempos', 'tk-metrics',
   'tk-ticket-head', 'tk-view',
 ];
 
@@ -104,6 +105,14 @@ test('el visor pinta cabecera, secciones y bloques del ticket', () => {
 
   const secciones = [...raiz.querySelectorAll('section')].map((s) => s.getAttribute('aria-label'));
   assert.deepEqual(secciones, ['Solicitud', 'Evidencias', 'Solución', 'Detalle']);
+
+  const fab = raiz.querySelector('.fab-btn');
+  assert.ok(fab, 'debe existir el botón flotante doc/metrics');
+  assert.equal(fab.getAttribute('aria-pressed'), 'false');
+  fab.click();
+  assert.equal(vista.modo, 'metrics');
+  assert.ok(raiz.querySelector('tk-metrics'), 'modo metrics monta <tk-metrics>');
+  assert.equal(raiz.querySelector('.fab-btn')?.getAttribute('aria-pressed'), 'true');
 });
 
 test('cada kind llega a su componente y los vacíos se ocultan', () => {
@@ -145,6 +154,26 @@ test('markdown, tabla y código producen su marca esperada', () => {
   const codigo = bloques[3].shadowRoot.querySelector('tk-code').shadowRoot;
   assert.match(codigo.innerHTML, /class="key">SELECT</);
   assert.ok(codigo.querySelector('is-copy-button'), 'el código debe reusar is-copy-button');
+});
+
+test('matriz de datos: is-data-grid sin búsqueda ni tools de toolbar', () => {
+  const { window } = montar();
+  const tabla = window.document.createElement('tk-table');
+  tabla.payload = {
+    title: 'Matriz de pruebas realizadas',
+    headers: ['Caso', 'Resultado', 'Notas'],
+    rows: [
+      ['Login', 'OK', 'JWT lab'],
+      ['PATCH doc', 'OK', 'docLane'],
+    ],
+  };
+  window.document.body.append(tabla);
+
+  const grid = tabla.shadowRoot.querySelector('is-data-grid');
+  assert.ok(grid, 'filas con >2 columnas deben montar is-data-grid');
+  assert.equal(grid.getAttribute('toolbar-tools'), 'false', 'toolbar-tools=false obligatorio');
+  assert.equal(grid.hasAttribute('quick-filter'), false, 'sin quick-filter en documento');
+  assert.equal(grid.hasAttribute('show-toolbar'), false, 'sin show-toolbar en documento');
 });
 
 test('el escape del markdown neutraliza HTML incrustado', () => {

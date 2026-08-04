@@ -1,4 +1,4 @@
-import{blockCss as g,crearBloque as p,define as y,html as o,inlineMd as c,raw as m,rec as $}from"./_shared.js";const k=`
+import{blockCss as g,crearBloque as p,define as y,html as a,inlineMd as c,raw as m,rec as $}from"./_shared.js";const k=`
   ${g}
   .ficha {
     display: grid;
@@ -35,17 +35,17 @@ import{blockCss as g,crearBloque as p,define as y,html as o,inlineMd as c,raw as
     display: block;
     --is-grid-height: auto;
   }
-`,l=r=>{if(r==null)return"";if(typeof r=="object"){const e=$(r);return c(e.text??e.label??e.value??"")}return c(r)};y("tk-table",p(k,(r,e)=>{const n=(Array.isArray(e.rows)?e.rows:[]).map(t=>Array.isArray(t)?t:[t]);if(!n.length)return;const s=(Array.isArray(e.headers)?e.headers:[]).map(String);if(n.every(t=>t.length===2)){r.append(o`
-      ${e.title&&o`<h2 class="titulo">${e.title}</h2>`}
+`,l=r=>{if(r==null)return"";if(typeof r=="object"){const e=$(r);return c(e.text??e.label??e.value??"")}return c(r)};y("tk-table",p(k,(r,e)=>{const n=(Array.isArray(e.rows)?e.rows:[]).map(t=>Array.isArray(t)?t:[t]);if(!n.length)return;const s=(Array.isArray(e.headers)?e.headers:[]).map(String);if(n.every(t=>t.length===2)){r.append(a`
+      ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
       <dl class="ficha">
-        ${n.map(t=>o`
+        ${n.map(t=>a`
           <dt>${m(l(t[0]))}</dt>
           <dd>${m(l(t[1]))}</dd>
         `)}
       </dl>
-      ${e.caption&&o`<p class="pie">${e.caption}</p>`}
-    `);return}const u=Math.max(...n.map(t=>t.length),s.length),f=Array.from({length:u},(t,i)=>({field:`c${i}`,headerName:s[i]??`Columna ${i+1}`,flex:1,sortable:!0,renderCell:({value:d})=>({html:l(d)})})),a=Object.assign(document.createElement("is-data-grid"),{columns:f,rows:n.map((t,i)=>{const d={id:i};return t.forEach((b,h)=>{d[`c${h}`]=b}),d})});a.setAttribute("auto-height",""),a.setAttribute("hide-footer",""),a.setAttribute("density","compact"),a.setAttribute("disable-column-menu",""),n.length>12&&(a.setAttribute("show-toolbar",""),a.setAttribute("quick-filter","")),r.append(o`
-    ${e.title&&o`<h2 class="titulo">${e.title}</h2>`}
-    ${a}
-    ${e.caption&&o`<p class="pie">${e.caption}</p>`}
+      ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    `);return}const u=Math.max(...n.map(t=>t.length),s.length),f=Array.from({length:u},(t,i)=>({field:`c${i}`,headerName:s[i]??`Columna ${i+1}`,flex:1,sortable:!0,renderCell:({value:d})=>({html:l(d)})})),o=Object.assign(document.createElement("is-data-grid"),{columns:f,rows:n.map((t,i)=>{const d={id:i};return t.forEach((b,h)=>{d[`c${h}`]=b}),d})});o.setAttribute("auto-height",""),o.setAttribute("hide-footer",""),o.setAttribute("density","compact"),o.setAttribute("disable-column-menu",""),o.setAttribute("toolbar-tools","false"),r.append(a`
+    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+    ${o}
+    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
   `)}));

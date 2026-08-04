@@ -72,17 +72,49 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 12. **tk-view**: arma secciones por `docLane` (solicitud, causa, solución,
     verificación, otros). Un bloque sin carril cae en «Detalle».
 
+### Documento y modos (`tk-view`, bloques)
+
+13. **Dos modos en `tk-view`**: `doc` (diligencia/solución: bloques + commits)
+    y `metrics` (estudio InSoft: KPIs, datos, tiempos). Se cambia con FAB
+    flotante; evento `tk-modo`; atributo `modo`. **No** mezclar tiempos
+    InSoft dentro del modo `doc`.
+14. **`tk-metrics`** es el contenedor del modo metrics. Vive en
+    `src/components/tk/tk-metrics.ts` y **debe** estar en `all.ts` /
+    `FUENTES` de `tests/render.test.mjs`.
+15. **`docLane`** es el contrato de secciones. El worker puede enriquecerlo
+    (`ensureLanes`); el visor agrupa por carril. No inventar carriles
+    nuevos sin alinear worker + visor.
+16. **`tk-table` + matriz de pruebas**:
+    - 2 columnas en todas las filas → ficha Campo/Valor (`dl.ficha`), no grid.
+    - Tabla de datos → `<is-data-grid>` con **siempre**
+      `toolbar-tools="false"`, **sin** `quick-filter`, **sin** `show-toolbar`.
+    - Motivo: en documento (p. ej. «Matriz de pruebas realizadas») la
+      búsqueda y Columnas/Filtros/Densidad/Exportar estorban.
+    - El boolean vive en el kit (`AppWebcomponents` → `is-data-grid`).
+      Si falta en el CDN, **arreglar el kit y pushear**, no ocultar con CSS
+      en el visor.
+17. **`tk-file-tree` hints**: pistas al hover con `<is-tooltip>`, **nunca**
+    texto inline al lado del nombre. Sincronizar árboles desde commits con
+    el script del worker (`npm run tk:sync-file-trees`), no inventar paths.
+
 ### General
 
-13. **`tk-stepper` y `tk-timeline` son del kit** (`is-stepper`, `is-timeline`).
+18. **`tk-stepper` y `tk-timeline` son del kit** (`is-stepper`, `is-timeline`).
     No crear timelines verticales custom: si el patrón es "fechas en eje
     temporal", `is-timeline` ya lo hace.
-14. **`<is-palette-selector>` del kit** aplica `data-palette` al `<html>` y
+19. **`<is-palette-selector>` del kit** aplica `data-palette` al `<html>` y
     persiste en `localStorage`. El `demo-boot.js` lo aplica antes del primer
     paint; el selector se inicializa leyendo ese atributo.
-15. **`compact` attribute + CSS media query** siempre para responsive.
+20. **`compact` attribute + CSS media query** siempre para responsive.
     No togglear visibilidad con JS en `matchMedia` (mejor atributo
     `:host([compact])` + CSS).
+21. **Cambios en dos repos**: cambio de API/`is-*` →
+    `Personal/apps/AppWebcomponents` (commit + push `main`); consumo en
+    tks → `frontend-webcomponents`. jsDelivr `@main` tarda minutos en
+    refrescar; pin de commit en export HTML si hace falta inmediatez.
+22. **Commits en PowerShell**: no usar HEREDOC bash
+    (`git commit -m "$(cat <<'EOF'…"`). Usar
+    `git commit -m "mensaje en una línea"` o aquí-string de PowerShell.
 
 ## Anti-patrones explícitos
 
@@ -143,6 +175,20 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 - **No añadir `<tk-actions>` si el ticket no está activo**. El componente
   ya oculta sus botones cuando no hay ticket. Ver `tk-actions.ts`.
 
+- **No activar toolbar de data-grid en tablas del documento**. Prohibido en
+  `tk-table.ts`: `show-toolbar`, `quick-filter`, o dejar `toolbar-tools`
+  en default (true). Obligatorio: `toolbar-tools="false"`. El test
+  `tests/tk-invariants.test.mjs` lo vigila.
+
+- **No meter KPIs/tiempos InSoft en modo `doc`**. Eso es `tk-metrics` /
+  modo `metrics`. Duplicar `tk-tiempos` en doc fue un error de producto.
+
+- **No pintar hints del file-tree como texto visible permanente**. Solo
+  `<is-tooltip>`. Texto al lado del path ensucia el árbol.
+
+- **No reinventar auth del worker en el front**. Login lab:
+  `POST /api/auth/login` en `jagudeloe-tks`. Ver `../backend-tks/LLM.md`.
+
 ### Convenciones de TS
 
 - **No usar `currentColor` en SVGs producidos por `is-icon`**. El componente
@@ -151,6 +197,10 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 
 - **No exportar `tk-*` como `tk-all.js` con guión**. Archivo real:
   `tk.all.js` (punto). Es lo que carga los previews.
+
+- **No añadir `tk-*` sin registrarlo en `all.ts` y en `FUENTES` del
+  `render.test.mjs`**. Si falta en `FUENTES`, jsdom no lo carga y el test
+  de `tk-view` falla o miente.
 
 ## Errores reales que nos costó tiempo
 
@@ -175,6 +225,14 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 | `compact` no se aplica en Safari | `:host([compact])` necesita que el atributo esté en el elemento | Atributo `compact` setado con `toggleAttribute('compact', true)` en `#onBreakpoint`. |
 | `is-drawer` size se sale de pantalla | Usar `--size: 100vw` | Limit a `min(92vw, 22rem)` con CSS var. CSS de parte `panel` para bg. |
 | Custom timeline CSS mojibake en tk-steps | Encabezados con tildes pierden encoding | El bloque debe escribirse con `Write`, no `Set-Content`. |
+| Matriz de pruebas con Columnas/Filtros/Densidad/Exportar/búsqueda | `tk-table` activaba toolbar/search o el kit no podía apagar tools | Kit: `toolbar-tools="false"`. Visor: siempre ese attr; nunca search en doc. |
+| Ocultar toolbar con CSS en el shadow del grid | CSS del consumidor no es el contrato | Extender `is-data-grid` en AppWebcomponents, build, push, luego consumir. |
+| `git commit` con HEREDOC bash falla en PowerShell | Shell de Windows no entiende `cat <<'EOF'` | `git commit -m "..."` en una línea. |
+| JWT system-login / verify-access rompe CRUD lab | Auth InSoft no aplica al lab | `POST /api/auth/login` → JWT `lab: true`; guard salta verify-access. |
+| Secciones en «Detalle» o desordenadas | `docLane` ausente | Worker `ensureLanes` (on por defecto); `?lanes=0` solo raw. |
+| File-tree incompleto vs commits | Paths a mano / stubs | `npm run tk:sync-file-trees -- --apply` en backend-tks. |
+| Modo metrics sin componente | `tk-metrics` fuera de `all.ts` / FUENTES | Registrar en barril + test. |
+| CDN `@main` sirve build viejo | Cache jsDelivr | Esperar o pin `@<sha>`. |
 
 ## Cómo añadir un componente nuevo
 
@@ -203,10 +261,18 @@ Si el `tk-*` necesita un `is-*` que no existe aún:
 
 ## Tests automatizados
 
+`tests/` **no** está en `.gitignore`: se versionan. Convención del repo:
+`*.test.mjs` con `node:test` (no `*.test.ts` — no hay runner TS).
+
 `npm run test` corre:
 
 - `tests/render.test.mjs` — humo del visor: parsing, despacho por `kind`,
-  saneado de HTML, escape de markdown, registro de custom elements.
+  saneado de HTML, escape de markdown, registro de custom elements,
+  modos doc/metrics, tabla → ficha vs grid sin chrome de toolbar.
+- `tests/tk-invariants.test.mjs` — invariantes de **fuente**:
+  `toolbar-tools="false"` en `tk-table`, prohibición de `quick-filter`/
+  `show-toolbar`, `tk-metrics` en `all.ts`, hints vía `is-tooltip` en
+  file-tree. Avisa inconsistencias antes del browser.
 - `tests/export.test.mjs` — el HTML descargable: import map completo,
   cada URI `data:` decodifica al `.js` compilado, JSON del ticket saneado.
 - `tests/demo.test.mjs` — invariantes del demo: paths relativos, manifest
@@ -215,6 +281,14 @@ Si el `tk-*` necesita un `is-*` que no existe aún:
   presentes (no reimplementación).
 
 Si rompes uno de estos, **el CI te lo dice antes de llegar al browser**.
+
+## Ecosistema relacionado
+
+| Repo | Path local | LLM |
+|---|---|---|
+| Visor WC (este) | `Personal/apps/jagudeloe/frontend-webcomponents` | este archivo + [`LLM.md`](../../../LLM.md) raíz |
+| Worker TKS | `Personal/apps/jagudeloe/backend-tks` | `../backend-tks/LLM.md` |
+| Kit `is-*` | `Personal/apps/AppWebcomponents` | `components/data/LLM.md` (grids) + `LLM.md` raíz |
 
 ### Cómo extender tests cuando aparece un error
 

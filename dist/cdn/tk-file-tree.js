@@ -1,5 +1,5 @@
-import{blockCss as g,crearBloque as b,define as p,html as d,rec as m}from"./_shared.js";const w=`
-  ${g}
+import{blockCss as v,crearBloque as w,define as y,html as d,rec as m}from"./_shared.js";const x=`
+  ${v}
   .arbol {
     box-sizing: border-box;
     width: 100%;
@@ -29,9 +29,9 @@ import{blockCss as g,crearBloque as b,define as p,html as d,rec as m}from"./_sha
   }
   .fila {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.55rem;
-    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    align-items: center;
     min-width: 0;
   }
   .ico {
@@ -43,46 +43,55 @@ import{blockCss as g,crearBloque as b,define as p,html as d,rec as m}from"./_sha
     min-width: 0;
     overflow-wrap: anywhere;
     word-break: break-word;
+    outline: none;
+  }
+  .nombre[tabindex] {
+    cursor: help;
+    border-bottom: 1px dotted color-mix(in srgb, var(--is-text-muted, #9aa7b4) 55%, transparent);
+  }
+  .nombre[tabindex]:hover,
+  .nombre[tabindex]:focus-visible {
+    color: var(--is-accent, #1a6eb0);
   }
   .carpeta .nombre { font-weight: 600; color: var(--is-text-soft, #c3ced9); }
-  .pista {
-    flex: 1 1 12rem;
-    min-width: 0;
-    color: var(--is-text-muted, #9aa7b4);
-    font-family: var(--is-font-sans, system-ui, sans-serif);
-    font-size: 0.92em;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
+  .carpeta .nombre[tabindex] {
+    border-bottom-color: transparent;
+    cursor: default;
   }
   .raiz {
     margin-bottom: 0.35rem;
     color: var(--is-accent, #1a6eb0);
     font-weight: 650;
   }
-`,h=(n,o="")=>({nombre:n,hijos:new Map,pista:o||void 0}),y=(n,o)=>{const e=h("");for(const r of n){const i=String(r).split(/[/\\]/).filter(Boolean);let s=e;i.forEach((t,a)=>{if(!s.hijos.has(t)){const c=a===i.length-1?String(o[t]??o[r]??o[i.slice(0,a+1).join("/")]??""):"";s.hijos.set(t,h(t,c))}s=s.hijos.get(t)})}return e},f=(n,o,e)=>{const r=m(n),i=String(r.name??r.nombre??"").trim();if(!i)return null;const s=String(r.path??(e?`${e}/${i}`:i)),t=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],a=h(i,String(r.hint??r.pista??o[i]??o[s]??""));for(const l of t){const c=f(l,o,s);c&&a.hijos.set(c.nombre,c)}return a},v=(n,o)=>{const e=h("");for(const r of n){const i=f(r,o,"");i&&e.hijos.set(i.nombre,i)}return e},u=n=>{const o=n.hijos.size===0;return d`
+  is-tooltip {
+    --max-width: 22rem;
+  }
+`,b=(e,o,i="")=>({nombre:e,path:o,hijos:new Map,pista:i||void 0}),j=(e,o)=>{const i=b("","");for(const r of e){const t=String(r).split(/[/\\]/).filter(Boolean);let s=i;const c=[];t.forEach((n,a)=>{c.push(n);const l=c.join("/");if(s.hijos.has(n)){if(a===t.length-1){const h=s.hijos.get(n),u=String(h.pista??o[l]??o[r]??o[n]??"");u&&!h.pista&&s.hijos.set(n,b(n,l,u))}}else{const u=a===t.length-1?String(o[l]??o[r]??o[n]??o[t.slice(0,a+1).join("/")]??""):"";s.hijos.set(n,b(n,l,u))}s=s.hijos.get(n)})}return i},f=(e,o,i)=>{const r=m(e),t=String(r.name??r.nombre??"").trim();if(!t)return null;const s=String(r.path??(i?`${i}/${t}`:t)),c=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],n=b(t,s,String(r.hint??r.pista??o[s]??o[t]??""));for(const a of c){const l=f(a,o,s);l&&n.hijos.set(l.nombre,l)}return n},$=(e,o)=>{const i=b("","");for(const r of e){const t=f(r,o,"");t&&i.hijos.set(t.nombre,t)}return i};let p=0;const g=e=>{const o=e.hijos.size===0,i=o?"mdi:file-document-outline":"mdi:folder-outline",r=e.pista?`ft-tip-${++p}`:"";return d`
     <li class="nodo ${o?"hoja":"carpeta"}">
       <div class="fila">
-        <is-icon class="ico" icon="${o?"mdi:file-document-outline":"mdi:folder-outline"}" aria-hidden="true"></is-icon>
-        <span class="nombre">${n.nombre}</span>
-        ${n.pista?d`<span class="pista">${n.pista}</span>`:null}
+        <is-icon class="ico" icon="${i}" aria-hidden="true"></is-icon>
+        ${e.pista?d`
+            <span class="nombre" id="${r}" tabindex="0">${e.nombre}</span>
+            <is-tooltip for="${r}" placement="top">${e.pista}</is-tooltip>
+          `:d`<span class="nombre">${e.nombre}</span>`}
       </div>
       ${o?null:d`
         <ul>
-          ${[...n.hijos.values()].map(u)}
+          ${[...e.hijos.values()].map(g)}
         </ul>
       `}
     </li>
-  `};p("tk-file-tree",b(w,(n,o)=>{const e=m(o.hints??o.notes),r=m(o.fileTree??{}),i=Array.isArray(o.tree)?o.tree:Array.isArray(r.tree)?r.tree:[],s=(Array.isArray(o.paths)?o.paths:Array.isArray(o.files)?o.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!i.length&&!s.length)return;const t=i.length?v(i,{...m(r.hints),...e}):y(s,{...m(r.hints),...e}),a=String(o.rootLabel??o.root??r.rootLabel??"").trim(),l=[...t.hijos.values()].map(u);n.append(d`
+  `};y("tk-file-tree",w(x,(e,o)=>{p=0;const i=m(o.hints??o.notes),r=m(o.fileTree??{}),t=Array.isArray(o.tree)?o.tree:Array.isArray(r.tree)?r.tree:[],s=(Array.isArray(o.paths)?o.paths:Array.isArray(o.files)?o.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!t.length&&!s.length)return;const c=t.length?$(t,{...m(r.hints),...i}):j(s,{...m(r.hints),...i}),n=String(o.rootLabel??o.root??r.rootLabel??"").trim(),a=[...c.hijos.values()].map(g);e.append(d`
     <h2 class="titulo">${String(o.title??r.title??"Archivos intervenidos")}</h2>
     <ul class="arbol" role="tree" aria-label="Archivos intervenidos">
-      ${a?d`
+      ${n?d`
         <li class="nodo carpeta raiz" role="treeitem">
           <div class="fila">
             <is-icon class="ico" icon="mdi:source-repository" aria-hidden="true"></is-icon>
-            <span class="nombre">${a}</span>
+            <span class="nombre">${n}</span>
           </div>
-          <ul role="group">${l}</ul>
+          <ul role="group">${a}</ul>
         </li>
-      `:l}
+      `:a}
     </ul>
   `)}));

@@ -3,9 +3,9 @@
  *
  * Payload: { title, headers?: string[], rows: (string | object)[][], caption? }
  *
- * La tabla la pinta <is-data-grid> del kit: orden, filtro rápido y exportación
- * ya están resueltos ahí y no se reimplementan aquí. Las celdas admiten
- * markdown inline, que se inyecta con `renderCell`.
+ * La tabla la pinta <is-data-grid> del kit. En el documento del tk la toolbar
+ * va apagada (`toolbar-tools="false"`, sin `quick-filter`): la matriz de
+ * pruebas no debe mostrar búsqueda ni Columnas/Filtros/Densidad/Exportar.
  *
  * Excepción deliberada: cuando todas las filas tienen dos celdas, el bloque no
  * es una tabla de datos sino una ficha Campo/Valor (la "Información del
@@ -113,11 +113,8 @@ define('tk-table', crearBloque(CSS, (root, p) => {
   rejilla.setAttribute('hide-footer', '');
   rejilla.setAttribute('density', 'compact');
   rejilla.setAttribute('disable-column-menu', '');
-  // Una tabla larga sí gana con búsqueda; una corta solo gana ruido.
-  if (filas.length > 12) {
-    rejilla.setAttribute('show-toolbar', '');
-    rejilla.setAttribute('quick-filter', '');
-  }
+  // Vista documento: sin búsqueda ni Columnas/Filtros/Densidad/Exportar.
+  rejilla.setAttribute('toolbar-tools', 'false');
 
   root.append(html`
     ${p.title && html`<h2 class="titulo">${p.title}</h2>`}
