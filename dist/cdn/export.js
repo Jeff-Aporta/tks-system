@@ -1,4 +1,4 @@
-const o="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn",c="Jeff-Aporta/jagudeloe-tks-front",d="main",r=`https://cdn.jsdelivr.net/gh/${c}@${d}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),l=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,a=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
+const o="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn",c="Jeff-Aporta/jagudeloe-tks-front",d="03b625043f50705b81423faf429a15e568f77dab",r=`https://cdn.jsdelivr.net/gh/${c}@${d}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),l=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,a=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
 <html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
 <head>
 <meta charset="utf-8">

@@ -17,8 +17,8 @@ const IS_CDN = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents'
 
 /** Repo público del visor · pin de commit (actualizar tras publicar). */
 export const TK_REPO = 'Jeff-Aporta/jagudeloe-tks-front';
-/** Placeholder sustituido en el release; mientras tanto `@main` vía jsDelivr. */
-export const TK_PIN = 'main';
+/** Commit fijado de `main` (actualizar tras cada release del CDN). */
+export const TK_PIN = '03b625043f50705b81423faf429a15e568f77dab';
 
 const TK_CDN = `https://cdn.jsdelivr.net/gh/${TK_REPO}@${TK_PIN}/dist/cdn`;
 
