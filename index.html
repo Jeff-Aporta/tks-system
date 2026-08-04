@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiquetes · jagudeloe</title>
+<meta name="description" content="Documentación de tiquetes PatyIA y Clientes.">
+
+<!--
+  Kit is-* por CDN, versión fijada por commit.
+  El .css de cada componente lo trae el propio componente; aquí solo van
+  los tokens de tema y las paletas de marca.
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+<script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+
+<!-- Tema antes del primer pintado: sin esto, un flash claro en cada carga. -->
+<script src="./src/js/boot.js"></script>
+
+<link rel="stylesheet" href="./src/css/app.css">
+
+<!--
+  Módulos ES nativos, sin Babel ni bundler: `npm run build` compila
+  `src/**/*.ts` (esbuild solo le quita los tipos y minifica) a `dist/cdn/`,
+  un directorio plano donde cada import relativo ya resuelve entre hermanos.
+  `npm run dev` corre ese build en watch mode.
+-->
+<script type="module" src="./dist/cdn/_shared.js"></script>
+</head>
+
+<body>
+  <tk-app></tk-app>
+  <is-toast placement="bottom-end"></is-toast>
+
+  <!-- Bloques del documento -->
+  <script type="module" src="./dist/cdn/tk-markdown.js"></script>
+  <script type="module" src="./dist/cdn/tk-html.js"></script>
+  <script type="module" src="./dist/cdn/tk-badges.js"></script>
+  <script type="module" src="./dist/cdn/tk-table.js"></script>
+  <script type="module" src="./dist/cdn/tk-image.js"></script>
+  <script type="module" src="./dist/cdn/tk-code.js"></script>
+  <script type="module" src="./dist/cdn/tk-url.js"></script>
+  <script type="module" src="./dist/cdn/tk-cambio-bd.js"></script>
+  <script type="module" src="./dist/cdn/tk-steps.js"></script>
+  <script type="module" src="./dist/cdn/tk-file-tree.js"></script>
+  <script type="module" src="./dist/cdn/tk-timeline.js"></script>
+  <script type="module" src="./dist/cdn/tk-sequence.js"></script>
+  <script type="module" src="./dist/cdn/tk-stepper.js"></script>
+  <script type="module" src="./dist/cdn/tk-chart.js"></script>
+  <script type="module" src="./dist/cdn/tk-diagram.js"></script>
+  <script type="module" src="./dist/cdn/tk-block.js"></script>
+
+  <!-- Documento y shell -->
+  <script type="module" src="./dist/cdn/tk-ticket-head.js"></script>
+  <script type="module" src="./dist/cdn/tk-actions.js"></script>
+  <script type="module" src="./dist/cdn/tk-view.js"></script>
+  <script type="module" src="./dist/cdn/tk-nav.js"></script>
+  <script type="module" src="./dist/cdn/tk-app.js"></script>
+</body>
+</html>

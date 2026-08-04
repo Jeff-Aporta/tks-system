@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-markdown · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-markdown&gt;</h1>
+      <p>Bloque <code>markdown</code> del tiquete. Acepta <code>text</code>, <code>body</code> o <code>content</code>; opcional <code>title</code>.</p>
+    </header>
+
+    <section class="demo">
+      <h2>Demo en vivo</h2>
+      <div class="marco">
+        <tk-markdown id="md"></tk-markdown>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('md').payload = {
+        title: 'Solicitud',
+        text: 'El worker devuelve **503** desde el deploy del 04-08-2026. El log muestra:\n\n- `tbl: BD_ISADOC.TK_TICKET`\n- `near "SELECT": syntax error`\n- Afecta **ambos** spaces (patyia, clientesis).\n\nDespués del cambio a D1, las queries con `json_agg` no compilan en SQLite. La página `/api/tk/.../tickets` cae con error 500.',
+      };
+    </script>
+  </main>
+</body>
+</html>

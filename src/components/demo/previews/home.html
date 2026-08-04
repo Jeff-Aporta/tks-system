@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inicio · tk-* demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>tk-* — visor de tiquetes en web components</h1>
+      <p>
+        Galería de componentes <code>tk-*</code> que pintan la documentación de
+        un tiquete. Reusan el kit <code>is-*</code> (botones, tags, charts, etc.)
+        por CDN. Cada item de la izquierda abre un preview con la API del
+        componente y un payload de muestra.
+      </p>
+    </header>
+
+    <section class="demo">
+      <h2>Cómo se consume</h2>
+      <div class="marco">
+        <p class="ayuda">Un solo <code>&lt;script type="module"&gt;</code> registra todos los bloques Tk. Después, cualquier <code>&lt;tk-block&gt;</code> resuelve el <code>kind</code> al componente correcto.</p>
+        <pre class="code"><code>&lt;script type="module" src="dist/cdn/tk.all.js"&gt;&lt;/script&gt;
+&lt;tk-block&gt;&lt;/tk-block&gt;
+&lt;script&gt;
+  const block = document.querySelector('tk-block');
+  block.bloque = {
+    kind: 'code',
+    payload: { code: 'SELECT * FROM tiquetes;', language: 'sql' },
+  };
+&lt;/script&gt;</code></pre>
+      </div>
+    </section>
+
+    <section class="demo">
+      <h2>Estructura del visor</h2>
+      <div class="marco">
+        <p class="ayuda">El visor completo es <code>&lt;tk-view&gt;</code>: recibe el JSON del tiquete y arma el documento agrupado por secciones (Solicitud, Causa, Solución…).</p>
+        <is-button href="tk-view.html" type="button" color="brand" variant="filled">
+          <is-icon slot="start" icon="mdi:arrow-right"></is-icon>
+          Ver tk-view
+        </is-button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

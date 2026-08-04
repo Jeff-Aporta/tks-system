@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-badges · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-badges&gt;</h1>
+      <p>Bloque <code>badge</code> (singular) o <code>badges</code> (plural). Cada item: <code>{ tone, label }</code>. Se pintan con <code>is-tag</code>.</p>
+    </header>
+
+    <section class="demo">
+      <h2>Estado del tiquete</h2>
+      <div class="marco">
+        <tk-badges id="b"></tk-badges>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('b').payload = {
+        title: 'Estado',
+        items: [
+          { tone: 'success', label: 'Completado' },
+          { tone: 'warning', label: 'Pendiente' },
+          { tone: 'danger',  label: 'Bloqueado' },
+          { tone: 'info',    label: 'En revisión' },
+          { tone: 'neutral', label: 'Borrador' },
+        ],
+      };
+    </script>
+  </main>
+</body>
+</html>

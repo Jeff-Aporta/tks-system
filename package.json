@@ -1,0 +1,28 @@
+{
+  "name": "jagudeloe-tks-front",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Visor de tiquetes jagudeloe (PatyIA / ClientesIS) en web components. CDN + HTML descargable portable.",
+  "type": "module",
+  "homepage": "https://jeff-aporta.github.io/jagudeloe-tks-front/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jeff-Aporta/jagudeloe-tks-front.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jeff-Aporta/jagudeloe-tks-front/issues"
+  },
+  "author": "Jeff-Aporta",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && npx --yes serve . -l 4180",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "jsdom": "^29.1.1",
+    "typescript": "^5.6.0"
+  }
+}

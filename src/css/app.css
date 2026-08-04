@@ -1,0 +1,61 @@
+/**
+ * app.css — página anfitriona. Todo lo demás vive en el shadow DOM de cada
+ * componente, así que este archivo es deliberadamente corto.
+ */
+
+:root {
+  --tk-radius: 0.625rem;
+  --tk-measure: 68ch;
+  --tk-link: #6fb2e8;
+  --tk-code-text: #a8d5ff;
+  --tk-code-com: #6b7a8c;
+  --tk-code-str: #7ee0b8;
+  --tk-code-num: #f0b775;
+  --tk-code-key: #7fb2ff;
+}
+
+.theme-light {
+  --tk-link: #14568c;
+  --tk-code-text: #0b4f86;
+  --tk-code-com: #6b7a8c;
+  --tk-code-str: #0a6e4f;
+  --tk-code-num: #9a5b00;
+  --tk-code-key: #1a4fb0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--is-bg, #0b0d10);
+  color: var(--is-text, #e6edf3);
+  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mientras el módulo de <tk-app> carga, el shell aún no está definido: sin
+   esto se ve el hueco vacío durante ~200 ms. */
+tk-app:not(:defined) {
+  display: grid;
+  height: 100dvh;
+  place-items: center;
+}
+
+tk-app:not(:defined)::after {
+  color: var(--is-text-muted, #9aa7b4);
+  content: "Cargando visor…";
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

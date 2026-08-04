@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-table · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-table&gt;</h1>
+      <p>Bloque <code>table</code>. Con <code>headers</code> + <code>rows</code> se pinta la rejilla con <code>is-data-grid</code>. Si todas las filas tienen 2 columnas se interpreta como ficha Campo/Valor.</p>
+    </header>
+
+    <section class="demo">
+      <h2>Tabla de datos</h2>
+      <div class="marco">
+        <tk-table id="t1"></tk-table>
+      </div>
+    </section>
+
+    <section class="demo">
+      <h2>Ficha Campo / Valor</h2>
+      <div class="marco">
+        <tk-table id="t2"></tk-table>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('t1').payload = {
+        title: 'Cambios por archivo',
+        headers: ['Archivo', 'Inserciones', 'Borrados'],
+        rows: [
+          ['src/db.ts', 12, 8],
+          ['src/routes/tk.ts', 45, 22],
+          ['src/lib/tk/repository.ts', 90, 110],
+          ['src/lib/db-adapter.ts', 18, 4],
+        ],
+        caption: 'Totales del último deploy.',
+      };
+      document.getElementById('t2').payload = {
+        title: 'Información del tiquete',
+        rows: [
+          ['Código', '**TK-000123**'],
+          ['Solicitante', 'Jeff Aporta'],
+          ['Estado', 'completado'],
+          ['Tiempo total', '9 horas'],
+          ['Space', 'patyia'],
+        ],
+      };
+    </script>
+  </main>
+</body>
+</html>

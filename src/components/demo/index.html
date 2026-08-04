@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-* · demo de componentes</title>
+  <meta name="description" content="Galería de web components tk-* de jagudeloe (visor de tiquetes). Mismo shell y sistema de iframe que AppWebcomponents.">
+  <!-- Tema antes del primer pintado: si no, parpadeo entre el default del html
+       estático y el valor guardado en localStorage. -->
+  <script src="demo-boot.js"></script>
+  <!-- Kit is-* + tema por CDN, igual que en index.html del visor. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <link rel="stylesheet" href="styles/shell.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a6eb0'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='14' font-weight='700' text-anchor='middle' fill='%23fff'%3Etk%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="shell-bar">
+    <is-button id="navBtn" class="shell-icon-btn shell-bar__nav-btn" color="neutral" variant="plain" pill type="button"
+               aria-label="Abrir menú de componentes" aria-expanded="false" aria-controls="drawer">
+      <is-icon slot="start" icon="mdi:menu"></is-icon>
+    </is-button>
+
+    <div class="brand-wrap" id="brandWrap">
+      <button type="button" class="brand" id="brand" aria-haspopup="listbox" aria-expanded="false" aria-controls="brandMenu" aria-label="jagudeloe — elegir paleta" title="Elegir paleta">
+        <span id="brandLead">ja</span><span class="brand__accent" id="brandAccent">gudeloe</span><span id="brandTail"></span>
+      </button>
+      <ul class="brand-menu" id="brandMenu" role="listbox" hidden aria-label="Paleta de marca">
+        <li role="option" tabindex="-1" data-palette="insoft" aria-selected="false">
+          <span class="brand-menu__swatch" aria-hidden="true"></span>
+          <span class="brand-menu__label">InSoft</span>
+          <is-icon class="brand-menu__check" icon="mdi:check" aria-hidden="true"></is-icon>
+        </li>
+        <li role="option" tabindex="-1" data-palette="contapyme" aria-selected="true">
+          <span class="brand-menu__swatch" aria-hidden="true"></span>
+          <span class="brand-menu__label">ContaPyme</span>
+          <is-icon class="brand-menu__check" icon="mdi:check" aria-hidden="true"></is-icon>
+        </li>
+        <li role="option" tabindex="-1" data-palette="agrowin" aria-selected="false">
+          <span class="brand-menu__swatch" aria-hidden="true"></span>
+          <span class="brand-menu__label">AgroWin</span>
+          <is-icon class="brand-menu__check" icon="mdi:check" aria-hidden="true"></is-icon>
+        </li>
+      </ul>
+    </div>
+
+    <is-button class="shell-icon-btn" id="fullscreenBtn" color="neutral" variant="plain" pill type="button" aria-label="Abrir preview en pantalla completa" title="Abrir preview en pantalla completa">
+      <is-icon slot="start" icon="mdi:open-in-new"></is-icon>
+    </is-button>
+
+    <is-theme-toggle id="themeToggle" dark="true"></is-theme-toggle>
+  </header>
+
+  <is-split-panel id="mainSplit" class="main-split" orientation="horizontal" position-in-pixels="200" primary="start" storage-key="tk-demo-nav">
+    <nav class="shell-nav" slot="start" id="shellNav" aria-label="Componentes tk-*"></nav>
+    <iframe class="preview-frame" slot="end" id="previewFrame" title="Vista del componente"></iframe>
+  </is-split-panel>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+    <header class="drawer__head">
+      <strong id="drawerTitle">Componentes</strong>
+      <is-button id="closeBtn" class="drawer__close" color="neutral" variant="plain" pill type="button" aria-label="Cerrar menú">
+        <is-icon slot="start" icon="mdi:close"></is-icon>
+      </is-button>
+    </header>
+    <nav class="drawer__nav" id="drawerNav" aria-label="Componentes tk-* (móvil)"></nav>
+  </aside>
+
+  <script type="module">
+    import components from './manifest.js';
+
+    // `home` vive en el manifest con la entrada portada; el resto son
+    // entradas del catálogo que el shell pinta en el nav.
+    const HOME = components.find((c) => c.tag === 'home') ?? { tag: 'home', title: 'Inicio', page: 'home.html' };
+    const catalog = components;
+
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const shellNav = document.getElementById('shellNav');
+    const frame = document.getElementById('previewFrame');
+    const brand = document.getElementById('brand');
+    const brandMenu = document.getElementById('brandMenu');
+    const brandWrap = document.getElementById('brandWrap');
+    const brandLead = document.getElementById('brandLead');
+    const brandAccent = document.getElementById('brandAccent');
+    const brandTail = document.getElementById('brandTail');
+    const params = new URLSearchParams(location.search);
+    const themes = new Set(['light', 'dark']);
+    const palettes = new Set(['insoft', 'contapyme', 'agrowin']);
+    const brands = {
+      // jagudeloe es marca propia: lead "ja" + acento "gudeloe" en color de marca.
+      insoft:    { lead: 'in',    accent: 'Soft', tail: '',    label: 'InSoft',    leadColor: '#000', accentColor: '#d71920' },
+      contapyme: { lead: 'ja',    accent: 'gudeloe', tail: '', label: 'jagudeloe', leadColor: '#000', accentColor: '#1a6eb0' },
+      agrowin:   { lead: 'ja',    accent: 'gudeloe', tail: '', label: 'jagudeloe', leadColor: '#000', accentColor: '#1a6eb0' },
+    };
+
+    const setMenuOpen = (open) => {
+      brand.setAttribute('aria-expanded', open ? 'true' : 'false');
+      brandMenu.hidden = !open;
+      brandWrap.classList.toggle('is-open', open);
+    };
+
+    // --- b64url helpers (mismo patrón que AppWebcomponents/index.html) ---
+    const b64urlEncode = (input) => {
+      const bytes = new TextEncoder().encode(input);
+      let bin = '';
+      bytes.forEach((b) => { bin += String.fromCharCode(b); });
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    };
+    const b64urlDecode = (input) => {
+      let pad = String(input).replace(/-/g, '+').replace(/_/g, '/');
+      while (pad.length % 4) pad += '=';
+      const bin = atob(pad);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bytes.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    };
+
+    const readStateParam = () => {
+      const raw = params.get('s');
+      if (!raw) return null;
+      try { return JSON.parse(b64urlDecode(raw)); } catch { return null; }
+    };
+
+    // --- categorías: orden coincide con la presentación del visor ---
+    const categoryMeta = {
+      shell:     { id: 'shell',     label: 'Shell' },
+      blocks:    { id: 'blocks',    label: 'Bloques' },
+      document:  { id: 'document',  label: 'Documento' },
+    };
+    const categoryOrder = Object.keys(categoryMeta);
+
+    // Construye un botón de nav o un grupo de categoría. Lo usa tanto el nav
+    // desktop como el drawer móvil — un único source of truth, dos destinos.
+    const drawerNav = document.getElementById('drawerNav');
+
+    const navItem = (component, home = false) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = home ? 'shell-nav__item shell-nav__item--home' : 'shell-nav__item';
+      btn.dataset.tag = component.tag;
+      btn.setAttribute('aria-label', `${component.title} ${component.tag}`);
+      const title = document.createElement('span');
+      title.className = 'shell-nav__title';
+      title.textContent = component.title;
+      btn.append(title);
+      if (!home) {
+        const tag = document.createElement('span');
+        tag.className = 'shell-nav__tag';
+        tag.textContent = `<${component.tag}>`;
+        btn.append(tag);
+      }
+      btn.addEventListener('click', () => {
+        selectComponent(component.tag);
+        closeDrawer();
+      });
+      return btn;
+    };
+
+    const navGroup = (meta, items) => {
+      const group = document.createElement('div');
+      group.className = 'shell-nav__group';
+      group.setAttribute('role', 'group');
+      group.setAttribute('aria-labelledby', `nav-cat-${meta.id}`);
+      const heading = document.createElement('div');
+      heading.className = 'shell-nav__heading';
+      heading.id = `nav-cat-${meta.id}`;
+      heading.textContent = meta.label;
+      group.appendChild(heading);
+      for (const c of items) group.appendChild(navItem(c));
+      return group;
+    };
+
+    const navItems = components.filter((c) => c.tag !== 'home');
+    const byCategory = new Map();
+    for (const c of navItems) {
+      const key = categoryMeta[c.category] ? c.category : 'blocks';
+      if (!byCategory.has(key)) byCategory.set(key, []);
+      byCategory.get(key).push(c);
+    }
+    for (const list of byCategory.values()) {
+      list.sort((a, b) => a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }));
+    }
+    for (const target of [shellNav, drawerNav]) {
+      target.appendChild(navItem(HOME, true));
+      for (const key of categoryOrder) {
+        const list = byCategory.get(key);
+        if (!list?.length) continue;
+        target.appendChild(navGroup(categoryMeta[key], list));
+      }
+    }
+
+    // --- initial state ---
+    const stateFromUrl = readStateParam();
+    let theme = themes.has(stateFromUrl?.theme)
+      ? stateFromUrl.theme
+      : (themes.has(localStorage.getItem('is-theme')) ? localStorage.getItem('is-theme') : 'dark');
+    let palette = palettes.has(stateFromUrl?.palette)
+      ? stateFromUrl.palette
+      : (palettes.has(localStorage.getItem('is-palette')) ? localStorage.getItem('is-palette') : 'contapyme');
+    let component = catalog.find((item) => item.tag === (stateFromUrl && stateFromUrl.component)) ?? HOME;
+
+    function encodeState(obj) {
+      return b64urlEncode(JSON.stringify(obj));
+    }
+
+    /** Preview URL: ?s= embebido + theme + palette; los iniciales NO se reescriben al togglear. */
+    function previewSrc(page) {
+      return `previews/${page}?s=${encodeState({ embed: true, theme, palette })}`;
+    }
+
+    function sendContext() {
+      frame.contentWindow?.postMessage({ type: 'is-context', theme, palette }, location.origin);
+    }
+
+    function updateUrl() {
+      // Solo navega el componente; theme/palette NO viajan en la URL live.
+      const encoded = encodeState({ component: component.tag });
+      const next = new URL(location.href);
+      next.search = '?s=' + encoded;
+      history.replaceState(null, '', next);
+    }
+
+    function renderContext({ navSmooth = false } = {}) {
+      root.classList.toggle('theme-light', theme === 'light');
+      root.classList.toggle('theme-dark', theme === 'dark');
+      root.dataset.theme = theme;
+      root.dataset.palette = palette;
+      themeToggle.dark = theme === 'dark';
+      // aria-current en AMBOS navs (desktop y drawer) — la misma clase CSS
+      // `.shell-nav__item[aria-current="true"]` ya pinta el highlight.
+      const navs = [shellNav, drawerNav];
+      for (const nav of navs) {
+        for (const node of nav.querySelectorAll('.shell-nav__item')) {
+          node.setAttribute('aria-current', node.dataset.tag === component.tag ? 'true' : 'false');
+        }
+      }
+      scheduleScrollNavToCurrent({ smooth: navSmooth });
+      for (const opt of brandMenu.querySelectorAll('[role="option"]')) {
+        opt.setAttribute('aria-selected', opt.dataset.palette === palette ? 'true' : 'false');
+      }
+      const brandData = brands[palette];
+      brandLead.textContent = brandData.lead;
+      brandTail.textContent = brandData.tail || '';
+      brandTail.style.color = brandData.leadColor;
+      brandAccent.textContent = brandData.accent;
+      brandLead.style.color = brandData.leadColor;
+      brandAccent.style.color = brandData.accentColor;
+      brand.setAttribute('aria-label', `${brandData.label} — elegir paleta`);
+      document.title = `${component.title} | ${brandData.label}`;
+      localStorage.setItem('is-theme', theme);
+      localStorage.setItem('is-palette', palette);
+      updateUrl();
+      sendContext();
+    }
+
+    /** Centra el ítem activo en el nav visible que tenga scroll horizontal. */
+    function scrollNavToCurrent({ smooth = false } = {}) {
+      const current = shellNav.querySelector('.shell-nav__item[aria-current="true"]');
+      if (!current) return;
+      if (shellNav.clientHeight < 8 && shellNav.clientWidth < 8) return;
+      const horizontal = getComputedStyle(shellNav).flexDirection === 'row';
+      const behavior = smooth ? 'smooth' : 'auto';
+      if (horizontal) {
+        const delta =
+          current.getBoundingClientRect().left -
+          shellNav.getBoundingClientRect().left -
+          (shellNav.clientWidth - current.offsetWidth) / 2;
+        shellNav.scrollTo({ left: shellNav.scrollLeft + delta, behavior });
+      } else {
+        const delta =
+          current.getBoundingClientRect().top -
+          shellNav.getBoundingClientRect().top -
+          (shellNav.clientHeight - current.offsetHeight) / 2;
+        shellNav.scrollTo({ top: shellNav.scrollTop + delta, behavior });
+      }
+    }
+
+    let scrollNavRaf = 0;
+    function scheduleScrollNavToCurrent(opts = {}) {
+      const run = () => scrollNavToCurrent(opts);
+      run();
+      cancelAnimationFrame(scrollNavRaf);
+      scrollNavRaf = requestAnimationFrame(() => {
+        run();
+        requestAnimationFrame(run);
+      });
+    }
+
+    function bootScrollNavToCurrent() {
+      scheduleScrollNavToCurrent();
+      setTimeout(() => scrollNavToCurrent(), 0);
+      setTimeout(() => scrollNavToCurrent(), 100);
+      setTimeout(() => scrollNavToCurrent(), 300);
+    }
+
+    function selectComponent(tag) {
+      const next = catalog.find((item) => item.tag === tag) ?? HOME;
+      if (next === component) return;
+      component = next;
+      frame.src = previewSrc(component.page);
+      renderContext({ navSmooth: true });
+    }
+
+    // --- Drawer móvil (hamburger) ---
+    const navBtn = document.getElementById('navBtn');
+    const drawer = document.getElementById('drawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const closeBtn = document.getElementById('closeBtn');
+    let lastFocused = null;
+
+    const isDrawerOpen = () => drawer.classList.contains('is-open');
+
+    const openDrawer = () => {
+      if (isDrawerOpen()) return;
+      lastFocused = document.activeElement;
+      drawer.hidden = false;
+      drawerBackdrop.hidden = false;
+      // Reflow para que la transición de transform se dispare.
+      drawer.offsetHeight;
+      drawer.classList.add('is-open');
+      drawerBackdrop.classList.add('is-open');
+      navBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('is-drawer-open');
+      // Foco al primer item navegable del drawer.
+      queueMicrotask(() => drawer.querySelector('.shell-nav__item')?.focus());
+    };
+
+    const closeDrawer = () => {
+      if (!isDrawerOpen()) return;
+      drawer.classList.remove('is-open');
+      drawerBackdrop.classList.remove('is-open');
+      navBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('is-drawer-open');
+      // Escondemos al final de la transición para no romper la animación.
+      const finish = () => {
+        if (!isDrawerOpen()) {
+          drawer.hidden = true;
+          drawerBackdrop.hidden = true;
+        }
+      };
+      drawer.addEventListener('transitionend', finish, { once: true });
+      // Fallback si la transición no se dispara (reduced-motion).
+      setTimeout(finish, 260);
+      if (lastFocused instanceof HTMLElement) lastFocused.focus();
+    };
+
+    navBtn.addEventListener('click', () => (isDrawerOpen() ? closeDrawer() : openDrawer()));
+    closeBtn.addEventListener('click', closeDrawer);
+    drawerBackdrop.addEventListener('click', closeDrawer);
+
+    window.addEventListener('message', (e) => {
+      if (e.origin !== location.origin) return;
+      if (e.data?.type === 'is-select' && typeof e.data.tag === 'string') {
+        selectComponent(e.data.tag);
+      }
+    });
+
+    frame.addEventListener('load', () => {
+      sendContext();
+      try {
+        frame.contentDocument?.addEventListener('pointerdown', () => setMenuOpen(false), { capture: true });
+      } catch { /* cross-origin */ }
+    });
+    brand.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setMenuOpen(brandMenu.hidden);
+    });
+    brandMenu.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-palette]');
+      if (!opt) return;
+      palette = opt.dataset.palette;
+      if (!palettes.has(palette)) palette = 'contapyme';
+      setMenuOpen(false);
+      renderContext();
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!brandWrap.contains(e.target)) setMenuOpen(false);
+    }, true);
+    window.addEventListener('blur', () => {
+      queueMicrotask(() => {
+        if (document.activeElement === frame) setMenuOpen(false);
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+        closeDrawer();
+      }
+    });
+    themeToggle.addEventListener('theme-toggle', (e) => {
+      theme = e.detail?.theme === 'light' ? 'light' : 'dark';
+      renderContext();
+    });
+    fullscreenBtn.addEventListener('click', () => {
+      window.open(`previews/${component.page}?s=${encodeState({ theme, palette })}`, '_blank', 'noopener');
+    });
+
+    frame.src = previewSrc(component.page);
+    renderContext();
+    bootScrollNavToCurrent();
+
+    // --- split-panel nav: clamp + persist vía storage-key="tk-demo-nav" ---
+    const mainSplit = document.getElementById('mainSplit');
+    const NAV_MIN = 140;
+    const NAV_MAX = 280;
+    const clampNav = (n) => Math.min(NAV_MAX, Math.max(NAV_MIN, Math.round(n)));
+    mainSplit?.addEventListener('reposition', () => {
+      const px = clampNav(mainSplit.positionInPixels);
+      if (px !== Math.round(mainSplit.positionInPixels)) mainSplit.positionInPixels = px;
+      scheduleScrollNavToCurrent();
+    });
+
+    customElements.whenDefined('is-split-panel').then(() => bootScrollNavToCurrent());
+    window.addEventListener('load', () => bootScrollNavToCurrent());
+    if (typeof ResizeObserver !== 'undefined') {
+      let roT = 0;
+      new ResizeObserver(() => {
+        clearTimeout(roT);
+        roT = setTimeout(() => scrollNavToCurrent(), 40);
+      }).observe(shellNav);
+    }
+
+    // --- mobile: el split-panel ya no cambia de orientación; en <641px el nav
+    //     del slot=start se oculta por CSS y la navegación vive en el drawer.
+    //     Aún así, escuchamos el media query por si en el futuro hace falta
+    //     recalcular posición/scroll del nav al cruzar el breakpoint. ---
+    const mql = window.matchMedia('(max-width: 640px)');
+    const onBreakpoint = () => {
+      if (mql.matches) closeDrawer();
+      scheduleScrollNavToCurrent();
+    };
+    mql.addEventListener?.('change', onBreakpoint);
+    onBreakpoint();
+  </script>
+</body>
+</html>

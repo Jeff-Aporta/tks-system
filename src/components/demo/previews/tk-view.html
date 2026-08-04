@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-view · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-view&gt;</h1>
+      <p>Documento completo de un tiquete. Recibe el JSON del tiquete (vía propiedad <code>ticket</code> o <code>json</code>) y construye la vista agrupando bloques por carril (<code>docLane</code>).</p>
+    </header>
+
+    <section class="demo">
+      <h2>Demo en vivo</h2>
+      <div class="marco">
+        <tk-view id="view"></tk-view>
+      </div>
+    </section>
+
+    <script type="module">
+      // Payload de muestra — la forma real es la que llega del worker en /api/tk/...
+      const tiquete = {
+        iticket: 'TK-000123',
+        space: 'patyia',
+        titulo: 'Migración del worker a D1 con SQLite nativo',
+        estado: 'completado',
+        solicitante: 'Jeff Aporta',
+        fechaSolicitud: '2026-07-30',
+        fechaEntrega: '2026-08-04',
+        tiempoTotalMinutos: 540,
+        diligenciaMinutos: 480,
+        rootCommits: [],
+        resumen: 'Reemplaza el adapter parcial de Postgres→D1 por queries nativas de SQLite (json_group_array, MAX/Bool, strftime). Restaura el servicio del worker jagudeloe-tks.',
+        content: [
+          {
+            kind: 'markdown',
+            payload: { docLane: 'solicitud', title: 'Contexto', text: 'El deploy del 2026-08-04 añadió un binding D1 que el adapter no traducía completo. Resultado: 503 en todos los GET de tickets.' },
+          },
+          {
+            kind: 'code',
+            payload: { docLane: 'causa', title: 'Causa', language: 'sql', code: 'SELECT json_agg(t.*) FROM ...' },
+          },
+          {
+            kind: 'code',
+            payload: { docLane: 'solucion', title: 'Solución', language: 'sql', code: 'SELECT json_group_array(json_object(\'id\', t.id, \'titulo\', t.titulo)) FROM tickets t;' },
+          },
+          {
+            kind: 'badges',
+            payload: { docLane: 'verificacion', items: [{ tone: 'success', label: 'Worker OK' }, { tone: 'info', label: 'D1 + SQLite' }] },
+          },
+        ],
+      };
+      document.getElementById('view').json = tiquete;
+    </script>
+  </main>
+</body>
+</html>

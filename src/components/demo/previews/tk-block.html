@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-block · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-block&gt;</h1>
+      <p>Despachador: un bloque del JSON al componente que lo pinta. Propiedad <code>bloque</code> = <code>{ kind, payload, blocks? }</code>. Un <code>kind</code> desconocido se muestra como <code>is-callout</code> en lugar de descartarse.</p>
+    </header>
+
+    <section class="demo">
+      <h2>markdown</h2>
+      <div class="marco">
+        <tk-block id="b1"></tk-block>
+      </div>
+    </section>
+
+    <section class="demo">
+      <h2>code / sql</h2>
+      <div class="marco">
+        <tk-block id="b2"></tk-block>
+      </div>
+    </section>
+
+    <section class="demo">
+      <h2>badges</h2>
+      <div class="marco">
+        <tk-block id="b3"></tk-block>
+      </div>
+    </section>
+
+    <section class="demo">
+      <h2>unknown kind (no se descarta)</h2>
+      <div class="marco">
+        <tk-block id="b4"></tk-block>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('b1').bloque = {
+        kind: 'markdown',
+        payload: { title: 'Solicitud', text: 'Aparece un 503 al listar tiquetes tras el último deploy.' },
+      };
+      document.getElementById('b2').bloque = {
+        kind: 'code',
+        payload: { title: 'SQL original', language: 'sql', code: 'SELECT json_agg(t.*) FROM tickets t;' },
+      };
+      document.getElementById('b3').bloque = {
+        kind: 'badges',
+        payload: { items: [{ tone: 'success', label: 'Worker OK' }, { tone: 'warning', label: 'Pendiente' }] },
+      };
+      document.getElementById('b4').bloque = {
+        kind: 'paradox',
+        payload: { foo: 'bar' },
+      };
+    </script>
+  </main>
+</body>
+</html>

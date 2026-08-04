@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-html · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-html&gt;</h1>
+      <p>Bloque <code>html</code> del tiquete. Sanea el HTML antes de inyectar: quita <code>script</code>, <code>style</code>, <code>iframe</code>, <code>form</code>, atributos <code>on*</code> y URLs <code>javascript:</code>. Los enlaces se abren en <code>target="_blank"</code>.</p>
+    </header>
+
+    <section class="demo">
+      <h2>Demo en vivo</h2>
+      <div class="marco">
+        <tk-html id="h"></tk-html>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('h').payload = {
+        title: 'HTML saneado',
+        html: '<p>Párrafo <strong>en negrita</strong> y <em>cursiva</em>.</p><ul><li>uno</li><li>dos</li></ul><p>Enlace al <a href="https://github.com/Jeff-Aporta/is-webcomponents">kit is-*</a>.</p><script>alert(1)</script><p onclick="alert(1)">Click trampa</p>',
+      };
+    </script>
+  </main>
+</body>
+</html>

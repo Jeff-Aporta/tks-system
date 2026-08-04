@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-code · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-code&gt;</h1>
+      <p>Bloque <code>code</code> o <code>sql</code>. Resaltado propio y mínimo: comentarios, cadenas, números y palabras clave de SQL/TS. Trae <code>is-copy-button</code> integrado.</p>
+    </header>
+
+    <section class="demo">
+      <h2>SQL</h2>
+      <div class="marco">
+        <tk-code id="c1"></tk-code>
+      </div>
+    </section>
+
+    <section class="demo">
+      <h2>TypeScript</h2>
+      <div class="marco">
+        <tk-code id="c2"></tk-code>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('c1').payload = {
+        title: 'Query equivalente en SQLite',
+        language: 'sql',
+        code: `-- Antes (Postgres):
+SELECT json_agg(t.*) FROM isadoc_tk_ticket t;
+
+-- Ahora (D1 / SQLite):
+SELECT json_group_array(json_object(
+  'id',   t."ITICKET",
+  'titulo', t."TITULO",
+  'activo', t."ACTIVO"
+)) FROM isadoc_tk_ticket t;`,
+      };
+      document.getElementById('c2').payload = {
+        title: 'Helper para parsear JSON',
+        language: 'ts',
+        code: `function parseJsonish(v: unknown): unknown {
+  if (typeof v !== 'string' || v.length < 2) return v;
+  const c0 = v.charCodeAt(0);
+  const cN = v.charCodeAt(v.length - 1);
+  const looksJson = (c0 === 123 && cN === 125) || (c0 === 91 && cN === 93);
+  if (!looksJson) return v;
+  try { return JSON.parse(v); } catch { return v; }
+}`,
+      };
+    </script>
+  </main>
+</body>
+</html>

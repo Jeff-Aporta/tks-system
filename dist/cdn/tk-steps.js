@@ -1,0 +1,50 @@
+import{blockCss as i,crearBloque as n,define as o,html as l,md as c,proseCss as d,raw as m,rec as h}from"./_shared.js";const g=`
+  ${i}
+  ${d}
+  ol { margin: 0; padding: 0; list-style: none; }
+  .fase {
+    position: relative;
+    padding: 0 0 1.35em 1.55em;
+    border-left: 1px solid var(--is-border, #2a3038);
+
+    &:last-child { padding-bottom: 0; border-left-color: transparent; }
+    &::before {
+      position: absolute;
+      top: 0.5em;
+      left: 0;
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 50%;
+      background: var(--is-accent, #1a6eb0);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--is-accent, #1a6eb0) 22%, transparent);
+      content: "";
+      transform: translateX(-50%);
+    }
+    h3 {
+      margin: 0 0 0.55em;
+      font-size: 0.9375em;
+      font-weight: 620;
+      letter-spacing: -0.008em;
+      line-height: 1.35;
+    }
+  }
+  .hallazgos { display: grid; gap: 0.45em; }
+  .hallazgo {
+    max-width: var(--tk-measure, 68ch);
+    color: var(--is-text-soft, #c3ced9);
+    font-size: 0.9em;
+    line-height: 1.55;
+
+    &.prosa > :last-child { margin-bottom: 0; }
+  }
+`,p=(t,s)=>{const e=h(t),r=Array.isArray(e.items)?e.items:Array.isArray(e.steps)?e.steps:e.text?[e.text]:[];return{title:String(e.title??e.label??`Fase ${s+1}`),items:r}},u=t=>t==null?null:typeof t=="string"?l`<div class="hallazgo prosa">${m(c(t))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:t});o("tk-steps",n(g,(t,s)=>{const r=(Array.isArray(s.phases)?s.phases:Array.isArray(s.steps)?s.steps:[]).map(p).filter(a=>a.items.length||a.title);r.length&&t.append(l`
+    ${s.title&&l`<h2 class="titulo">${s.title}</h2>`}
+    <ol>
+      ${r.map(a=>l`
+        <li class="fase">
+          <h3>${a.title}</h3>
+          <div class="hallazgos">${a.items.map(u)}</div>
+        </li>
+      `)}
+    </ol>
+  `)}));

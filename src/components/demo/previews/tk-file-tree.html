@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
+<head>
+  <meta charset="UTF-8">
+  <script src="../preview-boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tk-file-tree · demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/is-base.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/palettes.min.css">
+  <link rel="stylesheet" href="../styles/preview.css">
+  <script type="module" src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn/all.min.js"></script>
+  <script type="module" src="../../../../dist/cdn/tk.all.js"></script>
+  <script type="module" src="../preview-chrome.js"></script>
+</head>
+<body>
+  <main class="demo">
+    <header>
+      <h1>&lt;tk-file-tree&gt;</h1>
+      <p>Bloque <code>file-tree</code>. Rutas planas se expanden a jerarquía y se pintan con <code>is-tree</code>. <code>hints</code> añade una pista por archivo (basename → texto).</p>
+    </header>
+
+    <section class="demo">
+      <h2>Demo en vivo</h2>
+      <div class="marco">
+        <tk-file-tree id="ft"></tk-file-tree>
+      </div>
+    </section>
+
+    <script type="module">
+      document.getElementById('ft').payload = {
+        title: 'Archivos tocados',
+        rootLabel: 'jagudeloe-tks',
+        paths: [
+          'src/db.ts',
+          'src/db-adapter.ts',
+          'src/routes/tk.ts',
+          'src/routes/commits.ts',
+          'src/routes/isp-svelte.ts',
+          'src/routes/query.ts',
+          'src/lib/tk/repository.ts',
+          'src/lib/tk/upsert.ts',
+          'src/lib/tk/head-patch.ts',
+          'src/lib/tk/doc-patch.ts',
+          'src/lib/tk/commit-record.ts',
+          'src/lib/tk/open-tickets.ts',
+          'src/lib/tk/pendientes.ts',
+          'src/lib/entity/revisado.ts',
+          'migrations/0001_d1.sql',
+        ],
+        hints: {
+          'db.ts': 'Quitar el adapter; SQL nativo en SQLite.',
+          'db-adapter.ts': 'Borrar el archivo: ya no aplica.',
+          'repository.ts': 'json_agg → json_group_array; BOOL_OR → MAX.',
+          'upsert.ts': 'Ajuste de FKs (ITICKET de contexto, no IID).',
+          '0001_d1.sql': 'Esquema D1 con PK compuesta (ITICKET, IID) en contextos.',
+        },
+      };
+    </script>
+  </main>
+</body>
+</html>
