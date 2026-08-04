@@ -26,5 +26,7 @@ import './tk-chart.js';
 import './tk-diagram.js';
 import './tk-block.js';
 import './tk-ticket-head.js';
+import './tk-commits.js';
+import './tk-tiempos.js';
 import './tk-actions.js';
 import './tk-view.js';

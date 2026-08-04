@@ -1,5 +1,5 @@
-import{blockCss as s,crearBloque as c,define as d,html as o,rec as u}from"./_shared.js";const g=`
-  ${s}
+import{blockCss as c,crearBloque as d,define as h,html as a,rec as m}from"./_shared.js";const u=`
+  ${c}
   .rejilla {
     display: grid;
     gap: 0.75rem;
@@ -25,11 +25,11 @@ import{blockCss as s,crearBloque as c,define as d,html as o,rec as u}from"./_sha
       display: block;
       width: 100%;
       height: auto;
-      transition: opacity 160ms ease-out;
+      transition: opacity 160ms ease-out, transform 220ms ease;
 
       &[data-cargando] { opacity: 0; }
     }
-    &:hover img { opacity: 0.92; }
+    &:hover img { opacity: 0.92; transform: scale(1.01); }
     &:focus-visible {
       outline: 2px solid var(--is-focus, #4c9be8);
       outline-offset: -2px;
@@ -48,31 +48,137 @@ import{blockCss as s,crearBloque as c,define as d,html as o,rec as u}from"./_sha
     font-size: 0.8125em;
     text-align: center;
   }
-`,n=t=>{const a=String(t.url??t.src??"").trim();return a?{url:a,alt:String(t.alt??t.caption??t.title??"Evidencia del tiquete"),caption:String(t.caption??"")}:null},m=t=>{let a=document.querySelector("is-lightbox[data-tk]");a||(a=document.createElement("is-lightbox"),a.setAttribute("data-tk",""),document.body.append(a)),a.replaceChildren(o`<img src="${t.url}" alt="${t.alt}">`),typeof a.show=="function"?a.show():a.setAttribute("open","")},p=t=>{const a=i=>{const e=i.target;e.removeAttribute("data-cargando"),e.naturalWidth&&e.naturalHeight&&(e.style.aspectRatio=`${e.naturalWidth} / ${e.naturalHeight}`)},r=i=>{const e=i.target;(e.closest(".lienzo")??e).replaceWith(o`
+`,g=`
+  :host {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 42%, rgb(15 23 42 / 35%), transparent 70%),
+      rgb(2 6 14 / 82%);
+    backdrop-filter: blur(10px) saturate(1.15);
+    -webkit-backdrop-filter: blur(10px) saturate(1.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    font-family: var(--is-font-sans, system-ui, sans-serif);
+  }
+  :host([open]) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .marco {
+    position: relative;
+    display: grid;
+    gap: 0.65rem;
+    width: min(96vw, 72rem);
+    max-height: min(92dvh, 56rem);
+    justify-items: center;
+  }
+  .foto {
+    display: block;
+    max-width: 100%;
+    max-height: min(82dvh, 50rem);
+    object-fit: contain;
+    border-radius: 0.75rem;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 8%),
+      0 24px 64px rgb(0 0 0 / 55%);
+    background: #0a0f18;
+  }
+  .leyenda {
+    max-width: 48rem;
+    color: rgb(226 232 240 / 88%);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    text-align: center;
+    text-wrap: pretty;
+  }
+  .cerrar,
+  .nav {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid rgb(255 255 255 / 14%);
+    border-radius: 999px;
+    background: rgb(15 23 42 / 72%);
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: background 140ms ease, transform 140ms ease;
+  }
+  .cerrar:hover,
+  .nav:hover {
+    background: rgb(30 41 59 / 88%);
+    transform: scale(1.04);
+  }
+  .cerrar {
+    top: -0.35rem;
+    right: -0.15rem;
+  }
+  .nav.prev { left: -0.25rem; top: 50%; transform: translateY(-50%); }
+  .nav.next { right: -0.25rem; top: 50%; transform: translateY(-50%); }
+  .nav.prev:hover,
+  .nav.next:hover { transform: translateY(-50%) scale(1.04); }
+  .contador {
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+    color: rgb(148 163 184 / 95%);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 40rem) {
+    .nav.prev { left: 0.15rem; }
+    .nav.next { right: 0.15rem; }
+    .cerrar { top: 0.15rem; right: 0.15rem; }
+  }
+`,l=e=>{const t=String(e.url??e.src??"").trim();return t?{url:t,alt:String(e.alt??e.caption??e.title??"Evidencia del tiquete"),caption:String(e.caption??"")}:null};class p extends HTMLElement{#t;#e=[];#r=0;#a=t=>{this.hasAttribute("open")&&(t.key==="Escape"?this.cerrar():t.key==="ArrowRight"?this.#i(1):t.key==="ArrowLeft"&&this.#i(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});const t=new CSSStyleSheet;t.replaceSync(g),this.#t.adoptedStyleSheets=[t]}connectedCallback(){document.addEventListener("keydown",this.#a),this.addEventListener("click",t=>{t.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#a)}abrir(t,o=0){this.#e=t,this.#r=Math.max(0,Math.min(o,t.length-1)),this.setAttribute("open",""),this.#o(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#i(t){this.#e.length<2||(this.#r=(this.#r+t+this.#e.length)%this.#e.length,this.#o())}#o(){const t=this.#e[this.#r];if(!t)return;const o=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(a`
+      <div class="marco" role="dialog" aria-modal="true" aria-label="${t.alt}">
+        ${o?a`<span class="contador">${this.#r+1} / ${this.#e.length}</span>`:null}
+        <button class="cerrar" type="button" aria-label="Cerrar" onclick=${()=>this.cerrar()}>
+          <is-icon icon="mdi:close" aria-hidden="true"></is-icon>
+        </button>
+        ${o?a`
+          <button class="nav prev" type="button" aria-label="Anterior" onclick=${()=>this.#i(-1)}>
+            <is-icon icon="mdi:chevron-left" aria-hidden="true"></is-icon>
+          </button>
+          <button class="nav next" type="button" aria-label="Siguiente" onclick=${()=>this.#i(1)}>
+            <is-icon icon="mdi:chevron-right" aria-hidden="true"></is-icon>
+          </button>
+        `:null}
+        <img class="foto" src="${t.url}" alt="${t.alt}">
+        ${t.caption||t.alt?a`<p class="leyenda">${t.caption||t.alt}</p>`:null}
+      </div>
+    `)}}customElements.get("tk-lightbox")||customElements.define("tk-lightbox",p);const b=()=>{let e=document.querySelector("tk-lightbox");return e||(e=document.createElement("tk-lightbox"),document.body.append(e)),e},f=(e,t,o)=>{const s=i=>{const r=i.target;r.removeAttribute("data-cargando"),r.naturalWidth&&r.naturalHeight&&(r.style.aspectRatio=`${r.naturalWidth} / ${r.naturalHeight}`)},n=i=>{const r=i.target;(r.closest(".lienzo")??r).replaceWith(a`
       <p class="rota">La evidencia ya no está disponible.</p>
-    `)};return o`
+    `)};return a`
     <figure>
       <button
         class="lienzo"
         type="button"
-        aria-label="Ampliar: ${t.alt}"
-        onclick=${()=>m(t)}
+        aria-label="Ampliar: ${e.alt}"
+        onclick=${()=>b().abrir(t,o)}
       >
         <img
-          src="${t.url}"
-          alt="${t.alt}"
+          src="${e.url}"
+          alt="${e.alt}"
           loading="lazy"
           decoding="async"
           data-cargando
-          onload=${a}
-          onerror=${r}
+          onload=${s}
+          onerror=${n}
         >
       </button>
-      ${t.caption&&o`<figcaption>${t.caption}</figcaption>`}
+      ${e.caption&&a`<figcaption>${e.caption}</figcaption>`}
     </figure>
-  `};d("tk-image",c(g,(t,a,r)=>{const i=r.bloques??[],e=(i.length?i.map(l=>n(u(l.payload))):[n(a)]).filter(l=>!!l);e.length&&t.append(o`
-    ${a.title&&o`<h2 class="titulo">${a.title}</h2>`}
-    <div class="${e.length>1?"rejilla":""}">
-      ${e.map(p)}
+  `};h("tk-image",d(u,(e,t,o)=>{const s=o.bloques??[],n=(s.length?s.map(i=>l(m(i.payload))):[l(t)]).filter(i=>!!i);n.length&&e.append(a`
+    ${t.title&&a`<h2 class="titulo">${t.title}</h2>`}
+    <div class="${n.length>1?"rejilla":""}">
+      ${n.map((i,r)=>f(i,n,r))}
     </div>
   `)}));

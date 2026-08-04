@@ -1,5 +1,5 @@
-import{blockCss as i,crearBloque as n,define as o,html as l,md as c,proseCss as d,raw as m,rec as h}from"./_shared.js";const g=`
-  ${i}
+import{blockCss as n,crearBloque as l,define as o,html as i,md as c,proseCss as d,raw as m,rec as h}from"./_shared.js";const p=`
+  ${n}
   ${d}
   ol { margin: 0; padding: 0; list-style: none; }
   .fase {
@@ -28,19 +28,22 @@ import{blockCss as i,crearBloque as n,define as o,html as l,md as c,proseCss as 
       line-height: 1.35;
     }
   }
-  .hallazgos { display: grid; gap: 0.45em; }
+  .hallazgos { display: grid; gap: 0.45em; min-width: 0; }
   .hallazgo {
-    max-width: var(--tk-measure, 68ch);
+    max-width: min(100%, var(--tk-measure, 68ch));
+    min-width: 0;
     color: var(--is-text-soft, #c3ced9);
     font-size: 0.9em;
     line-height: 1.55;
+    overflow-wrap: anywhere;
 
     &.prosa > :last-child { margin-bottom: 0; }
   }
-`,p=(t,s)=>{const e=h(t),r=Array.isArray(e.items)?e.items:Array.isArray(e.steps)?e.steps:e.text?[e.text]:[];return{title:String(e.title??e.label??`Fase ${s+1}`),items:r}},u=t=>t==null?null:typeof t=="string"?l`<div class="hallazgo prosa">${m(c(t))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:t});o("tk-steps",n(g,(t,s)=>{const r=(Array.isArray(s.phases)?s.phases:Array.isArray(s.steps)?s.steps:[]).map(p).filter(a=>a.items.length||a.title);r.length&&t.append(l`
-    ${s.title&&l`<h2 class="titulo">${s.title}</h2>`}
+  h3 { overflow-wrap: anywhere; }
+`,g=(t,r)=>{const e=h(t),s=Array.isArray(e.items)?e.items:Array.isArray(e.steps)?e.steps:e.text?[e.text]:[];return{title:String(e.title??e.label??`Fase ${r+1}`),items:s}},u=t=>t==null?null:typeof t=="string"?i`<div class="hallazgo prosa">${m(c(t))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:t});o("tk-steps",l(p,(t,r)=>{const s=(Array.isArray(r.phases)?r.phases:Array.isArray(r.steps)?r.steps:[]).map(g).filter(a=>a.items.length||a.title);s.length&&t.append(i`
+    ${r.title&&i`<h2 class="titulo">${r.title}</h2>`}
     <ol>
-      ${r.map(a=>l`
+      ${s.map(a=>i`
         <li class="fase">
           <h3>${a.title}</h3>
           <div class="hallazgos">${a.items.map(u)}</div>

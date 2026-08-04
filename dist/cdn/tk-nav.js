@@ -1,4 +1,4 @@
-import{css as a,define as n,estadoColor as c,fecha as l,html as r}from"./_shared.js";const d=`
+import{css as a,define as r,estadoColor as c,fecha as l,html as s}from"./_shared.js";const d=`
   :host {
     display: flex;
     overflow: hidden;
@@ -18,20 +18,6 @@ import{css as a,define as n,estadoColor as c,fecha as l,html as r}from"./_shared
     padding: 0 0.45rem 1rem;
     scrollbar-width: thin;
   }
-  .grupo {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 0.95rem 0.55rem 0.45rem;
-    backdrop-filter: blur(8px);
-    background: color-mix(in srgb, var(--is-bg, #0b0d10) 82%, transparent);
-    color: var(--is-text-muted, #9aa7b4);
-    font-size: 0.6875rem;
-    font-weight: 650;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-  }
-  .grupo span { color: var(--is-text-soft, #c3ced9); font-weight: 500; }
   .tk {
     display: grid;
     width: 100%;
@@ -80,12 +66,27 @@ import{css as a,define as n,estadoColor as c,fecha as l,html as r}from"./_shared
     opacity: 0.88;
     font-variant-numeric: tabular-nums;
   }
+  @media (max-width: 22rem) {
+    .fecha { display: none; }
+  }
   .punto {
     width: 0.4rem;
     height: 0.4rem;
     flex: none;
     border-radius: 50%;
     background: var(--punto);
+  }
+  .ambito {
+    flex: none;
+    padding: 0.05em 0.4em;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--is-border-soft, #1f242b) 80%, transparent);
+    color: var(--is-text-soft, #c3ced9);
+    font-family: var(--is-font-sans, system-ui, sans-serif);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
   .titulo {
     display: -webkit-box;
@@ -102,48 +103,46 @@ import{css as a,define as n,estadoColor as c,fecha as l,html as r}from"./_shared
     font-size: 0.8125rem;
     text-align: center;
   }
-`,u={success:"var(--is-color-success-500, #2f9e44)",warning:"var(--is-color-warning-500, #f08c00)",info:"var(--is-accent, #1a6eb0)",neutral:"var(--is-text-muted, #9aa7b4)"},p={patyia:"PatyIA",clientesis:"Clientes"};class h extends HTMLElement{#e=[];#i="";#s="";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),a(this.#t,d)}connectedCallback(){this.#o()}get filas(){return this.#e}set filas(t){this.#e=t??[],this.isConnected&&this.#o()}get seleccionado(){return this.#i}set seleccionado(t){this.#i!==t&&(this.#i=t??"",this.isConnected&&this.#a())}#a(){for(const t of this.#t.querySelectorAll(".tk"))t.setAttribute("aria-current",String(t.dataset.tk===this.#i))}#n(){const t=this.#s.trim().toLowerCase();return t?this.#e.filter(e=>[e.iticket,e.titulo,e.resumen].some(i=>String(i??"").toLowerCase().includes(t))):this.#e}#c(t){this.dispatchEvent(new CustomEvent("tk-seleccion",{detail:{iticket:t.iticket,space:t.space},bubbles:!0,composed:!0}))}#o(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const t=e=>{this.#s=String(e.target.value??"");const i=this.#t.querySelector(".lista");i&&i.replaceWith(this.#r())};this.#t.append(r`
+`,u={success:"var(--is-color-success-500, #2f9e44)",warning:"var(--is-color-warning-500, #f08c00)",info:"var(--is-accent, #1a6eb0)",neutral:"var(--is-text-muted, #9aa7b4)"},h={patyia:"PatyIA",clientesis:"Clientes"},m=(o,t)=>String(t.fechaSolicitud??"").localeCompare(String(o.fechaSolicitud??""));class p extends HTMLElement{#s=[];#e="";#o="";#i="all";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),a(this.#t,d)}connectedCallback(){this.#n()}get filas(){return this.#s}set filas(t){this.#s=t??[],this.isConnected&&this.#n()}get seleccionado(){return this.#e}set seleccionado(t){this.#e!==t&&(this.#e=t??"",this.isConnected&&this.#r())}get contexto(){return this.#i}set contexto(t){const i=t==="patyia"||t==="clientesis"?t:"all";this.#i!==i&&(this.#i=i,this.isConnected&&this.#n())}#r(){for(const t of this.#t.querySelectorAll(".tk"))t.setAttribute("aria-current",String(t.dataset.tk===this.#e))}#c(){const t=this.#o.trim().toLowerCase(),i=this.#i;return[...this.#s].filter(e=>i==="all"?!0:String(e.space)===i).filter(e=>t?[e.iticket,e.titulo,e.resumen].some(n=>String(n??"").toLowerCase().includes(t)):!0).sort(m)}#l(t){this.dispatchEvent(new CustomEvent("tk-seleccion",{detail:{iticket:t.iticket,space:t.space},bubbles:!0,composed:!0}))}#n(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const t=i=>{this.#o=String(i.target.value??"");const e=this.#t.querySelector(".lista");e&&e.replaceWith(this.#a())};this.#t.append(s`
       <div class="buscador">
         <is-input
           type="search"
           placeholder="Buscar tiquete…"
-          value="${this.#s}"
+          value="${this.#o}"
           onis-input=${t}
         >
           <is-icon slot="start" icon="mdi:magnify" aria-hidden="true"></is-icon>
         </is-input>
       </div>
-      ${this.#r()}
-    `)}#r(){const t=this.#n(),e=new Map;for(const i of t){const o=String(i.space??"otros");e.has(o)||e.set(o,[]),e.get(o).push(i)}return t.length?r`
+      ${this.#a()}
+    `)}#a(){const t=this.#c(),i=this.#i==="all";return t.length?s`
       <div class="lista">
-        ${[...e.entries()].map(([i,o])=>r`
-          <p class="grupo">${p[i]??i} <span>${o.length}</span></p>
-          ${o.map(s=>r`
-            <button
-              class="tk"
-              type="button"
-              data-tk="${s.iticket}"
-              aria-current="${String(s.iticket===this.#i)}"
-              onclick=${()=>this.#c(s)}
-            >
-              <span class="meta">
-                <span
-                  class="punto"
-                  style="--punto: ${u[c(s.estado)]}"
-                  aria-hidden="true"
-                ></span>
-                <span class="codigo">${s.iticket}</span>
-                ${s.fechaSolicitud?r`<span class="fecha">${l(s.fechaSolicitud)}</span>`:null}
-              </span>
-              <span class="titulo">${String(s.titulo??"Sin t\xEDtulo")}</span>
-            </button>
-          `)}
+        ${t.map(e=>s`
+          <button
+            class="tk"
+            type="button"
+            data-tk="${e.iticket}"
+            aria-current="${String(e.iticket===this.#e)}"
+            onclick=${()=>this.#l(e)}
+          >
+            <span class="meta">
+              <span
+                class="punto"
+                style="--punto: ${u[c(e.estado)]}"
+                aria-hidden="true"
+              ></span>
+              <span class="codigo">${e.iticket}</span>
+              ${i?s`<span class="ambito">${h[String(e.space)]??e.space}</span>`:null}
+              ${e.fechaSolicitud?s`<span class="fecha">${l(e.fechaSolicitud)}</span>`:null}
+            </span>
+            <span class="titulo">${String(e.titulo??"Sin t\xEDtulo")}</span>
+          </button>
         `)}
       </div>
-    `:r`
+    `:s`
         <div class="lista">
           <p class="vacio">
-            ${this.#e.length?"Ning\xFAn tiquete coincide con la b\xFAsqueda.":"Cargando tiquetes\u2026"}
+            ${this.#s.length?"Ning\xFAn tiquete coincide con el filtro.":"Cargando tiquetes\u2026"}
           </p>
         </div>
-      `}}n("tk-nav",h);
+      `}}r("tk-nav",p);

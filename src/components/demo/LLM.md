@@ -1,76 +1,123 @@
-# LLM.md — demo de tk-*
+# LLM.md — demo de tk-* + visor de jagudeloe
 
-Guía operativa para la galería de web components `tk-*` en
-`src/components/demo/`. Léela antes de tocar el demo: la mitad de las trampas
-ya nos costó una hora cada una.
+Guía operativa para el visor de tiquetes en web components y su galería de demos.
+**Léela antes de tocar el código: la mitad de las trampas ya nos costó una hora
+cada una.**
 
 ## Qué hay aquí
 
 ```
-src/components/demo/
-├── index.html             ← shell (brand menu, theme-toggle, split-panel, iframe)
-├── manifest.js            ← { tag, title, category, page, script }[]
-├── demo-boot.js           ← tema antes del primer paint (shell)
-├── preview-boot.js        ← tema antes del primer paint (iframes)
-├── preview-chrome.js      ← sync theme/palette vía postMessage `is-context`
-├── styles/
-│   ├── shell.css          ← layout del gallery
-│   └── preview.css        ← layout de cada preview
-└── previews/              ← una .html por entrada del manifest + home
+src/
+├── components/
+│   ├── tk/                 ← bloques de documento (tk-view, tk-table, …)
+│   └── app/                ← shell del visor (tk-app, tk-nav)
+├── js/                     ← estado (URL), api, cache, boot, export
+├── types/tk.d.ts           ← contrato compartido
+└── components/demo/        ← galería de demos del visor
+    ├── index.html          ← shell del gallery (drawer + iframe)
+    ├── manifest.js         ← { tag, title, category, page, script }[]
+    ├── demo-boot.js        ← tema antes del primer paint (shell)
+    ├── preview-boot.js     ← tema antes del primer paint (iframes)
+    ├── preview-chrome.js   ← sync theme/palette vía postMessage `is-context`
+    ├── styles/
+    │   ├── shell.css       ← layout del gallery
+    │   └── preview.css     ← layout de las páginas de demo
+    └── previews/           ← una .html por entrada del manifest + home
 ```
 
-Reuso del kit `is-*` por CDN (commit-pinned, mismo que el visor
-`index.html`). **No se añade ningún componente nuevo al kit**: cada `tk-*` ya
-delega en `is-button`, `is-tag`, `is-tree`, `is-timeline`, `is-chart`, etc.
+Reuso del kit `is-*` por CDN (commit-pinned). **Nunca** se reimplementa un
+control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
+`is-tree`, `is-timeline`, `is-chart`, `is-copy-button`, `is-stat`,
+`is-callout`, `is-drawer`, `is-palette-selector`, `is-toast`,
+`is-theme-toggle`, `is-split-panel`, `is-input`, `is-icon`, `is-lightbox`,
+`is-sequence-diagram`, `is-stepper`, `is-data-grid`, `is-details`, `is-spinner`,
+`is-main`, `is-banner`, `is-cdn-snippet`, `is-image`, `is-popover`, etc.
 
 ## Convenciones que se respetan
+
+### Demo (`src/components/demo/`)
 
 1. **Protocolo `?s=`**: el shell codifica en base64url
    `{ component, theme, palette }`. Los iframes usan `?s={ embed, theme, palette }`.
    `theme`/`palette` **no** se reescriben en la URL al cambiar (son UI, no
-   estado de navegación). Esto replica el contrato de AppWebcomponents.
+   estado de navegación). Contrato idéntico a AppWebcomponents.
 2. **`embed: true` en previews**: el preview-chrome oculta su toolbar y delega
    el theme/palette al shell. Lo activa `preview-boot.js` desde `?s=`.
 3. **Path a `tk.all.js`**: desde `previews/foo.html` es `../../../../dist/cdn/tk.all.js`
-   (4 niveles). Si lo cambias, ejecuta `tests/demo.test.mjs` (verifica el patrón).
-4. **Path a `is-*` CDN**: `https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@<commit>/dist/cdn/all.min.js`.
-   El commit va fijo en cada `<script>`/`<link>` — no usar `@latest`.
+   (4 niveles). El test `tests/demo.test.mjs` bloquea cualquier cambio.
+4. **Path a `is-*` CDN**: `https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/all.min.js` (tip de `main`).
+   Commit fijo en cada `<script>`/`<link>` — **nunca** `@latest`.
 5. **Carga de `tk-*`**: un solo `<script type="module" src=".../tk.all.js">`
    registra todos los `tk-*`. Cada preview instancia el componente que le toca
-   con un payload realista y le asigna `.payload` o `.ticket` o `.bloque`
+   con un payload realista y le asigna `.payload` / `.ticket` / `.bloque`
    (ver contrato en `src/components/tk/_shared.ts`).
-6. **Categorías del nav**: `shell` (documento: view/ticket-head/actions/),
+6. **Categorías del nav**: `shell` (documento: view, ticket-head, actions),
    `blocks` (todos los demás), orden estable.
-7. **Tema `contapyme` por default** en el shell (la demo es jagudeloe, no
-   InSoft). Las otras paletas sólo cambian el header.
+7. **Tema `contapyme` por default** en el shell.
+8. **Mobile**: el `<is-drawer>` del kit aloja el nav móvil. El hamburger solo
+   se muestra en `<= 640px`. El mismo nav se inyecta en `shellNav` (desktop)
+   y `drawerNav` (móvil) — fuente única, dos destinos.
+9. **Brand menu**: usa `<is-palette-selector>` del kit. El branding "ja |
+   gudeloe" es texto estático en `.brand-lockup`, no interactivo.
+
+### Visor (`src/components/app/`)
+
+10. **tk-app responsive**: desktop con `<is-split-panel>` (`primary="start"`,
+    `position-in-pixels`, `storage-key="tk-app-nav"`) para redimensionar el
+    catálogo. En `<= 48rem` el atributo `compact` colapsa el panel izquierdo
+    y mueve el nav al `<is-drawer>` (hamburguesa).
+11. **tk-nav**: lista plana ordenada por `fechaSolicitud` desc. El filtro de
+    espacio (Todo / PatyIA / Clientes) vive en tabs del header de `tk-app`
+    (`is-tab-group` → `nav.contexto`). Buscador con `<is-input>`.
+12. **tk-view**: arma secciones por `docLane` (solicitud, causa, solución,
+    verificación, otros). Un bloque sin carril cae en «Detalle».
+
+### General
+
+13. **`tk-stepper` y `tk-timeline` son del kit** (`is-stepper`, `is-timeline`).
+    No crear timelines verticales custom: si el patrón es "fechas en eje
+    temporal", `is-timeline` ya lo hace.
+14. **`<is-palette-selector>` del kit** aplica `data-palette` al `<html>` y
+    persiste en `localStorage`. El `demo-boot.js` lo aplica antes del primer
+    paint; el selector se inicializa leyendo ese atributo.
+15. **`compact` attribute + CSS media query** siempre para responsive.
+    No togglear visibilidad con JS en `matchMedia` (mejor atributo
+    `:host([compact])` + CSS).
 
 ## Anti-patrones explícitos
 
-- **No escribir HTML con `Set-Content` de PowerShell**
-  corrompe UTF-8 (doble encoding, mojibake tipo `vía` → `vÃ­a`).
-  Usar `Write` (la herramienta) o `.NET` directo:
+### Demo
+
+- **No escribir HTML con `Set-Content` de PowerShell** corrompe UTF-8
+  (doble encoding, mojibake tipo `vía` → `vÃ­a`). Usar `Write` (la
+  herramienta) o `.NET` directo:
   `[System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))`.
-  Si ves `Â·`, `â€"`, `Ã±` en el output, **es mojibake, no es un cambio del
+  Si ves `Â·`, `â€"`, `Ã±` en el output, **es mojake, no es un cambio del
   usuario**. Reconstruir el archivo desde el origen limpio.
 
 - **No inventar un protocolo `?s=` propio**. El shell importa `manifest.js`
-  y reusa el mismo `b64url(JSON.stringify(...))` que AppWebcomponents. Si
-  cambias el formato, los iframes no sincronizan.
+  y reusa el mismo `b64url(JSON.stringify(...))` que AppWebcomponents.
 
-- **No añadir lógica de "docs completas" al demo**. La demo Imita la
-  presentación de AppWebcomponents (TOC, scrollspy, syntax highlight con
-  CodeMirror) NO aplica aquí: los `tk-*` son componentes de bloque, no
-  páginas de documentación. Cada preview es una página simple con título +
-  descripción + demo en vivo.
+- **No añadir lógica de "docs completas" al demo**. La demo imita la
+  presentación de AppWebcomponents (chrome, TOC lateral, scrollspy) NO
+  aplica aquí: los `tk-*` son componentes de bloque, no páginas de
+  documentación. Cada preview es una página simple con título + descripción
+  + demo en vivo.
 
-- **No exigir el kit `is-*` por nmp** dentro de los previews. La CDN ya
-  carga todos los `is-*` por commit-pinned. Si te falta un control, primero
-  busca en el kit (`is-button`, `is-tag`, `is-tree`, …) y solo entonces
-  escribe CSS plano.
+- **No reimplementar el drawer móvil**. El kit tiene `<is-drawer>` con
+  backdrop, slide-in, escape, light-dismiss, focus trap. Usarlo.
+
+- **No reimplementar el palette picker**. El kit tiene `<is-palette-selector>`
+  con su propio trigger, menú, swatch, check, `aria-selected`, localStorage.
+  Usarlo. El `<is-palette-selector>` también acepta `slot="trigger"` para
+  custom branding.
+
+- **No reimplementar el theme toggle**. El kit tiene `<is-theme-toggle>`.
+  Solo `demo-boot.js` aplica el tema antes del primer paint.
 
 - **No usar `isChart` u otros nombres con mayúscula** — los nombres de
-  custom elements siempre son kebab-case en minúscula (`is-chart`,
-  `is-bar-chart`). `customElements.define('IsChart', …)` falla silencioso.
+  custom elements siempre son kebab-case (`is-chart`, `is-bar-chart`).
+  `customElements.define('IsChart', …)` falla silencioso.
 
 - **No tocar el `manifest.js` sin ejecutar el test**. La pareja
   `tag` ↔ `page` debe existir (el test la verifica). Borrar un `tk-*` del
@@ -79,9 +126,31 @@ delega en `is-button`, `is-tag`, `is-tree`, `is-timeline`, `is-chart`, etc.
 - **No escribir `tk-all.js` con guion**. El archivo real es `tk.all.js`
   (punto). Lo genera `scripts/build.mjs` desde `src/components/tk/all.ts`.
 
-- **No usar `ManageBOM` UTF-8 sin BOM** desde `Set-Content` en PowerShell 5.1
-  (a veces lo agrega). Si los `.html` sirven con BOM, los `<script>` son
-  válidos pero el `Content-Type: text/html` puede no detectarlo.
+- **No usar `is-toast` directo. Usar el wrapper `aviso()` de `js/estado.ts`**.
+  Ese wrapper hace lookup del host, ofrece fallback a consola, y mantiene
+  tipos.
+
+- **No escribir el `is-palette-selector` con `value` y un listener manual**
+  para `data-palette`. El componente ya escribe el atributo en `<html>`
+  y persiste en localStorage. Solo escucha `is-palette-change` para
+  sincronizar iframes.
+
+### Visor
+
+- **No usar `is-split-panel` en móvil** si el patrón es drawer/hamburguesa:
+  en `tk-app` el split es desktop; en `compact` se colapsa y gana el drawer.
+
+- **No añadir `<tk-actions>` si el ticket no está activo**. El componente
+  ya oculta sus botones cuando no hay ticket. Ver `tk-actions.ts`.
+
+### Convenciones de TS
+
+- **No usar `currentColor` en SVGs producidos por `is-icon`**. El componente
+  ya hereda `color`; el SVG debe pintar con `fill="currentColor"` o el
+  CSS interno del kit.
+
+- **No exportar `tk-*` como `tk-all.js` con guión**. Archivo real:
+  `tk.all.js` (punto). Es lo que carga los previews.
 
 ## Errores reales que nos costó tiempo
 
@@ -90,25 +159,34 @@ delega en `is-button`, `is-tag`, `is-tree`, `is-timeline`, `is-chart`, etc.
 | Iframe devuelve 404 para `tk.all.js` | Path relativo con 3 `../` en vez de 4 | Contar: `previews/` → `demo/` → `components/` → `src/` → root. Cuatro niveles. |
 | `<tk-view>` no renderiza dentro de jsdom | jsdom no carga módulos con `data:` URI | Renderizar solo contra el HTML estático; validar estructura, no pintar. |
 | `tk-all.js` no se encuentra en dist | Olvidaste `npm run build` | `build` antes de `dev` o `test`. |
-| `manifest.js` exportar `export default` | El browser lo soporta, pero jsdom lo quiere como ES module en `import components from './manifest.js'` | Sí, `export default [...]` está bien. Pero verifica que el archivo se sirve con `Content-Type: application/javascript` (no `text/plain`). |
+| `manifest.js` exportar `export default` | El browser lo soporta, pero jsdom lo quiere como ES module en `import components from './manifest.js'` | Usar `import(manifestUrl)` dinámico en el test, no `JSON.parse(string)`. |
 | Las tildes se ven rotas en el iframe | Mojibake por el linter / Set-Content | Reconstruir el archivo con UTF-8 sin BOM. |
-| `tk-html` no carga como iframe | El type MIME no se detecta | No aplica — nuestros `.html` sirven OK. |
 | `tk-tree` no expande al cargar | `is-tree-item` sin `expanded` cuando el padre no es hoja | Ver `tk-file-tree.ts` — la marca `expanded` se aplica desde el shell. |
 | `tk-timeline` no muestra gráfica | Sólo se pinta cuando hay ≥ 2 `date` válidos | Payload de muestra con 4 ISO dates. |
 | `tk-chart` no se ve | `<is-chart>` necesita el `<script type="application/json">` con la config; el componente la lee de su primer hijo. | `tk-chart.ts` lo inyecta con `jsonScript`. |
-| Pestaña "Inicio" no navega | `HOME = { tag: 'home', page: 'home.html' }` debe estar en el catálogo, no en el `manifest.js` | La galería hace `catalog = [HOME, ...components]`. |
+| Pestaña "Inicio" no navega | `HOME` debe estar en el manifest con `tag: 'home'` | El shell lee HOME de `components.find(c => c.tag === 'home')`. |
 | `localStorage` `is-theme` no persiste en iframe | Firefox trata storage de iframes de otro origen como particionado | Ok, mismo origen. Si el iframe no es del mismo origen, el preview-boot.js cae al `<html data-theme>` por defecto. |
+| Drawer no abre en click | El `<tk-nav>` no se ha movido al `<is-drawer>` antes de `show()` | `#moverNav('drawer')` antes de `#drawer.show()`. Si el nav está en otro padre, el drawer queda vacío. |
+| Drawer abre con `tk-*` styles rotos | El CSS de `tk-nav` envuelve a `tk-nav` con `.shell-nav`, no `.drawer` | El drawer usa `<div class="drawer__mount">` + el mismo `<tk-nav>`; el shadow DOM del nav lo pinta. |
+| `is-palette-selector` no se ve inicializado | `value` se setea después del `connectedCallback` | El componente lee `document.documentElement.dataset.palette` en init. `demo-boot.js` lo aplica antes de cargar el kit. |
+| `tk-html` no carga como iframe | El type MIME no se detecta | No aplica — nuestros `.html` sirven OK. |
+| `tk-table` con celdas sin texto | La rejilla requiere `<td>` con contenido | El componente `<is-data-grid>` rellena vacíos con string vacío. |
+| El nav móvil se ve duplicado | El `<tk-nav>` se inyecta en `shellNav` Y `drawerNav` con el mismo contenido | Es el patrón desktop+drawer; ocultar el rail en `compact` via CSS. |
+| `compact` no se aplica en Safari | `:host([compact])` necesita que el atributo esté en el elemento | Atributo `compact` setado con `toggleAttribute('compact', true)` en `#onBreakpoint`. |
+| `is-drawer` size se sale de pantalla | Usar `--size: 100vw` | Limit a `min(92vw, 22rem)` con CSS var. CSS de parte `panel` para bg. |
+| Custom timeline CSS mojibake en tk-steps | Encabezados con tildes pierden encoding | El bloque debe escribirse con `Write`, no `Set-Content`. |
 
 ## Cómo añadir un componente nuevo
 
-1. Crear `src/components/tk/tk-mi-bloque.ts` (ver patrón en `tk-badges.ts`,
-   `tk-table.ts`). Registrarlo en `src/components/tk/all.ts`.
+1. Crear `src/components/tk/tk-mi-bloque.ts` (ver patrón en `tk-badges.ts`).
+   Registrarlo en `src/components/tk/all.ts`.
 2. `npm run build` → confirma que `dist/cdn/tk-mi-bloque.js` y `tk.all.js`
    se regeneran.
 3. Crear `src/components/demo/previews/tk-mi-bloque.html` con plantilla
-   idéntica a `tk-markdown.html` (reemplaza `<tk-markdown>` por `<tk-mi-bloque>`).
+   idéntica a `tk-markdown.html`.
 4. Añadir entrada en `src/components/demo/manifest.js`:
    `{ tag: 'tk-mi-bloque', title: '…', category: 'blocks', page: 'tk-mi-bloque.html', script: '../tk/tk-mi-bloque.ts' }`.
+   Añadir `home` con `category: 'shell'` solo si es la portada.
 5. `npm run test` — falla si el manifest no resuelve o si el preview no
    tiene el tag correspondiente.
 
@@ -116,7 +194,8 @@ delega en `is-button`, `is-tag`, `is-tree`, `is-timeline`, `is-chart`, etc.
 
 Si el `tk-*` necesita un `is-*` que no existe aún:
 1. **Antes**: confirmar que no se resuelve con un `is-*` ya disponible
-   (`is-tree`, `is-callout`, `is-stat`, `is-tag`, `is-chart`…).
+   (`is-tree`, `is-callout`, `is-stat`, `is-tag`, `is-chart`, `is-input`,
+   `is-palette-selector`, `is-drawer`, `is-toast`, `is-popover`, `is-popup`).
 2. **Si todo falla**: añadir el `is-*` en `AppWebcomponents/components/`
    (otro repo). Exponerlo en `dist/cdn/all.min.js`.
 3. **Solo entonces**: bumpear el commit CDN en `index.html` del visor Y en
@@ -124,18 +203,32 @@ Si el `tk-*` necesita un `is-*` que no existe aún:
 
 ## Tests automatizados
 
-`npm run test` corre dos suites:
+`npm run test` corre:
 
 - `tests/render.test.mjs` — humo del visor: parsing, despacho por `kind`,
   saneado de HTML, escape de markdown, registro de custom elements.
 - `tests/export.test.mjs` — el HTML descargable: import map completo,
   cada URI `data:` decodifica al `.js` compilado, JSON del ticket saneado.
-- `tests/demo.test.mjs` (este PR) — invariantes del demo: paths
-  relativos, manifest ↔ preview, encoding UTF-8, is-* cargado por CDN.
+- `tests/demo.test.mjs` — invariantes del demo: paths relativos, manifest
+  ↔ preview, encoding UTF-8 sin BOM, sin mojibake, is-* cargado por CDN,
+  boot scripts balanceados, `<is-palette-selector>` Y `<is-drawer>`
+  presentes (no reimplementación).
 
 Si rompes uno de estos, **el CI te lo dice antes de llegar al browser**.
 
-## Comando útiles
+### Cómo extender tests cuando aparece un error
+
+Si un bug escapa a producción:
+
+1. Reproducir el bug en HTML estático.
+2. Añadir un caso al test correspondiente (ej. `tests/demo.test.mjs` para
+   rutas del demo).
+3. Verificar que el test falla en `main` y pasa en tu branch.
+4. Hacer el fix **solo** después de tener el test rojo.
+
+Nunca fixes sin un test que demuestre el bug — sin él, el bug va a volver.
+
+## Comandos útiles
 
 ```bash
 npm run build           # compila ts → dist/cdn/*.js + tk.all.js
@@ -158,3 +251,10 @@ curl -s -o /dev/null -w "%{http_code}\n" \
   http://localhost:4180/dist/cdn/tk.all.js
 # 200
 ```
+
+## Convenciones de commit
+
+- Conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`.
+- `dist/cdn/tk.all.js` se commitea junto al commit (es build artifact).
+- Mensajes en español, máx 72 chars en el subject.
+- No pisar master — branches por feature.

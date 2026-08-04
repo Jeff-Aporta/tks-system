@@ -2,7 +2,7 @@
  * export.ts — descarga de un tiquete como HTML portable.
  *
  * El archivo generado:
- *   - enlaza el kit `is-*` por CDN (commit fijo),
+ *   - enlaza el kit `is-*` por CDN (`@main`, tip actual),
  *   - carga `tk.all.js` por CDN (commit fijo de este repo),
  *   - lleva el JSON del tiquete quemado en un <script type="application/json">.
  *
@@ -12,8 +12,7 @@
  *
  * El pin de este repo se actualiza tras cada release a `main` (ver README).
  */
-const IS_CDN = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents'
-  + '@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn';
+import { IS_CDN } from './is-cdn.js';
 
 /** Repo público del visor · pin de commit (actualizar tras publicar). */
 export const TK_REPO = 'Jeff-Aporta/jagudeloe-tks-front';

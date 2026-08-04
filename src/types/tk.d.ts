@@ -42,12 +42,17 @@ interface TkCommit {
   readonly insCount?: number;
   readonly delCount?: number;
   readonly minutos?: number;
+  readonly fecha?: string | null;
+  readonly meta?: Record<string, unknown>;
+  readonly sortKey?: number;
 }
 
 interface TkTiempo {
   readonly name: string;
   readonly detail?: string;
   readonly minutos: number;
+  readonly phase?: string;
+  readonly sortKey?: number;
 }
 
 interface TkContext {

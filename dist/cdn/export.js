@@ -1,4 +1,4 @@
-const o="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn",c="Jeff-Aporta/jagudeloe-tks-front",d="03b625043f50705b81423faf429a15e568f77dab",r=`https://cdn.jsdelivr.net/gh/${c}@${d}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),l=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,a=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
+import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/jagudeloe-tks-front",l="03b625043f50705b81423faf429a15e568f77dab",i=`https://cdn.jsdelivr.net/gh/${c}@${l}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),d=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,o=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
 <html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
 <head>
 <meta charset="utf-8">
@@ -7,12 +7,12 @@ const o="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412
 <title>${n(s)}</title>
 
 <!-- Kit is-* (versi\xF3n fijada) -->
-<link rel="stylesheet" href="${o}/is-base.min.css">
-<link rel="stylesheet" href="${o}/palettes.min.css">
-<script type="module" src="${o}/all.min.js"><\/script>
+<link rel="stylesheet" href="${a}/is-base.min.css">
+<link rel="stylesheet" href="${a}/palettes.min.css">
+<script type="module" src="${a}/all.min.js"><\/script>
 
 <!-- Componentes tk-* (bundle \xFAnico, CDN de este repo) -->
-<script type="module" src="${r}/tk.all.js"><\/script>
+<script type="module" src="${i}/tk.all.js"><\/script>
 
 <style>
   :root {
@@ -50,7 +50,7 @@ const o="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412
 
   <tk-view embebido></tk-view>
 
-  <script type="application/json" id="tk-datos">${a}<\/script>
+  <script type="application/json" id="tk-datos">${o}<\/script>
   <script type="module">
     const datos = JSON.parse(document.getElementById('tk-datos').textContent);
     const vista = document.querySelector('tk-view');
@@ -58,4 +58,4 @@ const o="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@1c0e451393a412
   <\/script>
 </body>
 </html>
-`},m={cdn:r,async html(t){return l(t)},async descargar(t){const s=await m.html(t),a=new Blob([s],{type:"text/html;charset=utf-8"}),i=URL.createObjectURL(a),e=document.createElement("a");e.href=i,e.download=`${t.iticket}.html`,document.body.append(e),e.click(),e.remove(),setTimeout(()=>URL.revokeObjectURL(i),3e4)}};export{d as TK_PIN,c as TK_REPO,m as exportar};
+`},m={cdn:i,async html(t){return d(t)},async descargar(t){const s=await m.html(t),o=new Blob([s],{type:"text/html;charset=utf-8"}),r=URL.createObjectURL(o),e=document.createElement("a");e.href=r,e.download=`${t.iticket}.html`,document.body.append(e),e.click(),e.remove(),setTimeout(()=>URL.revokeObjectURL(r),3e4)}};export{l as TK_PIN,c as TK_REPO,m as exportar};

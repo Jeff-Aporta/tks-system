@@ -39,15 +39,18 @@ const CSS = /* css */ `
       line-height: 1.35;
     }
   }
-  .hallazgos { display: grid; gap: 0.45em; }
+  .hallazgos { display: grid; gap: 0.45em; min-width: 0; }
   .hallazgo {
-    max-width: var(--tk-measure, 68ch);
+    max-width: min(100%, var(--tk-measure, 68ch));
+    min-width: 0;
     color: var(--is-text-soft, #c3ced9);
     font-size: 0.9em;
     line-height: 1.55;
+    overflow-wrap: anywhere;
 
     &.prosa > :last-child { margin-bottom: 0; }
   }
+  h3 { overflow-wrap: anywhere; }
 `;
 
 interface Fase {

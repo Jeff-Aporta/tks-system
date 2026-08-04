@@ -1,41 +1,88 @@
-import{blockCss as l,crearBloque as m,define as f,html as r,raw as u,rec as h}from"./_shared.js";const p=`
-  ${l}
-  is-tree {
-    display: block;
-    padding: 0.7em 0.85em;
+import{blockCss as g,crearBloque as b,define as p,html as d,rec as m}from"./_shared.js";const w=`
+  ${g}
+  .arbol {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    overflow-x: auto;
+    list-style: none;
     border: 1px solid var(--is-border-soft, #1f242b);
     border-radius: var(--tk-radius, 0.625rem);
     background: var(--is-bg-soft, #14181d);
     font-family: var(--is-font-mono, ui-monospace, Menlo, monospace);
-    font-size: 0.8125em;
+    font-size: 0.8125rem;
     line-height: 1.55;
+    -webkit-overflow-scrolling: touch;
   }
+  .arbol ul {
+    margin: 0;
+    padding: 0 0 0 1.05rem;
+    list-style: none;
+    border-left: 1px solid color-mix(in srgb, var(--is-border, #2a3038) 80%, transparent);
+  }
+  .nodo {
+    margin: 0.12rem 0;
+    min-width: 0;
+  }
+  .fila {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.55rem;
+    align-items: baseline;
+    min-width: 0;
+  }
+  .ico {
+    flex: none;
+    color: var(--is-text-muted, #9aa7b4);
+    font-size: 1em;
+  }
+  .nombre {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .carpeta .nombre { font-weight: 600; color: var(--is-text-soft, #c3ced9); }
   .pista {
-    margin-left: 0.65em;
+    flex: 1 1 12rem;
+    min-width: 0;
     color: var(--is-text-muted, #9aa7b4);
     font-family: var(--is-font-sans, system-ui, sans-serif);
-    font-size: 0.95em;
+    font-size: 0.92em;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
   }
-`,a=e=>({nombre:e,hijos:new Map}),g=e=>{const o=a("");for(const s of e){let i=o;for(const t of String(s).split("/").filter(Boolean))i.hijos.has(t)||i.hijos.set(t,a(t)),i=i.hijos.get(t)}return o},c=(e,o)=>{const s=e.hijos.size===0,i=s?String(o[e.nombre]??""):"";return r`
-    <is-tree-item ${u(s?"":"expanded")}>
-      <is-icon
-        slot="icon"
-        icon="${s?"mdi:file-document-outline":"mdi:folder-outline"}"
-        aria-hidden="true"
-      ></is-icon>
-      ${e.nombre}
-      ${i&&r`<span class="pista">${i}</span>`}
-      ${[...e.hijos.values()].map(t=>c(t,o))}
-    </is-tree-item>
-  `};f("tk-file-tree",m(p,(e,o)=>{const s=(Array.isArray(o.paths)?o.paths:[]).map(String).filter(Boolean);if(!s.length)return;const i=h(o.hints),t=[...g(s).hijos.values()].map(d=>c(d,i)),n=String(o.rootLabel??"").trim();e.append(r`
-    <h2 class="titulo">${String(o.title??"Archivos intervenidos")}</h2>
-    <is-tree selection="none">
-      ${n?r`
-        <is-tree-item expanded>
-          <is-icon slot="icon" icon="mdi:source-repository" aria-hidden="true"></is-icon>
-          ${n}
-          ${t}
-        </is-tree-item>
-      `:t}
-    </is-tree>
+  .raiz {
+    margin-bottom: 0.35rem;
+    color: var(--is-accent, #1a6eb0);
+    font-weight: 650;
+  }
+`,h=(n,o="")=>({nombre:n,hijos:new Map,pista:o||void 0}),y=(n,o)=>{const e=h("");for(const r of n){const i=String(r).split(/[/\\]/).filter(Boolean);let s=e;i.forEach((t,a)=>{if(!s.hijos.has(t)){const c=a===i.length-1?String(o[t]??o[r]??o[i.slice(0,a+1).join("/")]??""):"";s.hijos.set(t,h(t,c))}s=s.hijos.get(t)})}return e},f=(n,o,e)=>{const r=m(n),i=String(r.name??r.nombre??"").trim();if(!i)return null;const s=String(r.path??(e?`${e}/${i}`:i)),t=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],a=h(i,String(r.hint??r.pista??o[i]??o[s]??""));for(const l of t){const c=f(l,o,s);c&&a.hijos.set(c.nombre,c)}return a},v=(n,o)=>{const e=h("");for(const r of n){const i=f(r,o,"");i&&e.hijos.set(i.nombre,i)}return e},u=n=>{const o=n.hijos.size===0;return d`
+    <li class="nodo ${o?"hoja":"carpeta"}">
+      <div class="fila">
+        <is-icon class="ico" icon="${o?"mdi:file-document-outline":"mdi:folder-outline"}" aria-hidden="true"></is-icon>
+        <span class="nombre">${n.nombre}</span>
+        ${n.pista?d`<span class="pista">${n.pista}</span>`:null}
+      </div>
+      ${o?null:d`
+        <ul>
+          ${[...n.hijos.values()].map(u)}
+        </ul>
+      `}
+    </li>
+  `};p("tk-file-tree",b(w,(n,o)=>{const e=m(o.hints??o.notes),r=m(o.fileTree??{}),i=Array.isArray(o.tree)?o.tree:Array.isArray(r.tree)?r.tree:[],s=(Array.isArray(o.paths)?o.paths:Array.isArray(o.files)?o.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!i.length&&!s.length)return;const t=i.length?v(i,{...m(r.hints),...e}):y(s,{...m(r.hints),...e}),a=String(o.rootLabel??o.root??r.rootLabel??"").trim(),l=[...t.hijos.values()].map(u);n.append(d`
+    <h2 class="titulo">${String(o.title??r.title??"Archivos intervenidos")}</h2>
+    <ul class="arbol" role="tree" aria-label="Archivos intervenidos">
+      ${a?d`
+        <li class="nodo carpeta raiz" role="treeitem">
+          <div class="fila">
+            <is-icon class="ico" icon="mdi:source-repository" aria-hidden="true"></is-icon>
+            <span class="nombre">${a}</span>
+          </div>
+          <ul role="group">${l}</ul>
+        </li>
+      `:l}
+    </ul>
   `)}));

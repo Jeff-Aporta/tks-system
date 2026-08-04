@@ -33,6 +33,9 @@ export const css = (shadow: ShadowRoot, cssText: string): void => {
 export const blockCss = /* css */ `
   :host {
     display: block;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     font-size: 0.9375rem;
@@ -40,24 +43,28 @@ export const blockCss = /* css */ `
   }
   .titulo {
     margin: 0 0 0.65em;
-    max-width: var(--tk-measure, 68ch);
+    max-width: min(100%, var(--tk-measure, 68ch));
     font-size: 1.0625em;
     font-weight: 620;
     letter-spacing: -0.011em;
     line-height: 1.35;
+    overflow-wrap: anywhere;
     color: var(--is-text, #e6edf3);
   }
   .superficie {
+    max-width: 100%;
+    min-width: 0;
     border: 1px solid var(--is-border-soft, #1f242b);
     border-radius: var(--tk-radius, 0.625rem);
     background: var(--is-bg-soft, #14181d);
   }
   .pie {
     margin: 0.65em 0 0;
-    max-width: var(--tk-measure, 68ch);
+    max-width: min(100%, var(--tk-measure, 68ch));
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125em;
     line-height: 1.5;
+    overflow-wrap: anywhere;
   }
 `;
 
@@ -321,7 +328,10 @@ export const md = (src: unknown): string => {
 /** CSS del HTML producido por `md()` — lo adoptan los bloques con prosa. */
 export const proseCss = /* css */ `
   .prosa {
-    max-width: var(--tk-measure, 68ch);
+    max-width: min(100%, var(--tk-measure, 68ch));
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 
     > :first-child { margin-top: 0; }
     > :last-child { margin-bottom: 0; }
@@ -331,14 +341,20 @@ export const proseCss = /* css */ `
       font-weight: 620;
       letter-spacing: -0.01em;
       line-height: 1.3;
+      overflow-wrap: anywhere;
     }
     h3 { font-size: 1.0625em; }
     h4 { font-size: 0.9375em; color: var(--is-text-muted, #9aa7b4); }
-    p { margin: 0 0 0.8em; }
-    ul, ol { margin: 0 0 0.85em; padding-left: 1.25em; }
+    p { margin: 0 0 0.8em; overflow-wrap: anywhere; }
+    ul, ol {
+      margin: 0 0 0.85em;
+      padding-left: 1.15em;
+      max-width: 100%;
+    }
     li {
       margin: 0.3em 0;
       padding-left: 0.15em;
+      overflow-wrap: anywhere;
 
       &::marker { color: var(--is-accent, #1a6eb0); }
       > p { margin: 0.2em 0; }
@@ -349,6 +365,7 @@ export const proseCss = /* css */ `
       text-underline-offset: 0.18em;
       text-decoration-thickness: 1px;
       text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+      overflow-wrap: anywhere;
 
       &:hover { text-decoration-color: currentColor; }
     }
@@ -360,16 +377,21 @@ export const proseCss = /* css */ `
       background: var(--is-code-bg, #0f1318);
       font-family: var(--is-font-mono, ui-monospace, "Cascadia Code", Menlo, monospace);
       font-size: 0.86em;
-      line-height: 1.35;
+      line-height: 1.45;
       vertical-align: baseline;
+      white-space: break-spaces;
+      overflow-wrap: anywhere;
+      word-break: break-word;
       color: var(--tk-code-text, #a8d5ff);
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
     }
     pre {
       margin: 0 0 1em;
+      max-width: 100%;
       padding: 0.85em 1em;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border: 1px solid var(--is-border-soft, #1f242b);
       border-radius: var(--tk-radius, 0.625rem);
       background: var(--is-code-bg, #0f1318);
@@ -383,11 +405,15 @@ export const proseCss = /* css */ `
         background: none;
         color: inherit;
         font-size: inherit;
+        white-space: pre;
         vertical-align: baseline;
+        word-break: normal;
+        overflow-wrap: normal;
       }
     }
     blockquote {
       margin: 0 0 1em;
+      max-width: 100%;
       padding: 0.15em 0 0.15em 0.95em;
       border-left: 2px solid color-mix(in srgb, var(--is-accent, #1a6eb0) 70%, transparent);
       color: var(--is-text-muted, #9aa7b4);
@@ -398,11 +424,14 @@ export const proseCss = /* css */ `
       border-top: 1px solid var(--is-border-soft, #1f242b);
     }
     table {
+      display: block;
       width: 100%;
       max-width: 100%;
       margin: 0 0 1em;
+      overflow-x: auto;
       border-collapse: collapse;
       font-size: 0.9em;
+      -webkit-overflow-scrolling: touch;
     }
     th, td {
       padding: 0.5em 0.75em;

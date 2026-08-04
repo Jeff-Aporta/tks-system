@@ -12,11 +12,19 @@
 
 import { css, define, html, rec } from './_shared.js';
 const CSS = /* css */ `
-  :host { display: block; }
+  :host {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
   :host([oculto]) { display: none; }
-  is-callout { font-size: 0.8125rem; }
+  is-callout { font-size: 0.8125rem; max-width: 100%; }
   code {
     font-family: var(--is-font-mono, ui-monospace, Menlo, monospace);
+    white-space: break-spaces;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     color: var(--tk-code-text, #a8d5ff);
   }
 `;
@@ -54,10 +62,10 @@ const tieneContenido = (b: TkBlock): boolean => {
   for (const clave of ['text', 'body', 'html', 'code', 'sql', 'url', 'src', 'href', 'label', 'source']) {
     if (String(p[clave] ?? '').trim()) return true;
   }
-  for (const clave of ['rows', 'items', 'badges', 'paths', 'phases', 'steps']) {
+  for (const clave of ['rows', 'items', 'badges', 'paths', 'files', 'tree', 'phases', 'steps', 'milestones', 'events', 'resumen']) {
     if (Array.isArray(p[clave]) && (p[clave] as unknown[]).length) return true;
   }
-  for (const clave of ['timeline', 'sequence', 'stepper', 'chart']) {
+  for (const clave of ['timeline', 'sequence', 'stepper', 'chart', 'fileTree']) {
     if (Object.keys(rec(p[clave])).length) return true;
   }
   return false;

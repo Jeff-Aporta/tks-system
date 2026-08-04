@@ -88,18 +88,19 @@ test('cada preview carga tk.all.js con el path relativo correcto', () => {
   }
 });
 
-test('cada preview carga el kit is-* por CDN con commit pinneado', () => {
-  // La regla es: commit hex fijo, NUNCA @latest.
-  const reCdn = /https:\/\/cdn\.jsdelivr\.net\/gh\/Jeff-Aporta\/is-webcomponents@([a-f0-9]{7,})/;
+test('cada preview carga el kit is-* por CDN tip (@main)', () => {
+  // Este proyecto sigue tip de main del kit (siempre la última revisión publicada).
+  const reCdn = /https:\/\/cdn\.jsdelivr\.net\/gh\/Jeff-Aporta\/is-webcomponents@(main|[a-f0-9]{7,})/;
   for (const entry of manifest) {
     const html = readUtf8SinBom(join(previews, entry.page));
     const m = reCdn.exec(html);
     assert.ok(m, `${entry.page} no carga el kit is-* desde jsDelivr`);
+    assert.equal(m[1], 'main', `${entry.page} debe usar @main, no un SHA fijo`);
     assert.ok(html.includes('dist/cdn/all.min.js'), `${entry.page} no apunta a all.min.js`);
   }
-  // El shell también debe usar el mismo commit (consistencia visual).
   const m = reCdn.exec(shellHtml);
   assert.ok(m, 'shell no carga is-* por CDN');
+  assert.equal(m[1], 'main', 'shell debe usar @main');
 });
 
 test('la rama "tag duplicada en dos previews" no existe', () => {
@@ -199,4 +200,79 @@ test('home.html existe, no declara tk-* específico y carga el kit', () => {
   // no es estrictamente un tk-* del catálogo.
   assert.match(home, /is-button|is-icon|tk-block/);
   assert.ok(home.includes('tk.all.js'));
+});
+
+// ─── Reuso del kit: estas son las reimplementaciones que ya borramos. ───
+// Si alguien las reintroduce, estos tests fallan con un mensaje claro.
+
+test('el shell usa <is-palette-selector> del kit (no menu de paleta custom)', () => {
+  assert.match(shellHtml, /<is-palette-selector\b/);
+  assert.match(shellHtml, /is-palette-selector[^>]*storage-key="is-palette"/);
+  // El selector emite `is-palette-change`; el shell debe escucharlo.
+  assert.match(shellHtml, /is-palette-change/);
+  // El shell NO debe tener el menu de paleta hecho a mano.
+  assert.ok(
+    !/class="brand-menu"/.test(shellHtml),
+    'el shell reintrodujo `.brand-menu` (reimplementación de is-palette-selector)',
+  );
+  assert.ok(
+    !/role="listbox"/.test(shellHtml),
+    'el shell reintrodujo `<ul role="listbox">` (reimplementación)',
+  );
+});
+
+test('la barra del shell.css no define clases de paleta custom', () => {
+  const css = readUtf8SinBom(join(demo, 'styles', 'shell.css'));
+  assert.ok(
+    !/\.brand-menu\b/.test(css),
+    '.brand-menu* en shell.css: lo trae is-palette-selector',
+  );
+  assert.ok(
+    !/\.brand__accent\b/.test(css),
+    '.brand__accent en shell.css: marca reemplazada por .brand-lockup estática',
+  );
+});
+
+test('el preview-chrome usa el theme toggle del kit, theme-toggle event', () => {
+  const js = readUtf8SinBom(join(demo, 'preview-chrome.js'));
+  assert.match(js, /is-theme-toggle/);
+  // El preview-chrome delega el theme/palette al shell vía postMessage;
+  // sólo construye la toolbar propia (palette selector + theme toggle).
+  assert.match(js, /'is-context'/);
+});
+
+test('tk-app.ts tiene layout responsive con is-split-panel + is-drawer', () => {
+  const tkApp = readUtf8SinBom(join(raiz, 'src', 'components', 'app', 'tk-app.ts'));
+  // 1. desktop: catálogo redimensionable con el kit.
+  assert.match(tkApp, /is-split-panel/);
+  assert.match(tkApp, /storage-key/);
+  assert.match(tkApp, /position-in-pixels/);
+  // 2. compact + media query; el rail se colapsa y el nav va al drawer.
+  assert.match(tkApp, /MQ_COMPACT/);
+  assert.match(tkApp, /toggleAttribute\('compact'/);
+  assert.match(tkApp, /<is-drawer\b/);
+  assert.match(tkApp, /placement="start"/);
+  assert.match(tkApp, /#moverNav\(/);
+  // 3. ningún `<aside class="drawer">` reimplementado.
+  assert.ok(
+    !/<aside class="drawer|<aside\s+class="drawer"/.test(tkApp),
+    'tk-app.ts reintrodujo <aside class="drawer"> (reimplementación de is-drawer)',
+  );
+});
+
+test('ningún <tk-*> reimplementa controles que ya están en el kit', () => {
+  // Lista negra de reimplementaciones comunes. Si un bloque tk-* empieza
+  // a usar estas clases, probablemente está reinventando algo del kit.
+  const blacklist = [
+    /<aside class="drawer\b/,             // drawer custom
+    /<div class="brand-menu\b/,           // palette picker custom
+    /<ul role="listbox"/,                // listbox custom
+  ];
+  for (const archivo of readdirSync(join(raiz, 'src', 'components', 'tk'))) {
+    if (!archivo.endsWith('.ts')) continue;
+    const src = readUtf8SinBom(join(raiz, 'src', 'components', 'tk', archivo));
+    for (const re of blacklist) {
+      assert.ok(!re.test(src), `${archivo} coincide con patrón de reimplementación: ${re}`);
+    }
+  }
 });

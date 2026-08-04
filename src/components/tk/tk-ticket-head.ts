@@ -1,80 +1,82 @@
 /**
  * <tk-ticket-head> — cabecera del tiquete: identidad, estado y cifras.
  *
- * Propiedades
- *   ticket    TkTicket
- *   acciones  HTMLElement | null  — botones (compartir/descargar) en la fila
- *             de identidad, no flotando al lado de todo el bloque.
+ * Propiedad
+ *   ticket  TkTicket
  *
  * Orden deliberado: código y título (qué es), estado y ámbito (dónde está),
  * cifras de tiempo (cuánto costó). El resumen cierra porque es prosa y ya no
- * se escanea, se lee.
+ * se escanea, se lee. Compartir/descargar viven en el header de <tk-app>.
  */
 
 import { blockCss, css, define, estadoColor, fecha, html, md, minutos, proseCss, raw } from './_shared.js';
 const CSS = /* css */ `
   ${blockCss}
   ${proseCss}
-  .cima {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem 1.25rem;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 1.15rem;
+  :host {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    container-type: inline-size;
   }
-  .identidad { flex: 1 1 18rem; min-width: 0; }
-  .acciones {
-    display: flex;
-    flex: none;
-    gap: 0.4rem;
-    align-items: center;
-    padding-top: 0.1rem;
+  .cima {
+    margin-bottom: 1.15rem;
+    min-width: 0;
+  }
+  .identidad {
+    min-width: 0;
+    max-width: 100%;
   }
   .codigo {
     display: flex;
     align-items: center;
     gap: 0.55em;
     margin: 0 0 0.4em;
+    min-width: 0;
     color: var(--is-text-muted, #9aa7b4);
     font-family: var(--is-font-mono, ui-monospace, Menlo, monospace);
     font-size: 0.8125rem;
     letter-spacing: 0.04em;
+    overflow-wrap: anywhere;
   }
   .punto {
     width: 0.5em;
     height: 0.5em;
+    flex: none;
     border-radius: 50%;
     background: var(--punto);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--punto) 22%, transparent);
   }
   h1 {
     margin: 0 0 0.7rem;
-    max-width: 28em;
-    font-size: clamp(1.4rem, 1.05rem + 1.4vw, 2rem);
+    max-width: 100%;
+    font-size: clamp(1.25rem, 1rem + 2.2vw, 2rem);
     font-weight: 660;
     letter-spacing: -0.024em;
-    line-height: 1.18;
-    text-wrap: balance;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-wrap: pretty;
   }
   .chips {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4em;
     margin: 0;
+    max-width: 100%;
     font-size: 0.8125rem;
   }
   .cifras {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.65rem;
     margin: 0 0 1.15rem;
+    min-width: 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
   }
   .cifra {
     display: grid;
     gap: 0.35rem;
-    flex: 1 1 11rem;
-    max-width: 16.5rem;
+    min-width: 0;
     padding: 0.7rem 0.85rem;
     border: 1px solid var(--is-border-soft, #1f242b);
     border-radius: var(--tk-radius, 0.625rem);
@@ -84,26 +86,39 @@ const CSS = /* css */ `
     display: flex;
     align-items: center;
     gap: 0.4em;
+    min-width: 0;
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 
-    is-icon { font-size: 0.95em; opacity: 0.9; }
+    is-icon { flex: none; font-size: 0.95em; opacity: 0.9; }
   }
   .cifra-valor {
+    min-width: 0;
     font-size: 0.975rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.35;
+    overflow-wrap: anywhere;
     font-variant-numeric: tabular-nums;
   }
   .resumen {
-    max-width: var(--tk-measure, 68ch);
+    max-width: min(100%, var(--tk-measure, 68ch));
+    min-width: 0;
     color: var(--is-text-soft, #c3ced9);
     font-size: 1rem;
     line-height: 1.7;
+  }
+
+  @container (max-width: 36rem) {
+    .cima { margin-bottom: 0.95rem; }
+    .cifras { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 48rem) {
+    .cifras { grid-template-columns: 1fr; }
   }
 `;
 
@@ -137,7 +152,6 @@ const cifra = (rotulo: string, valor: string, icono: string): DocumentFragment |
 
 class TkTicketHead extends HTMLElement {
   #ticket: TkTicket | null = null;
-  #acciones: HTMLElement | null = null;
   #root: ShadowRoot;
 
   constructor() {
@@ -154,12 +168,6 @@ class TkTicketHead extends HTMLElement {
     if (this.isConnected) this.#render();
   }
 
-  get acciones(): HTMLElement | null { return this.#acciones; }
-  set acciones(v: HTMLElement | null) {
-    this.#acciones = v;
-    if (this.isConnected) this.#render();
-  }
-
   #render(): void {
     while (this.#root.firstChild) this.#root.removeChild(this.#root.firstChild);
     const tk = this.#ticket;
@@ -167,7 +175,8 @@ class TkTicketHead extends HTMLElement {
 
     const color = estadoColor(tk.estado);
     const resumen = String(tk.resumen ?? '').trim();
-    const commits = tk.rootCommits?.length ?? 0;
+    const commits = (tk.rootCommits?.length
+      ?? (tk.contexts ?? []).reduce((n, c) => n + (c.commits?.length ?? 0), 0)) || 0;
 
     this.#root.append(html`
       <div class="cima">
@@ -183,7 +192,6 @@ class TkTicketHead extends HTMLElement {
             ${chip(String(tk.solicitante ?? ''), 'neutral', 'mdi:account-outline')}
           </div>
         </div>
-        ${this.#acciones && html`<div class="acciones">${this.#acciones}</div>`}
       </div>
       <div class="cifras">
         ${cifra('Solicitado', fecha(tk.fechaSolicitud, true), 'mdi:calendar-arrow-right')}

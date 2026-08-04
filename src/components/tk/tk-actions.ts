@@ -1,27 +1,29 @@
 /**
- * <tk-actions> — acciones del tiquete: compartir y descargar.
+ * <tk-actions> — compartir y descargar el tiquete (solo iconos).
  *
  * Propiedad
  *   ticket  TkTicket
  *
- * Compartir copia un enlace a la vista de página completa (sin cabecera ni
- * panel), que es lo que se manda por chat o correo. Descargar genera un HTML
- * autocontenido con el JSON quemado, para archivar la documentación.
- *
- * Vive en `components/tk/` pero no viaja en el HTML descargado: allí no hay
- * nada que compartir ni que volver a descargar.
+ * Pensado para el header de <tk-app>: `variant="text"`, sin etiqueta.
+ * Visible solo cuando hay ticket. No viaja en el HTML descargado.
  */
 
 import { css, define, html } from './_shared.js';
 import { aviso, estado } from '../../js/estado.js';
 import { exportar } from '../../js/export.js';
+
 const CSS = /* css */ `
   :host {
-    display: flex;
-    flex: none;
-    gap: 0.4rem;
+    display: none;
+    flex-wrap: nowrap;
+    gap: 0.15rem;
     align-items: center;
+    flex: none;
     font-family: var(--is-font-sans, system-ui, sans-serif);
+  }
+  :host([activo]) { display: inline-flex; }
+  is-button {
+    min-width: 2.25rem;
   }
 `;
 
@@ -40,6 +42,7 @@ class TkActions extends HTMLElement {
   get ticket(): TkTicket | null { return this.#ticket; }
   set ticket(v: TkTicket | null) {
     this.#ticket = v;
+    this.toggleAttribute('activo', !!v?.iticket);
     if (this.isConnected) this.#render();
   }
 
@@ -53,14 +56,13 @@ class TkActions extends HTMLElement {
       full: true,
     });
 
-    // Compartir nativo donde exista (móvil); portapapeles en escritorio.
     const nav = navigator as Navigator & { share?: (d: ShareData) => Promise<void> };
     if (nav.share) {
       try {
         await nav.share({ title: `${tk.iticket} · ${tk.titulo ?? ''}`.trim(), url });
         return;
       } catch {
-        // Cancelar el diálogo no es un error: se sigue al portapapeles.
+        /* cancelar → portapapeles */
       }
     }
 
@@ -89,19 +91,30 @@ class TkActions extends HTMLElement {
 
   #render(): void {
     while (this.#root.firstChild) this.#root.removeChild(this.#root.firstChild);
-    if (!this.#ticket) return;
+    if (!this.#ticket?.iticket) return;
 
     this.#root.append(html`
-      <is-button variant="outlined" onclick=${() => void this.#compartir()}>
-        <is-icon slot="start" icon="mdi:share-variant-outline" aria-hidden="true"></is-icon>
-        Compartir
+      <is-button
+        variant="text"
+        color="neutral"
+        pill
+        type="button"
+        aria-label="Compartir tiquete"
+        title="Compartir"
+        onclick=${() => void this.#compartir()}
+      >
+        <is-icon icon="mdi:share-variant-outline" aria-hidden="true"></is-icon>
       </is-button>
       <is-button
-        variant="filled"
+        variant="text"
+        color="neutral"
+        pill
+        type="button"
+        aria-label="Descargar HTML del tiquete"
+        title="Descargar"
         onclick=${(e: Event) => void this.#descargar(e.currentTarget as HTMLElement)}
       >
-        <is-icon slot="start" icon="mdi:download-outline" aria-hidden="true"></is-icon>
-        Descargar
+        <is-icon icon="mdi:download-outline" aria-hidden="true"></is-icon>
       </is-button>
     `);
   }

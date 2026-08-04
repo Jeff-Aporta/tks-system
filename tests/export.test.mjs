@@ -26,8 +26,7 @@ const TICKET = {
 /** Reproduce la plantilla de `js/export.ts` sin navegador. */
 function generar(tk, pin = 'main') {
   const escapar = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const isCdn = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents'
-    + '@1c0e451393a412c2c5a41d1d4d4a2e62aa662bda/dist/cdn';
+  const isCdn = 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn';
   const tkCdn = `https://cdn.jsdelivr.net/gh/Jeff-Aporta/jagudeloe-tks-front@${pin}/dist/cdn`;
   const json = JSON.stringify(tk).replace(/<\/(script)/gi, '<\\/$1');
   const titulo = `${tk.iticket} · ${tk.titulo ?? 'Tiquete'}`;
