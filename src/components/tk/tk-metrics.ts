@@ -25,8 +25,8 @@ const CSS = /* css */ `
     gap: clamp(1.1rem, 0.8rem + 1.2vw, 1.75rem);
     box-sizing: border-box;
     width: 100%;
-    max-width: 52rem;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
     padding: 0;
   }
   .eyebrow {

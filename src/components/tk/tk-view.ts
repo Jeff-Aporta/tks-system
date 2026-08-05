@@ -30,7 +30,11 @@ const CSS = /* css */ `
     max-width: 100%;
     min-width: 0;
     container-type: inline-size;
-    --tk-measure: min(72ch, 100%);
+    /* Sin medida de lectura: el documento ocupa todo el ancho del visor. Con un
+       tope en unidades ch quedaba una franja muerta a la derecha. */
+    --tk-measure: 100%;
+    /* El video también toma el ancho completo de la columna. */
+    --tk-video-max: 100%;
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;

@@ -34,11 +34,11 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     line-height: 1.5;
     overflow-wrap: anywhere;
   }
-`;var M=Symbol("tk-html-crudo"),v=i=>({[M]:String(i??"")}),G=i=>typeof i=="object"&&i!==null&&M in i,a=(i,...e)=>{let t=[],r=[],o="";for(let l=0;l<i.length;l++){if(o+=i[l],l>=e.length)continue;let c=e[l];if(c==null||c===!1||c===!0)continue;if(typeof c=="function"&&/\s+on([a-zA-Z][\w-]*)=\s*$/.test(o)){let f=o.match(/\s+on([a-zA-Z][\w-]*)=\s*$/);o=o.slice(0,o.length-f[0].length),o+=` data-tk-ev="${r.length}"`,r.push({evento:f[1].toLowerCase(),fn:c});continue}if(G(c)){o+=c[M];continue}let h=Array.isArray(c)?c:[c];for(let f of h)f==null||f===!1||f===!0||(f instanceof Node?(o+=`<template data-tk-nodo="${t.length}"></template>`,t.push(f)):G(f)?o+=f[M]:o+=S(f))}let n=document.createElement("template");n.innerHTML=o;let s=n.content;for(let l of[...s.querySelectorAll("template[data-tk-nodo]")]){let c=Number(l.dataset.tkNodo);l.replaceWith(t[c]??document.createComment("tk:nodo"))}for(let l of[...s.querySelectorAll("[data-tk-ev]")]){let c=Number(l.dataset.tkEv),g=r[c];g&&l.addEventListener(g.evento,g.fn),l.removeAttribute("data-tk-ev")}return s},T=i=>{let e=document.createElement("script");return e.type="application/json",e.textContent=JSON.stringify(i),e},S=i=>String(i??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"),d=i=>i&&typeof i=="object"&&!Array.isArray(i)?i:{},C=i=>{let e=[],t=String(i??"").replace(/`([^`]+)`/g,(r,o)=>(e.push(o),` ${e.length-1} `));return t=S(t).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,(r,o,n)=>`<a href="${S(n)}" target="_blank" rel="noopener noreferrer">${o}</a>`).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[\s(])\*([^*\n]+)\*/g,"$1<em>$2</em>").replace(/~~([^~]+)~~/g,"<del>$1</del>"),t.replace(/ (\d+) /g,(r,o)=>`<code>${S(e[Number(o)])}</code>`)},x=i=>{let e=String(i??"").replace(/\r\n?/g,`
+`;var M=Symbol("tk-html-crudo"),v=i=>({[M]:String(i??"")}),G=i=>typeof i=="object"&&i!==null&&M in i,n=(i,...e)=>{let t=[],r=[],o="";for(let l=0;l<i.length;l++){if(o+=i[l],l>=e.length)continue;let c=e[l];if(c==null||c===!1||c===!0)continue;if(typeof c=="function"&&/\s+on([a-zA-Z][\w-]*)=\s*$/.test(o)){let f=o.match(/\s+on([a-zA-Z][\w-]*)=\s*$/);o=o.slice(0,o.length-f[0].length),o+=` data-tk-ev="${r.length}"`,r.push({evento:f[1].toLowerCase(),fn:c});continue}if(G(c)){o+=c[M];continue}let h=Array.isArray(c)?c:[c];for(let f of h)f==null||f===!1||f===!0||(f instanceof Node?(o+=`<template data-tk-nodo="${t.length}"></template>`,t.push(f)):G(f)?o+=f[M]:o+=S(f))}let a=document.createElement("template");a.innerHTML=o;let s=a.content;for(let l of[...s.querySelectorAll("template[data-tk-nodo]")]){let c=Number(l.dataset.tkNodo);l.replaceWith(t[c]??document.createComment("tk:nodo"))}for(let l of[...s.querySelectorAll("[data-tk-ev]")]){let c=Number(l.dataset.tkEv),g=r[c];g&&l.addEventListener(g.evento,g.fn),l.removeAttribute("data-tk-ev")}return s},T=i=>{let e=document.createElement("script");return e.type="application/json",e.textContent=JSON.stringify(i),e},S=i=>String(i??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"),d=i=>i&&typeof i=="object"&&!Array.isArray(i)?i:{},C=i=>{let e=[],t=String(i??"").replace(/`([^`]+)`/g,(r,o)=>(e.push(o),` ${e.length-1} `));return t=S(t).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,(r,o,a)=>`<a href="${S(a)}" target="_blank" rel="noopener noreferrer">${o}</a>`).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[\s(])\*([^*\n]+)\*/g,"$1<em>$2</em>").replace(/~~([^~]+)~~/g,"<del>$1</del>"),t.replace(/ (\d+) /g,(r,o)=>`<code>${S(e[Number(o)])}</code>`)},x=i=>{let e=String(i??"").replace(/\r\n?/g,`
 `).split(`
-`),t=[],r=[],o=0,n=()=>{r.length&&t.push(`<p>${C(r.join(" "))}</p>`),r.length=0};for(;o<e.length;){let s=e[o],l=s.match(/^\s*```(\w+)?\s*$/);if(l){n();let h=[];for(o++;o<e.length&&!/^\s*```\s*$/.test(e[o]);)h.push(e[o++]);o++,t.push(`<pre data-lang="${S(l[1]??"")}"><code>${S(h.join(`
-`))}</code></pre>`);continue}if(/^\s*\|/.test(s)&&/^\s*\|[\s:|-]+\|?\s*$/.test(e[o+1]??"")){n();let h=w=>w.trim().replace(/^\||\|$/g,"").split("|").map(D=>C(D.trim())),f=h(s);o+=2;let b=[];for(;o<e.length&&/^\s*\|/.test(e[o]);)b.push(h(e[o++]));t.push(`<table><thead><tr>${f.map(w=>`<th>${w}</th>`).join("")}</tr></thead><tbody>${b.map(w=>`<tr>${w.map(D=>`<td>${D}</td>`).join("")}</tr>`).join("")}</tbody></table>`);continue}let c=s.match(/^(#{1,6})\s+(.*)$/);if(c){n();let h=Math.min(c[1].length+2,6);t.push(`<h${h}>${C(c[2])}</h${h}>`),o++;continue}if(/^\s*(---|___|\*\*\*)\s*$/.test(s)){n(),t.push("<hr>"),o++;continue}if(/^\s*>\s?/.test(s)){n();let h=[];for(;o<e.length&&/^\s*>\s?/.test(e[o]);)h.push(e[o++].replace(/^\s*>\s?/,""));t.push(`<blockquote>${x(h.join(`
-`))}</blockquote>`);continue}let g=s.match(/^\s*([-*+]|\d+[.)])\s+/);if(g){n();let h=/\d/.test(g[1]),f=[];for(;o<e.length;){let w=e[o].match(/^\s*([-*+]|\d+[.)])\s+(.*)$/);if(!w){if(f.length&&/^\s{2,}\S/.test(e[o])){f[f.length-1]+=` ${e[o].trim()}`,o++;continue}break}f.push(w[2]),o++}let b=h?"ol":"ul";t.push(`<${b}>${f.map(w=>`<li>${C(w)}</li>`).join("")}</${b}>`);continue}if(!s.trim()){n(),o++;continue}r.push(s.trim()),o++}return n(),t.join(`
+`),t=[],r=[],o=0,a=()=>{r.length&&t.push(`<p>${C(r.join(" "))}</p>`),r.length=0};for(;o<e.length;){let s=e[o],l=s.match(/^\s*```(\w+)?\s*$/);if(l){a();let h=[];for(o++;o<e.length&&!/^\s*```\s*$/.test(e[o]);)h.push(e[o++]);o++,t.push(`<pre data-lang="${S(l[1]??"")}"><code>${S(h.join(`
+`))}</code></pre>`);continue}if(/^\s*\|/.test(s)&&/^\s*\|[\s:|-]+\|?\s*$/.test(e[o+1]??"")){a();let h=w=>w.trim().replace(/^\||\|$/g,"").split("|").map(D=>C(D.trim())),f=h(s);o+=2;let b=[];for(;o<e.length&&/^\s*\|/.test(e[o]);)b.push(h(e[o++]));t.push(`<table><thead><tr>${f.map(w=>`<th>${w}</th>`).join("")}</tr></thead><tbody>${b.map(w=>`<tr>${w.map(D=>`<td>${D}</td>`).join("")}</tr>`).join("")}</tbody></table>`);continue}let c=s.match(/^(#{1,6})\s+(.*)$/);if(c){a();let h=Math.min(c[1].length+2,6);t.push(`<h${h}>${C(c[2])}</h${h}>`),o++;continue}if(/^\s*(---|___|\*\*\*)\s*$/.test(s)){a(),t.push("<hr>"),o++;continue}if(/^\s*>\s?/.test(s)){a();let h=[];for(;o<e.length&&/^\s*>\s?/.test(e[o]);)h.push(e[o++].replace(/^\s*>\s?/,""));t.push(`<blockquote>${x(h.join(`
+`))}</blockquote>`);continue}let g=s.match(/^\s*([-*+]|\d+[.)])\s+/);if(g){a();let h=/\d/.test(g[1]),f=[];for(;o<e.length;){let w=e[o].match(/^\s*([-*+]|\d+[.)])\s+(.*)$/);if(!w){if(f.length&&/^\s{2,}\S/.test(e[o])){f[f.length-1]+=` ${e[o].trim()}`,o++;continue}break}f.push(w[2]),o++}let b=h?"ol":"ul";t.push(`<${b}>${f.map(w=>`<li>${C(w)}</li>`).join("")}</${b}>`);continue}if(!s.trim()){a(),o++;continue}r.push(s.trim()),o++}return a(),t.join(`
 `)},y=`
   .prosa {
     max-width: 100%;
@@ -199,12 +199,12 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       --spacing: 0.75em;
     }
   }
-`,me=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric"}),ue=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}),$=(i,e=!1)=>{if(!i)return"";let t=String(i).trim();(t.startsWith('"')&&t.endsWith('"')||t.startsWith("'")&&t.endsWith("'"))&&(t=t.slice(1,-1).trim());let r=new Date(t);return Number.isNaN(r.getTime())?t:(e?ue:me).format(r)},I=i=>{let e=Number(i);if(!Number.isFinite(e)||e<=0)return"";let t=Math.floor(e/60),r=Math.round(e%60);return t?r?`${t} h ${r} min`:`${t} h`:`${r} min`},pe={primary:"brand",brand:"brand",info:"info",success:"success",ok:"success",warning:"warning",warn:"warning",danger:"danger",error:"danger",violet:"brand",neutral:"neutral",default:"neutral"},Z=i=>pe[String(i??"").toLowerCase()]??"neutral",X=i=>{let e=String(i??"").toLowerCase();return e.includes("cerrad")||e.includes("solucion")?"success":e.includes("proceso")||e.includes("curso")?"warning":e.includes("abiert")||e.includes("nuevo")?"info":"neutral"},A={encode(i){let e=new TextEncoder().encode(i),t="";for(let r of e)t+=String.fromCharCode(r);return btoa(t).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},decode(i){let e=String(i).replace(/-/g,"+").replace(/_/g,"/");for(;e.length%4;)e+="=";let t=atob(e),r=new Uint8Array(t.length);for(let o=0;o<t.length;o++)r[o]=t.charCodeAt(o);return new TextDecoder().decode(r)}},m=(i,e)=>{customElements.get(i)||customElements.define(i,e)},p=(i,e)=>class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,i)}connectedCallback(){this.#i()}get payload(){return this.#t}set payload(t){this.#t=d(t),this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);e(this.#e,this.#t,this)}};var he=`
+`,me=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric"}),ue=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}),$=(i,e=!1)=>{if(!i)return"";let t=String(i).trim();(t.startsWith('"')&&t.endsWith('"')||t.startsWith("'")&&t.endsWith("'"))&&(t=t.slice(1,-1).trim());let r=new Date(t);return Number.isNaN(r.getTime())?t:(e?ue:me).format(r)},q=i=>{let e=Number(i);if(!Number.isFinite(e)||e<=0)return"";let t=Math.floor(e/60),r=Math.round(e%60);return t?r?`${t} h ${r} min`:`${t} h`:`${r} min`},pe={primary:"brand",brand:"brand",info:"info",success:"success",ok:"success",warning:"warning",warn:"warning",danger:"danger",error:"danger",violet:"brand",neutral:"neutral",default:"neutral"},Z=i=>pe[String(i??"").toLowerCase()]??"neutral",X=i=>{let e=String(i??"").toLowerCase();return e.includes("cerrad")||e.includes("solucion")?"success":e.includes("proceso")||e.includes("curso")?"warning":e.includes("abiert")||e.includes("nuevo")?"info":"neutral"},A={encode(i){let e=new TextEncoder().encode(i),t="";for(let r of e)t+=String.fromCharCode(r);return btoa(t).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},decode(i){let e=String(i).replace(/-/g,"+").replace(/_/g,"/");for(;e.length%4;)e+="=";let t=atob(e),r=new Uint8Array(t.length);for(let o=0;o<t.length;o++)r[o]=t.charCodeAt(o);return new TextDecoder().decode(r)}},m=(i,e)=>{customElements.get(i)||customElements.define(i,e)},p=(i,e)=>class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,i)}connectedCallback(){this.#i()}get payload(){return this.#t}set payload(t){this.#t=d(t),this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);e(this.#e,this.#t,this)}};var he=`
   ${u}
   ${y}
-`;m("tk-markdown",p(he,(i,e)=>{let t=String(e.text??e.body??e.content??"").trim();!t&&!e.title||i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
-    ${t&&a`<div class="prosa">${v(x(t))}</div>`}
+`;m("tk-markdown",p(he,(i,e)=>{let t=String(e.text??e.body??e.content??"").trim();!t&&!e.title||i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
+    ${t&&n`<div class="prosa">${v(x(t))}</div>`}
   `)}));var ge=`
   ${u}
   ${y}
@@ -217,9 +217,9 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
   }
   .prosa a { color: var(--tk-link, #6fb2e8); }
   .prosa code { color: var(--tk-code-text, #a8d5ff); }
-`,fe=["script","style","iframe","object","embed","form","link","meta","base"],be=i=>i.replace(/(?:^|;)\s*width\s*:\s*\d{3,4}px\b/gi,";width:100%").replace(/(?:^|;)\s*max-width\s*:\s*\d{3,4}px\b/gi,";max-width:100%").replace(/(?:^|;)\s*min-width\s*:\s*\d{3,4}px\b/gi,";min-width:0").replace(/^;+/,"").trim(),ve=i=>i.replace(/(?:^|;)\s*color\s*:\s*(?:#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})\b|rgba?\([^)]*\)|hsla?\([^)]*\)|gray|grey|silver|currentcolor)\s*/gi,";").replace(/;{2,}/g,";").replace(/^;+|;+$/g,"").trim(),ke=i=>{let e=new DOMParser().parseFromString(String(i??""),"text/html");e.body.querySelectorAll(fe.join(",")).forEach(t=>t.remove());for(let t of e.body.querySelectorAll("*")){for(let s of[...t.attributes]){let l=s.name.toLowerCase(),c=s.value.trim().toLowerCase();(l.startsWith("on")||(l==="href"||l==="src")&&c.startsWith("javascript:"))&&t.removeAttribute(s.name)}t.tagName==="A"&&(t.setAttribute("target","_blank"),t.setAttribute("rel","noopener noreferrer"));let r=t.getAttribute("width");r&&/^\d{3,4}$/.test(r)&&Number(r)>=400&&(t.removeAttribute("width"),t.setAttribute("data-tk-fluid",""));let o=t.getAttribute("style");if(!o)continue;let n=o;/color\s*:/i.test(n)&&(n=ve(n)),/\d{3,4}px/.test(n)&&/(?:^|;)\s*(?:max-)?width\s*:/i.test(n)&&(n=be(n)),n?n!==o&&t.setAttribute("style",n):t.removeAttribute("style")}return e.body.innerHTML};m("tk-html",p(ge,(i,e)=>{let t=String(e.html??"").trim();!t&&!e.title||i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
-    ${t&&a`<div class="prosa">${v(ke(t))}</div>`}
+`,fe=["script","style","iframe","object","embed","form","link","meta","base"],be=i=>i.replace(/(?:^|;)\s*width\s*:\s*\d{3,4}px\b/gi,";width:100%").replace(/(?:^|;)\s*max-width\s*:\s*\d{3,4}px\b/gi,";max-width:100%").replace(/(?:^|;)\s*min-width\s*:\s*\d{3,4}px\b/gi,";min-width:0").replace(/^;+/,"").trim(),ve=i=>i.replace(/(?:^|;)\s*color\s*:\s*(?:#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})\b|rgba?\([^)]*\)|hsla?\([^)]*\)|gray|grey|silver|currentcolor)\s*/gi,";").replace(/;{2,}/g,";").replace(/^;+|;+$/g,"").trim(),ke=i=>{let e=new DOMParser().parseFromString(String(i??""),"text/html");e.body.querySelectorAll(fe.join(",")).forEach(t=>t.remove());for(let t of e.body.querySelectorAll("*")){for(let s of[...t.attributes]){let l=s.name.toLowerCase(),c=s.value.trim().toLowerCase();(l.startsWith("on")||(l==="href"||l==="src")&&c.startsWith("javascript:"))&&t.removeAttribute(s.name)}t.tagName==="A"&&(t.setAttribute("target","_blank"),t.setAttribute("rel","noopener noreferrer"));let r=t.getAttribute("width");r&&/^\d{3,4}$/.test(r)&&Number(r)>=400&&(t.removeAttribute("width"),t.setAttribute("data-tk-fluid",""));let o=t.getAttribute("style");if(!o)continue;let a=o;/color\s*:/i.test(a)&&(a=ve(a)),/\d{3,4}px/.test(a)&&/(?:^|;)\s*(?:max-)?width\s*:/i.test(a)&&(a=be(a)),a?a!==o&&t.setAttribute("style",a):t.removeAttribute("style")}return e.body.innerHTML};m("tk-html",p(ge,(i,e)=>{let t=String(e.html??"").trim();!t&&!e.title||i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
+    ${t&&n`<div class="prosa">${v(ke(t))}</div>`}
   `)}));var we=`
   ${u}
   .fila {
@@ -229,10 +229,10 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     align-items: center;
     font-size: 0.875rem;
   }
-`;m("tk-badges",p(we,(i,e)=>{let r=(Array.isArray(e.items)?e.items:Array.isArray(e.badges)?e.badges:e.label?[e]:[]).map(d).map(o=>({texto:String(o.label??o.text??"").trim(),color:Z(o.tone??o.color)})).filter(o=>o.texto);r.length&&i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`;m("tk-badges",p(we,(i,e)=>{let r=(Array.isArray(e.items)?e.items:Array.isArray(e.badges)?e.badges:e.label?[e]:[]).map(d).map(o=>({texto:String(o.label??o.text??"").trim(),color:Z(o.tone??o.color)})).filter(o=>o.texto);r.length&&i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="fila">
-      ${r.map(o=>a`
+      ${r.map(o=>n`
         <is-tag color="${o.color}" variant="filled-outlined" pill>${o.texto}</is-tag>
       `)}
     </div>
@@ -273,19 +273,19 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     display: block;
     --is-grid-height: auto;
   }
-`,N=i=>{if(i==null)return"";if(typeof i=="object"){let e=d(i);return C(e.text??e.label??e.value??"")}return C(i)};m("tk-table",p(ye,(i,e)=>{let t=(Array.isArray(e.rows)?e.rows:[]).map(l=>Array.isArray(l)?l:[l]);if(!t.length)return;let r=(Array.isArray(e.headers)?e.headers:[]).map(String);if(t.every(l=>l.length===2)){i.append(a`
-      ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`,N=i=>{if(i==null)return"";if(typeof i=="object"){let e=d(i);return C(e.text??e.label??e.value??"")}return C(i)};m("tk-table",p(ye,(i,e)=>{let t=(Array.isArray(e.rows)?e.rows:[]).map(l=>Array.isArray(l)?l:[l]);if(!t.length)return;let r=(Array.isArray(e.headers)?e.headers:[]).map(String);if(t.every(l=>l.length===2)){i.append(n`
+      ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
       <dl class="ficha">
-        ${t.map(l=>a`
+        ${t.map(l=>n`
           <dt>${v(N(l[0]))}</dt>
           <dd>${v(N(l[1]))}</dd>
         `)}
       </dl>
-      ${e.caption&&a`<p class="pie">${e.caption}</p>`}
-    `);return}let o=Math.max(...t.map(l=>l.length),r.length),n=Array.from({length:o},(l,c)=>({field:`c${c}`,headerName:r[c]??`Columna ${c+1}`,flex:1,sortable:!0,renderCell:({value:g})=>({html:N(g)})})),s=Object.assign(document.createElement("is-data-grid"),{columns:n,rows:t.map((l,c)=>{let g={id:c};return l.forEach((h,f)=>{g[`c${f}`]=h}),g})});s.setAttribute("auto-height",""),s.setAttribute("hide-footer",""),s.setAttribute("density","compact"),s.setAttribute("disable-column-menu",""),s.setAttribute("toolbar-tools","false"),i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+      ${e.caption&&n`<p class="pie">${e.caption}</p>`}
+    `);return}let o=Math.max(...t.map(l=>l.length),r.length),a=Array.from({length:o},(l,c)=>({field:`c${c}`,headerName:r[c]??`Columna ${c+1}`,flex:1,sortable:!0,renderCell:({value:g})=>({html:N(g)})})),s=Object.assign(document.createElement("is-data-grid"),{columns:a,rows:t.map((l,c)=>{let g={id:c};return l.forEach((h,f)=>{g[`c${f}`]=h}),g})});s.setAttribute("auto-height",""),s.setAttribute("hide-footer",""),s.setAttribute("density","compact"),s.setAttribute("disable-column-menu",""),s.setAttribute("toolbar-tools","false"),i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     ${s}
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var xe=`
   ${u}
   .rejilla {
@@ -425,13 +425,13 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     .nav.next { right: 0.15rem; }
     .cerrar { top: 0.15rem; right: 0.15rem; }
   }
-`,Q=i=>{let e=String(i.url??i.src??"").trim();return e?{url:e,alt:String(i.alt??i.caption??i.title??"Evidencia del tiquete"),caption:String(i.caption??"")}:null},R=class extends HTMLElement{#t;#e=[];#i=0;#o=e=>{this.hasAttribute("open")&&(e.key==="Escape"?this.cerrar():e.key==="ArrowRight"?this.#r(1):e.key==="ArrowLeft"&&this.#r(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});let e=new CSSStyleSheet;e.replaceSync($e),this.#t.adoptedStyleSheets=[e]}connectedCallback(){document.addEventListener("keydown",this.#o),this.addEventListener("click",e=>{e.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#o)}abrir(e,t=0){this.#e=e,this.#i=Math.max(0,Math.min(t,e.length-1)),this.setAttribute("open",""),this.#a(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#r(e){this.#e.length<2||(this.#i=(this.#i+e+this.#e.length)%this.#e.length,this.#a())}#a(){let e=this.#e[this.#i];if(!e)return;let t=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(a`
+`,Q=i=>{let e=String(i.url??i.src??"").trim();return e?{url:e,alt:String(i.alt??i.caption??i.title??"Evidencia del tiquete"),caption:String(i.caption??"")}:null},R=class extends HTMLElement{#t;#e=[];#i=0;#o=e=>{this.hasAttribute("open")&&(e.key==="Escape"?this.cerrar():e.key==="ArrowRight"?this.#r(1):e.key==="ArrowLeft"&&this.#r(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});let e=new CSSStyleSheet;e.replaceSync($e),this.#t.adoptedStyleSheets=[e]}connectedCallback(){document.addEventListener("keydown",this.#o),this.addEventListener("click",e=>{e.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#o)}abrir(e,t=0){this.#e=e,this.#i=Math.max(0,Math.min(t,e.length-1)),this.setAttribute("open",""),this.#a(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#r(e){this.#e.length<2||(this.#i=(this.#i+e+this.#e.length)%this.#e.length,this.#a())}#a(){let e=this.#e[this.#i];if(!e)return;let t=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(n`
       <div class="marco" role="dialog" aria-modal="true" aria-label="${e.alt}">
-        ${t?a`<span class="contador">${this.#i+1} / ${this.#e.length}</span>`:null}
+        ${t?n`<span class="contador">${this.#i+1} / ${this.#e.length}</span>`:null}
         <button class="cerrar" type="button" aria-label="Cerrar" onclick=${()=>this.cerrar()}>
           <is-icon icon="mdi:close" aria-hidden="true"></is-icon>
         </button>
-        ${t?a`
+        ${t?n`
           <button class="nav prev" type="button" aria-label="Anterior" onclick=${()=>this.#r(-1)}>
             <is-icon icon="mdi:chevron-left" aria-hidden="true"></is-icon>
           </button>
@@ -440,11 +440,11 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
           </button>
         `:null}
         <img class="foto" src="${e.url}" alt="${e.alt}">
-        ${e.caption||e.alt?a`<p class="leyenda">${e.caption||e.alt}</p>`:null}
+        ${e.caption||e.alt?n`<p class="leyenda">${e.caption||e.alt}</p>`:null}
       </div>
-    `)}};customElements.get("tk-lightbox")||customElements.define("tk-lightbox",R);var Se=()=>{let i=document.querySelector("tk-lightbox");return i||(i=document.createElement("tk-lightbox"),document.body.append(i)),i},Ce=(i,e,t)=>{let r=n=>{let s=n.target;s.removeAttribute("data-cargando"),s.naturalWidth&&s.naturalHeight&&(s.style.aspectRatio=`${s.naturalWidth} / ${s.naturalHeight}`)},o=n=>{let s=n.target;(s.closest(".lienzo")??s).replaceWith(a`
+    `)}};customElements.get("tk-lightbox")||customElements.define("tk-lightbox",R);var Se=()=>{let i=document.querySelector("tk-lightbox");return i||(i=document.createElement("tk-lightbox"),document.body.append(i)),i},Ce=(i,e,t)=>{let r=a=>{let s=a.target;s.removeAttribute("data-cargando"),s.naturalWidth&&s.naturalHeight&&(s.style.aspectRatio=`${s.naturalWidth} / ${s.naturalHeight}`)},o=a=>{let s=a.target;(s.closest(".lienzo")??s).replaceWith(n`
       <p class="rota">La evidencia ya no está disponible.</p>
-    `)};return a`
+    `)};return n`
     <figure>
       <button
         class="lienzo"
@@ -462,12 +462,12 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
           onerror=${o}
         >
       </button>
-      ${i.caption&&a`<figcaption>${i.caption}</figcaption>`}
+      ${i.caption&&n`<figcaption>${i.caption}</figcaption>`}
     </figure>
-  `};m("tk-image",p(xe,(i,e,t)=>{let r=t.bloques??[],o=(r.length?r.map(n=>Q(d(n.payload))):[Q(e)]).filter(n=>!!n);o.length&&i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+  `};m("tk-image",p(xe,(i,e,t)=>{let r=t.bloques??[],o=(r.length?r.map(a=>Q(d(a.payload))):[Q(e)]).filter(a=>!!a);o.length&&i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="${o.length>1?"rejilla":""}">
-      ${o.map((n,s)=>Ce(n,o,s))}
+      ${o.map((a,s)=>Ce(a,o,s))}
     </div>
   `)}));var Te=`
   ${u}
@@ -506,8 +506,8 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
   .str { color: var(--tk-code-str, #7ee0b8); }
   .num { color: var(--tk-code-num, #f0b775); }
   .key { color: var(--tk-code-key, #7fb2ff); font-weight: 600; }
-`,Ae=new RegExp("\\b("+["select","from","where","insert","into","values","update","set","delete","create","alter","drop","table","index","view","join","left","right","inner","outer","on","group","order","by","having","limit","offset","and","or","not","null","as","distinct","case","when","then","else","end","begin","commit","rollback","union","exists","between","like","in","const","let","var","function","return","if","for","while","await","async","class","extends","new","this","import","export","default","interface","type","try","catch","throw","typeof","true","false"].join("|")+")\\b","gi"),ze=i=>{let e=[],t=o=>(e.push(o),`\0${e.length-1}\0`),r=S(i);return r=r.replace(/(--[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/|#[^\n]*)/g,o=>t(`<span class="com">${o}</span>`)),r=r.replace(/('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`)/g,o=>t(`<span class="str">${o}</span>`)),r=r.replace(/\b\d+(\.\d+)?\b/g,o=>t(`<span class="num">${o}</span>`)),r=r.replace(Ae,o=>t(`<span class="key">${o}</span>`)),r.replace(/ (\d+) /g,(o,n)=>e[Number(n)])};m("tk-code",p(Te,(i,e)=>{let t=String(e.code??e.sql??"").replace(/\s+$/,"");if(!t)return;let r=String(e.language??(e.sql?"sql":"")).trim();i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`,Ae=new RegExp("\\b("+["select","from","where","insert","into","values","update","set","delete","create","alter","drop","table","index","view","join","left","right","inner","outer","on","group","order","by","having","limit","offset","and","or","not","null","as","distinct","case","when","then","else","end","begin","commit","rollback","union","exists","between","like","in","const","let","var","function","return","if","for","while","await","async","class","extends","new","this","import","export","default","interface","type","try","catch","throw","typeof","true","false"].join("|")+")\\b","gi"),ze=i=>{let e=[],t=o=>(e.push(o),`\0${e.length-1}\0`),r=S(i);return r=r.replace(/(--[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/|#[^\n]*)/g,o=>t(`<span class="com">${o}</span>`)),r=r.replace(/('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`)/g,o=>t(`<span class="str">${o}</span>`)),r=r.replace(/\b\d+(\.\d+)?\b/g,o=>t(`<span class="num">${o}</span>`)),r=r.replace(Ae,o=>t(`<span class="key">${o}</span>`)),r.replace(/ (\d+) /g,(o,a)=>e[Number(a)])};m("tk-code",p(Te,(i,e)=>{let t=String(e.code??e.sql??"").replace(/\s+$/,"");if(!t)return;let r=String(e.language??(e.sql?"sql":"")).trim();i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="marco">
       <div class="barra">
         <span class="lenguaje">${r||"c\xF3digo"}</span>
@@ -515,7 +515,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       </div>
       <pre><code>${v(ze(t))}</code></pre>
     </div>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var Ee=`
   ${u}
   a {
@@ -547,13 +547,13 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     white-space: nowrap;
   }
   is-icon { flex: none; font-size: 1.05em; }
-`;m("tk-url",p(Ee,(i,e)=>{let t=String(e.href??e.url??"").trim();/^https?:\/\//i.test(t)&&i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`;m("tk-url",p(Ee,(i,e)=>{let t=String(e.href??e.url??"").trim();/^https?:\/\//i.test(t)&&i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <a href="${t}" target="_blank" rel="noopener noreferrer">
       <is-icon icon="mdi:open-in-new" aria-hidden="true"></is-icon>
       <span class="etiqueta">${String(e.label??t)}</span>
     </a>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var je="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js",Me=`
   ${u}
 
@@ -630,8 +630,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     white-space: nowrap;
     clip-path: inset(50%);
   }
-`,Ie=/^[a-zA-Z0-9_-]{6,20}$/,ee=!1,qe=()=>{if(ee||customElements.get("lite-youtube"))return;ee=!0;let i=document.createElement("script");i.src=je,i.async=!0,document.head.append(i)};m("tk-video",p(Me,(i,e)=>{let t=String(e.youtubeid??e.youtubeId??"").trim();if(!Ie.test(t))return;qe();let r=`Reproducir: ${String(e.title??"video")}`;i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`,qe=/^[a-zA-Z0-9_-]{6,20}$/,ee=!1,Ie=()=>{if(ee||customElements.get("lite-youtube"))return;ee=!0;let i=document.createElement("script");i.src=je,i.async=!0,document.head.append(i)};m("tk-video",p(Me,(i,e)=>{let t=String(e.youtubeid??e.youtubeId??"").trim();if(!qe.test(t))return;Ie();let r=`Reproducir: ${String(e.title??"video")}`;i.append(n`
     <lite-youtube videoid="${t}" params="rel=0&amp;modestbranding=1" playlabel="${r}">
       <a
         class="lty-playbtn"
@@ -640,7 +639,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
         rel="noopener noreferrer"
       ><span class="lyt-visually-hidden">${r}</span></a>
     </lite-youtube>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var Le=`
   ${u}
   ${y}
@@ -685,16 +684,16 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     + tk-code { display: block; padding: 0 0.95em 0.95em; }
   }
   dl { margin: 0; display: contents; }
-`,te=(i,e)=>e?a`<dl class="campo"><dt>${i}</dt><dd>${e}</dd></dl>`:null;m("tk-cambio-bd",p(Le,(i,e)=>{let t=String(e.sql??"").trim(),r=String(e.tabla??"").trim(),o=String(e.registro??"").trim(),n=String(e.intencion??"").trim();if(!t&&!r&&!n)return;let s=t?Object.assign(document.createElement("tk-code"),{payload:{code:t,language:"sql"}}):null;i.append(a`
+`,te=(i,e)=>e?n`<dl class="campo"><dt>${i}</dt><dd>${e}</dd></dl>`:null;m("tk-cambio-bd",p(Le,(i,e)=>{let t=String(e.sql??"").trim(),r=String(e.tabla??"").trim(),o=String(e.registro??"").trim(),a=String(e.intencion??"").trim();if(!t&&!r&&!a)return;let s=t?Object.assign(document.createElement("tk-code"),{payload:{code:t,language:"sql"}}):null;i.append(n`
     <h2 class="titulo">${String(e.title??"Cambio en base de datos")}</h2>
     <div class="marco">
-      ${(r||o)&&a`
+      ${(r||o)&&n`
         <div class="cabecera">
           ${te("Tabla",r)}
           ${te("Registro",o)}
         </div>
       `}
-      ${n&&a`<div class="intencion prosa">${v(x(n))}</div>`}
+      ${a&&n`<div class="intencion prosa">${v(x(a))}</div>`}
       ${s}
     </div>
   `)}));var De=`
@@ -739,10 +738,10 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     &.prosa > :last-child { margin-bottom: 0; }
   }
   h3 { overflow-wrap: anywhere; }
-`,Ne=(i,e)=>{let t=d(i),r=Array.isArray(t.items)?t.items:Array.isArray(t.steps)?t.steps:t.text?[t.text]:[];return{title:String(t.title??t.label??`Fase ${e+1}`),items:r}},Re=i=>i==null?null:typeof i=="string"?a`<div class="hallazgo prosa">${v(x(i))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:i});m("tk-steps",p(De,(i,e)=>{let r=(Array.isArray(e.phases)?e.phases:Array.isArray(e.steps)?e.steps:[]).map(Ne).filter(o=>o.items.length||o.title);r.length&&i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`,Ne=(i,e)=>{let t=d(i),r=Array.isArray(t.items)?t.items:Array.isArray(t.steps)?t.steps:t.text?[t.text]:[];return{title:String(t.title??t.label??`Fase ${e+1}`),items:r}},Re=i=>i==null?null:typeof i=="string"?n`<div class="hallazgo prosa">${v(x(i))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:i});m("tk-steps",p(De,(i,e)=>{let r=(Array.isArray(e.phases)?e.phases:Array.isArray(e.steps)?e.steps:[]).map(Ne).filter(o=>o.items.length||o.title);r.length&&i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <ol>
-      ${r.map(o=>a`
+      ${r.map(o=>n`
         <li class="fase">
           <h3>${o.title}</h3>
           <div class="hallazgos">${o.items.map(Re)}</div>
@@ -817,25 +816,25 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
   is-tooltip {
     --max-width: 22rem;
   }
-`,E=(i,e,t="")=>({nombre:i,path:e,hijos:new Map,pista:t||void 0}),Be=(i,e)=>{let t=E("","");for(let r of i){let o=String(r).split(/[/\\]/).filter(Boolean),n=t,s=[];o.forEach((l,c)=>{s.push(l);let g=s.join("/");if(n.hijos.has(l)){if(c===o.length-1){let h=n.hijos.get(l),f=String(h.pista??e[g]??e[r]??e[l]??"");f&&!h.pista&&n.hijos.set(l,E(l,g,f))}}else{let f=c===o.length-1?String(e[g]??e[r]??e[l]??e[o.slice(0,c+1).join("/")]??""):"";n.hijos.set(l,E(l,g,f))}n=n.hijos.get(l)})}return t},ie=(i,e,t)=>{let r=d(i),o=String(r.name??r.nombre??"").trim();if(!o)return null;let n=String(r.path??(t?`${t}/${o}`:o)),s=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],l=E(o,n,String(r.hint??r.pista??e[n]??e[o]??""));for(let c of s){let g=ie(c,e,n);g&&l.hijos.set(g.nombre,g)}return l},Fe=(i,e)=>{let t=E("","");for(let r of i){let o=ie(r,e,"");o&&t.hijos.set(o.nombre,o)}return t},re=0,oe=i=>{let e=i.hijos.size===0,t=e?"mdi:file-document-outline":"mdi:folder-outline",r=i.pista?`ft-tip-${++re}`:"";return a`
+`,E=(i,e,t="")=>({nombre:i,path:e,hijos:new Map,pista:t||void 0}),Be=(i,e)=>{let t=E("","");for(let r of i){let o=String(r).split(/[/\\]/).filter(Boolean),a=t,s=[];o.forEach((l,c)=>{s.push(l);let g=s.join("/");if(a.hijos.has(l)){if(c===o.length-1){let h=a.hijos.get(l),f=String(h.pista??e[g]??e[r]??e[l]??"");f&&!h.pista&&a.hijos.set(l,E(l,g,f))}}else{let f=c===o.length-1?String(e[g]??e[r]??e[l]??e[o.slice(0,c+1).join("/")]??""):"";a.hijos.set(l,E(l,g,f))}a=a.hijos.get(l)})}return t},ie=(i,e,t)=>{let r=d(i),o=String(r.name??r.nombre??"").trim();if(!o)return null;let a=String(r.path??(t?`${t}/${o}`:o)),s=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],l=E(o,a,String(r.hint??r.pista??e[a]??e[o]??""));for(let c of s){let g=ie(c,e,a);g&&l.hijos.set(g.nombre,g)}return l},Fe=(i,e)=>{let t=E("","");for(let r of i){let o=ie(r,e,"");o&&t.hijos.set(o.nombre,o)}return t},re=0,oe=i=>{let e=i.hijos.size===0,t=e?"mdi:file-document-outline":"mdi:folder-outline",r=i.pista?`ft-tip-${++re}`:"";return n`
     <li class="nodo ${e?"hoja":"carpeta"}">
       <div class="fila">
         <is-icon class="ico" icon="${t}" aria-hidden="true"></is-icon>
-        ${i.pista?a`
+        ${i.pista?n`
             <span class="nombre" id="${r}" tabindex="0">${i.nombre}</span>
             <is-tooltip for="${r}" placement="top">${i.pista}</is-tooltip>
-          `:a`<span class="nombre">${i.nombre}</span>`}
+          `:n`<span class="nombre">${i.nombre}</span>`}
       </div>
-      ${e?null:a`
+      ${e?null:n`
         <ul>
           ${[...i.hijos.values()].map(oe)}
         </ul>
       `}
     </li>
-  `};m("tk-file-tree",p(He,(i,e)=>{re=0;let t=d(e.hints??e.notes),r=d(e.fileTree??{}),o=Array.isArray(e.tree)?e.tree:Array.isArray(r.tree)?r.tree:[],n=(Array.isArray(e.paths)?e.paths:Array.isArray(e.files)?e.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!o.length&&!n.length)return;let s=o.length?Fe(o,{...d(r.hints),...t}):Be(n,{...d(r.hints),...t}),l=String(e.rootLabel??e.root??r.rootLabel??"").trim(),c=[...s.hijos.values()].map(oe);i.append(a`
+  `};m("tk-file-tree",p(He,(i,e)=>{re=0;let t=d(e.hints??e.notes),r=d(e.fileTree??{}),o=Array.isArray(e.tree)?e.tree:Array.isArray(r.tree)?r.tree:[],a=(Array.isArray(e.paths)?e.paths:Array.isArray(e.files)?e.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!o.length&&!a.length)return;let s=o.length?Fe(o,{...d(r.hints),...t}):Be(a,{...d(r.hints),...t}),l=String(e.rootLabel??e.root??r.rootLabel??"").trim(),c=[...s.hijos.values()].map(oe);i.append(n`
     <h2 class="titulo">${String(e.title??r.title??"Archivos intervenidos")}</h2>
     <ul class="arbol" role="tree" aria-label="Archivos intervenidos">
-      ${l?a`
+      ${l?n`
         <li class="nodo carpeta raiz" role="treeitem">
           <div class="fila">
             <is-icon class="ico" icon="mdi:source-repository" aria-hidden="true"></is-icon>
@@ -902,25 +901,25 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125em;
   }
-`,Oe=i=>i.map((e,t)=>{let r=d(e);return{id:String(r.key??r.id??`h${t}`),label:String(r.label??r.name??`Hito ${t+1}`),date:String(r.iso??r.date??""),hora:String(r.hora??""),desc:String(r.nota??r.description??"")}}).filter(e=>e.label);m("tk-timeline",p(Pe,(i,e)=>{let t=d(e.timeline??e),r=Oe(Array.isArray(t.milestones)?t.milestones:Array.isArray(t.events)?t.events:[]),o=(Array.isArray(t.resumen)?t.resumen:[]).map(d);if(!r.length&&!o.length)return;let n=String(t.title??e.title??""),s=r.filter(c=>c.date&&!Number.isNaN(new Date(c.date).getTime())),l=s.length>=2?a`
+`,Oe=i=>i.map((e,t)=>{let r=d(e);return{id:String(r.key??r.id??`h${t}`),label:String(r.label??r.name??`Hito ${t+1}`),date:String(r.iso??r.date??""),hora:String(r.hora??""),desc:String(r.nota??r.description??"")}}).filter(e=>e.label);m("tk-timeline",p(Pe,(i,e)=>{let t=d(e.timeline??e),r=Oe(Array.isArray(t.milestones)?t.milestones:Array.isArray(t.events)?t.events:[]),o=(Array.isArray(t.resumen)?t.resumen:[]).map(d);if(!r.length&&!o.length)return;let a=String(t.title??e.title??""),s=r.filter(c=>c.date&&!Number.isNaN(new Date(c.date).getTime())),l=s.length>=2?n`
       <is-timeline color="inline">
-        ${T({timeline:{title:n||void 0,orientation:"vertical",events:s.map(c=>({id:c.id,label:c.label,date:c.date,desc:c.desc}))}})}
+        ${T({timeline:{title:a||void 0,orientation:"vertical",events:s.map(c=>({id:c.id,label:c.label,date:c.date,desc:c.desc}))}})}
       </is-timeline>
-    `:a`
+    `:n`
       <ul class="hitos">
-        ${r.map(c=>a`
+        ${r.map(c=>n`
           <li class="hito">
             <span class="hora">${c.hora||$(c.date)}</span>
             <span class="etiqueta">${c.label}</span>
-            ${c.desc&&a`<span class="nota">${c.desc}</span>`}
+            ${c.desc&&n`<span class="nota">${c.desc}</span>`}
           </li>
         `)}
       </ul>
-    `;i.append(a`
-    ${n&&a`<h2 class="titulo">${n}</h2>`}
-    ${o.length>0&&a`
+    `;i.append(n`
+    ${a&&n`<h2 class="titulo">${a}</h2>`}
+    ${o.length>0&&n`
       <div class="resumen">
-        ${o.map(c=>a`
+        ${o.map(c=>n`
           <div class="cifra" ${v(c.highlight===!0?"data-hl":"")}>
             <span class="cifra-rotulo">${String(c.label??"")}</span>
             <span class="cifra-valor">${String(c.value??"\u2014")}</span>
@@ -944,15 +943,15 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     background: var(--is-bg-soft, #14181d);
   }
   is-sequence-diagram { display: block; min-width: 32rem; }
-`;m("tk-sequence",p(_e,(i,e)=>{let t=d(e.sequence),r=Array.isArray(t.messages)?t.messages:[],o=String(e.preset??t.preset??"");if(!r.length&&!o)return;let n=String(e.subtitle??"");i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
-    ${n&&a`<p class="subtitulo">${n}</p>`}
+`;m("tk-sequence",p(_e,(i,e)=>{let t=d(e.sequence),r=Array.isArray(t.messages)?t.messages:[],o=String(e.preset??t.preset??"");if(!r.length&&!o)return;let a=String(e.subtitle??"");i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
+    ${a&&n`<p class="subtitulo">${a}</p>`}
     <div class="marco">
       <is-sequence-diagram color="inline">
         ${T(o&&!r.length?{preset:o}:{sequence:t})}
       </is-sequence-diagram>
     </div>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var Ue=`
   ${u}
   ${y}
@@ -961,20 +960,20 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     color: var(--is-text, #e6edf3);
     font-size: 0.875em;
   }
-`;m("tk-stepper",p(Ue,(i,e)=>{let t=d(e.stepper??e),r=(Array.isArray(t.steps)?t.steps:[]).map(d);r.length&&i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+`;m("tk-stepper",p(Ue,(i,e)=>{let t=d(e.stepper??e),r=(Array.isArray(t.steps)?t.steps:[]).map(d);r.length&&i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <!-- active = total: el procedimiento está documentado, ningún paso queda pendiente. -->
     <is-stepper orientation="vertical" active="${r.length}">
-      ${r.map(o=>{let n=String(o.description??o.desc??"").trim();return a`
+      ${r.map(o=>{let a=String(o.description??o.desc??"").trim();return n`
           <is-stepper-step
             label="${String(o.label??o.title??"")}"
             icon="${String(o.icon??"mdi:checkbox-marked-circle-outline")}"
           >
-            ${n&&a`<div slot="description" class="desc prosa">${v(x(n))}</div>`}
+            ${a&&n`<div slot="description" class="desc prosa">${v(x(a))}</div>`}
           </is-stepper-step>
         `})}
     </is-stepper>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var We=`
   ${u}
   .subtitulo {
@@ -994,15 +993,15 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     width: 100%;
     min-height: 16rem;
   }
-`;m("tk-chart",p(We,(i,e)=>{let t=d(e.chart??e),r=d(t.data);if(!(Array.isArray(r.datasets)?r.datasets:[]).length)return;let n=d(d(t.options).plugins),s=String(e.title??d(n.title).text??""),l=String(d(n.subtitle).text??""),c={...t,options:{...d(t.options),plugins:{...n,title:{display:!1},subtitle:{display:!1}}}};i.append(a`
-    ${s&&a`<h2 class="titulo">${s}</h2>`}
-    ${l&&a`<p class="subtitulo">${l}</p>`}
+`;m("tk-chart",p(We,(i,e)=>{let t=d(e.chart??e),r=d(t.data);if(!(Array.isArray(r.datasets)?r.datasets:[]).length)return;let a=d(d(t.options).plugins),s=String(e.title??d(a.title).text??""),l=String(d(a.subtitle).text??""),c={...t,options:{...d(t.options),plugins:{...a,title:{display:!1},subtitle:{display:!1}}}};i.append(n`
+    ${s&&n`<h2 class="titulo">${s}</h2>`}
+    ${l&&n`<p class="subtitulo">${l}</p>`}
     <div class="marco">
       <is-chart type="${String(t.type??"bar")}">
         ${T(c)}
       </is-chart>
     </div>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
   `)}));var Je=`
   ${u}
   .marco {
@@ -1029,25 +1028,25 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     font-size: 0.8125em;
     text-align: center;
   }
-`,Ve="https://mermaid.ink/svg/",Ye=()=>document.documentElement.dataset.theme!=="light";m("tk-diagram",p(Je,(i,e)=>{let t=Ye(),r=String(t&&e.sourceDark||e.source||"").trim();if(!r)return;let o=String(e.engine??"mermaid").toLowerCase(),n=/^\s*%%\{/.test(r)?r:`%%{init: {"theme": "${t?"dark":"default"}"}}%%
-${r}`,s=l=>{l.target.replaceWith(a`
+`,Ve="https://mermaid.ink/svg/",Ye=()=>document.documentElement.dataset.theme!=="light";m("tk-diagram",p(Je,(i,e)=>{let t=Ye(),r=String(t&&e.sourceDark||e.source||"").trim();if(!r)return;let o=String(e.engine??"mermaid").toLowerCase(),a=/^\s*%%\{/.test(r)?r:`%%{init: {"theme": "${t?"dark":"default"}"}}%%
+${r}`,s=l=>{l.target.replaceWith(n`
       <p class="fallo">El servicio de diagramas no respondió. La fuente está abajo.</p>
-    `),i.querySelector("is-details")?.setAttribute("open","")};i.append(a`
-    ${e.title&&a`<h2 class="titulo">${e.title}</h2>`}
+    `),i.querySelector("is-details")?.setAttribute("open","")};i.append(n`
+    ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="marco">
-      ${o==="mermaid"?a`
+      ${o==="mermaid"?n`
         <img
-          src="${Ve+A.encode(n)}"
+          src="${Ve+A.encode(a)}"
           alt="${String(e.alt??e.caption??"Diagrama del tiquete")}"
           loading="lazy"
           decoding="async"
           onerror=${s}
         >
-      `:a`
+      `:n`
         <p class="fallo">Motor de diagrama no soportado: ${o}.</p>
       `}
     </div>
-    ${e.caption&&a`<p class="pie">${e.caption}</p>`}
+    ${e.caption&&n`<p class="pie">${e.caption}</p>`}
     <is-details summary="Fuente ${o}" variant="filled-outlined">
       <pre><code>${r}</code></pre>
     </is-details>
@@ -1067,7 +1066,7 @@ ${r}`,s=l=>{l.target.replaceWith(a`
     word-break: break-word;
     color: var(--tk-code-text, #a8d5ff);
   }
-`,Ge={markdown:"tk-markdown",md:"tk-markdown",text:"tk-markdown",html:"tk-html",badge:"tk-badges",badges:"tk-badges",table:"tk-table",image:"tk-image","image-group":"tk-image",steps:"tk-steps",timeline:"tk-timeline","metrics-timeline":"tk-timeline","file-tree":"tk-file-tree",code:"tk-code",sql:"tk-code",sequence:"tk-sequence","mui-stepper":"tk-stepper",stepper:"tk-stepper",url:"tk-url",link:"tk-url",video:"tk-video",youtube:"tk-video","cambio-bd":"tk-cambio-bd",chart:"tk-chart",diagram:"tk-diagram"},Ze=i=>{let e=d(i.payload);if(Array.isArray(i.blocks)&&i.blocks.length)return!0;for(let t of["text","body","html","code","sql","url","src","href","label","source","youtubeid","youtubeId"])if(String(e[t]??"").trim())return!0;for(let t of["rows","items","badges","paths","files","tree","phases","steps","milestones","events","resumen"])if(Array.isArray(e[t])&&e[t].length)return!0;for(let t of["timeline","sequence","stepper","chart","fileTree"])if(Object.keys(d(e[t])).length)return!0;return!1},H=class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,Ke)}connectedCallback(){this.#i()}get bloque(){return this.#t}set bloque(e){this.#t=e??{},this.isConnected&&this.#i()}get docLane(){return d(this.#t.payload).docLane??"otros"}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t,t=String(e.kind??"").toLowerCase();if(!Ze(e)){this.setAttribute("oculto","");return}this.removeAttribute("oculto");let r=Ge[t];if(!r){this.#e.append(a`
+`,Ge={markdown:"tk-markdown",md:"tk-markdown",text:"tk-markdown",html:"tk-html",badge:"tk-badges",badges:"tk-badges",table:"tk-table",image:"tk-image","image-group":"tk-image",steps:"tk-steps",timeline:"tk-timeline","metrics-timeline":"tk-timeline","file-tree":"tk-file-tree",code:"tk-code",sql:"tk-code",sequence:"tk-sequence","mui-stepper":"tk-stepper",stepper:"tk-stepper",url:"tk-url",link:"tk-url",video:"tk-video",youtube:"tk-video","cambio-bd":"tk-cambio-bd",chart:"tk-chart",diagram:"tk-diagram"},Ze=i=>{let e=d(i.payload);if(Array.isArray(i.blocks)&&i.blocks.length)return!0;for(let t of["text","body","html","code","sql","url","src","href","label","source","youtubeid","youtubeId"])if(String(e[t]??"").trim())return!0;for(let t of["rows","items","badges","paths","files","tree","phases","steps","milestones","events","resumen"])if(Array.isArray(e[t])&&e[t].length)return!0;for(let t of["timeline","sequence","stepper","chart","fileTree"])if(Object.keys(d(e[t])).length)return!0;return!1},H=class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,Ke)}connectedCallback(){this.#i()}get bloque(){return this.#t}set bloque(e){this.#t=e??{},this.isConnected&&this.#i()}get docLane(){return d(this.#t.payload).docLane??"otros"}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t,t=String(e.kind??"").toLowerCase();if(!Ze(e)){this.setAttribute("oculto","");return}this.removeAttribute("oculto");let r=Ge[t];if(!r){this.#e.append(n`
         <is-callout color="warning" icon="mdi:puzzle-outline">
           Bloque <code>${t||"sin tipo"}</code> sin representación en este visor.
         </is-callout>
@@ -1181,12 +1180,12 @@ ${r}`,s=l=>{l.target.replaceWith(a`
   @media (max-width: 48rem) {
     .cifras { grid-template-columns: 1fr; }
   }
-`,Qe={success:"var(--is-color-success-500, #2f9e44)",warning:"var(--is-color-warning-500, #f08c00)",info:"var(--is-accent, #1a6eb0)",neutral:"var(--is-text-muted, #9aa7b4)"},B=(i,e,t)=>i?a`
+`,Qe={success:"var(--is-color-success-500, #2f9e44)",warning:"var(--is-color-warning-500, #f08c00)",info:"var(--is-accent, #1a6eb0)",neutral:"var(--is-text-muted, #9aa7b4)"},B=(i,e,t)=>i?n`
     <is-tag color="${e}" variant="filled-outlined" pill>
       <is-icon slot="start" icon="${t}" aria-hidden="true"></is-icon>
       ${i}
     </is-tag>
-  `:null,q=(i,e,t)=>e?a`
+  `:null,I=(i,e,t)=>e?n`
     <div class="cifra">
       <span class="cifra-rotulo">
         <is-icon icon="${t}" aria-hidden="true"></is-icon>
@@ -1194,7 +1193,7 @@ ${r}`,s=l=>{l.target.replaceWith(a`
       </span>
       <span class="cifra-valor">${e}</span>
     </div>
-  `:null,F=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,Xe)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e)return;let t=X(e.estado),r=String(e.resumen??"").trim(),o=(e.rootCommits?.length??(e.contexts??[]).reduce((n,s)=>n+(s.commits?.length??0),0))||0;this.#e.append(a`
+  `:null,F=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,Xe)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e)return;let t=X(e.estado),r=String(e.resumen??"").trim(),o=(e.rootCommits?.length??(e.contexts??[]).reduce((a,s)=>a+(s.commits?.length??0),0))||0;this.#e.append(n`
       <div class="cima">
         <div class="identidad">
           <p class="codigo">
@@ -1210,12 +1209,12 @@ ${r}`,s=l=>{l.target.replaceWith(a`
         </div>
       </div>
       <div class="cifras">
-        ${q("Solicitado",$(e.fechasolicitud,!0),"mdi:calendar-arrow-right")}
-        ${q("Entregado",$(e.fechaentrega,!0),"mdi:calendar-check")}
-        ${q("Tiempo total",I(e.tiempoTotalMinutos??e.diligenciaMinutos),"mdi:timer-outline")}
-        ${q("Commits",o?String(o):"","mdi:source-commit")}
+        ${I("Solicitado",$(e.fechasolicitud,!0),"mdi:calendar-arrow-right")}
+        ${I("Entregado",$(e.fechaentrega,!0),"mdi:calendar-check")}
+        ${I("Tiempo total",q(e.tiempoTotalMinutos??e.diligenciaMinutos),"mdi:timer-outline")}
+        ${I("Commits",o?String(o):"","mdi:source-commit")}
       </div>
-      ${r&&a`<div class="resumen prosa">${v(x(r))}</div>`}
+      ${r&&n`<div class="resumen prosa">${v(x(r))}</div>`}
     `)}};m("tk-ticket-head",F);var et=`
   :host {
     display: block;
@@ -1295,7 +1294,7 @@ ${r}`,s=l=>{l.target.replaceWith(a`
     background: color-mix(in srgb, #ef4444 16%, transparent);
   }
   .fecha { color: var(--is-text-muted, #9aa7b4); white-space: nowrap; }
-`,tt={ISS:"Dev-InSoft/ISS-AyudasCPIA","ISS-AyudasCPIA":"Dev-InSoft/ISS-AyudasCPIA",PatyIA:"Dev-InSoft/ISS-AyudasCPIA","ISA-DOC":"Dev-InSoft/ISA-DOC","isa-patyia":"Jeff-Aporta/isa-patyia",ISA:"Jeff-Aporta/isa-patyia","ISW-ClientesIS":"Dev-InSoft/ISW-ClientesIS","ISP-ClientesIS":"Dev-InSoft/ISP-ClientesIS","ISP-CLientesISServer":"Dev-InSoft/ISP-CLientesISServer","ISS-ClientesIS-ContaPymeU":"Dev-InSoft/ISS-ClientesIS-ContaPymeU","ISP-SvelteComponents":"Dev-InSoft/ISP-SvelteComponents"},it=(i,e)=>{let t=e.trim();if(!t)return"#";let r=i.trim();return`https://github.com/${tt[r]??`Dev-InSoft/${r||"repo"}`}/commit/${t}`},rt=i=>{let e=d(i.meta),t=String(i.fecha??e.fecha??"");if(!t)return"\u2014";let r=new Date(t);if(Number.isNaN(r.getTime()))return $(t);let o=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return`${r.getDate()} ${o[r.getMonth()]}`},ot=i=>{let e=d(i.meta);return String(e.repo??i.proyecto??"PatyIA")},P=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,et)}connectedCallback(){this.#i()}get commits(){return this.#t}set commits(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.filter(n=>String(n.hash??"").trim());if(!e.length)return;let t=0,r=0,o=0;for(let n of e)t+=Number(n.inscount??0),r+=Number(n.delcount??0),o+=Number(n.minutos??0);this.#e.append(a`
+`,tt={ISS:"Dev-InSoft/ISS-AyudasCPIA","ISS-AyudasCPIA":"Dev-InSoft/ISS-AyudasCPIA",PatyIA:"Dev-InSoft/ISS-AyudasCPIA","ISA-DOC":"Dev-InSoft/ISA-DOC","isa-patyia":"Jeff-Aporta/isa-patyia",ISA:"Jeff-Aporta/isa-patyia","ISW-ClientesIS":"Dev-InSoft/ISW-ClientesIS","ISP-ClientesIS":"Dev-InSoft/ISP-ClientesIS","ISP-CLientesISServer":"Dev-InSoft/ISP-CLientesISServer","ISS-ClientesIS-ContaPymeU":"Dev-InSoft/ISS-ClientesIS-ContaPymeU","ISP-SvelteComponents":"Dev-InSoft/ISP-SvelteComponents"},it=(i,e)=>{let t=e.trim();if(!t)return"#";let r=i.trim();return`https://github.com/${tt[r]??`Dev-InSoft/${r||"repo"}`}/commit/${t}`},rt=i=>{let e=d(i.meta),t=String(i.fecha??e.fecha??"");if(!t)return"\u2014";let r=new Date(t);if(Number.isNaN(r.getTime()))return $(t);let o=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return`${r.getDate()} ${o[r.getMonth()]}`},ot=i=>{let e=d(i.meta);return String(e.repo??i.proyecto??"PatyIA")},P=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,et)}connectedCallback(){this.#i()}get commits(){return this.#t}set commits(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.filter(a=>String(a.hash??"").trim());if(!e.length)return;let t=0,r=0,o=0;for(let a of e)t+=Number(a.inscount??0),r+=Number(a.delcount??0),o+=Number(a.minutos??0);this.#e.append(n`
       <div class="panel" role="region" aria-label="Commits del tiquete">
         <table>
           <thead>
@@ -1309,18 +1308,18 @@ ${r}`,s=l=>{l.target.replaceWith(a`
             </tr>
           </thead>
           <tbody>
-            ${e.map(n=>{let s=String(n.hash??""),l=it(ot(n),s);return a`
+            ${e.map(a=>{let s=String(a.hash??""),l=it(ot(a),s);return n`
                 <tr>
                   <td>
                     <a class="hash" href="${l}" target="_blank" rel="noopener noreferrer">
                       ${s.slice(0,9)}
                     </a>
                   </td>
-                  <td class="fecha">${rt(n)}</td>
-                  <td><span class="desc" title="${String(n.descripcion??"")}">${String(n.descripcion??"")}</span></td>
-                  <td class="num"><span class="chip ins">+${Number(n.inscount??0)}</span></td>
-                  <td class="num"><span class="chip del">−${Number(n.delcount??0)}</span></td>
-                  <td class="num">${Number(n.minutos??0)} min</td>
+                  <td class="fecha">${rt(a)}</td>
+                  <td><span class="desc" title="${String(a.descripcion??"")}">${String(a.descripcion??"")}</span></td>
+                  <td class="num"><span class="chip ins">+${Number(a.inscount??0)}</span></td>
+                  <td class="num"><span class="chip del">−${Number(a.delcount??0)}</span></td>
+                  <td class="num">${Number(a.minutos??0)} min</td>
                 </tr>
               `})}
             <tr class="total">
@@ -1469,12 +1468,12 @@ ${r}`,s=l=>{l.target.replaceWith(a`
     min-width: 0;
     padding: 0.35rem 0 0.85rem;
   }
-`,O={investigacion:{label:"Investigaci\xF3n y testing",bar:"linear-gradient(90deg, #7c3aed, #8b5cf6)",bg:"rgba(124,58,237,0.14)",fg:"#c4b5fd",border:"rgba(167,139,250,0.45)"},commits:{label:"Commits",bar:"linear-gradient(90deg, #06b6d4, #6366f1)",bg:"rgba(6,182,212,0.14)",fg:"#a5f3fc",border:"rgba(34,211,238,0.45)"},diligencia:{label:"Diligencia",bar:"linear-gradient(90deg, #f59e0b, #fbbf24)",bg:"rgba(245,158,11,0.14)",fg:"#fde68a",border:"rgba(251,191,36,0.45)"},otro:{label:"Otro",bar:"linear-gradient(90deg, #059669, #10b981)",bg:"rgba(16,185,129,0.12)",fg:"#a7f3d0",border:"rgba(52,211,153,0.4)"}},nt=i=>{let e=Math.round(Number(i??0));return e<=0?0:Math.round(e/5)*5},ae=i=>{let e=String(i.phase??"").trim().toLowerCase();if(e&&O[e])return e;let t=`${i.name??""} ${i.detail??""}`.toLowerCase();return/^diligencia\b|\bdiligencia del\b|evidencias \+|documentaci[oó]n tk/i.test(t)?"diligencia":/investigaci|testing\b|\bpruebas\b|verificaci|reproducci|matriz de prueba|diagn[oó]stico/i.test(t)?"investigacion":/commit|repositorio|codigo|c[oó]digo|servidor|front|desarrollo|entrega|bd\b|fix\b|feat\b/i.test(t)?"commits":"otro"},_=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,at)}connectedCallback(){this.#i()}get tiempos(){return this.#t}set tiempos(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.map(r=>({...r,minutos:nt(r.minutos)})).filter(r=>r.minutos>0&&String(r.name??"").trim());if(!e.length)return;let t=e.reduce((r,o)=>r+o.minutos,0)||1;this.#e.append(a`
+`,O={investigacion:{label:"Investigaci\xF3n y testing",bar:"linear-gradient(90deg, #7c3aed, #8b5cf6)",bg:"rgba(124,58,237,0.14)",fg:"#c4b5fd",border:"rgba(167,139,250,0.45)"},commits:{label:"Commits",bar:"linear-gradient(90deg, #06b6d4, #6366f1)",bg:"rgba(6,182,212,0.14)",fg:"#a5f3fc",border:"rgba(34,211,238,0.45)"},diligencia:{label:"Diligencia",bar:"linear-gradient(90deg, #f59e0b, #fbbf24)",bg:"rgba(245,158,11,0.14)",fg:"#fde68a",border:"rgba(251,191,36,0.45)"},otro:{label:"Otro",bar:"linear-gradient(90deg, #059669, #10b981)",bg:"rgba(16,185,129,0.12)",fg:"#a7f3d0",border:"rgba(52,211,153,0.4)"}},nt=i=>{let e=Math.round(Number(i??0));return e<=0?0:Math.round(e/5)*5},ae=i=>{let e=String(i.phase??"").trim().toLowerCase();if(e&&O[e])return e;let t=`${i.name??""} ${i.detail??""}`.toLowerCase();return/^diligencia\b|\bdiligencia del\b|evidencias \+|documentaci[oó]n tk/i.test(t)?"diligencia":/investigaci|testing\b|\bpruebas\b|verificaci|reproducci|matriz de prueba|diagn[oó]stico/i.test(t)?"investigacion":/commit|repositorio|codigo|c[oó]digo|servidor|front|desarrollo|entrega|bd\b|fix\b|feat\b/i.test(t)?"commits":"otro"},_=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,at)}connectedCallback(){this.#i()}get tiempos(){return this.#t}set tiempos(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.map(r=>({...r,minutos:nt(r.minutos)})).filter(r=>r.minutos>0&&String(r.name??"").trim());if(!e.length)return;let t=e.reduce((r,o)=>r+o.minutos,0)||1;this.#e.append(n`
       <div class="linea" aria-label="Línea de tiempo de métricas">
-        ${e.map(r=>{let o=ae(r),n=O[o];return a`
+        ${e.map(r=>{let o=ae(r),a=O[o];return n`
             <div
               class="pista"
-              style="${`--fase-bar:${n.bar}`}"
+              style="${`--fase-bar:${a.bar}`}"
             >
               <div class="eje">
                 <span class="punto" aria-hidden="true"></span>
@@ -1484,7 +1483,7 @@ ${r}`,s=l=>{l.target.replaceWith(a`
                 <div class="cima">
                   <div>
                     <div class="nombre">${r.name}</div>
-                    ${r.detail?a`<p class="detail">${r.detail}</p>`:null}
+                    ${r.detail?n`<p class="detail">${r.detail}</p>`:null}
                   </div>
                   <span class="mins">${r.minutos} min</span>
                 </div>
@@ -1493,18 +1492,18 @@ ${r}`,s=l=>{l.target.replaceWith(a`
           `})}
       </div>
       <div class="panel" role="region" aria-label="Resumen de tiempos InSoft">
-        ${e.map(r=>{let o=ae(r),n=O[o],s=Math.min(100,r.minutos/t*100);return a`
+        ${e.map(r=>{let o=ae(r),a=O[o],s=Math.min(100,r.minutos/t*100);return n`
             <div
               class="fila"
-              style="${`--fase-bar:${n.bar};--fase-bg:${n.bg};--fase-fg:${n.fg};--fase-border:${n.border}`}"
+              style="${`--fase-bar:${a.bar};--fase-bg:${a.bg};--fase-fg:${a.fg};--fase-border:${a.border}`}"
             >
               <div class="cima">
                 <div>
                   <div class="cima" style="justify-content:flex-start;margin-bottom:0.25rem">
                     <span class="nombre">${r.name}</span>
-                    <span class="fase">${n.label}</span>
+                    <span class="fase">${a.label}</span>
                   </div>
-                  ${r.detail?a`<p class="detail">${r.detail}</p>`:null}
+                  ${r.detail?n`<p class="detail">${r.detail}</p>`:null}
                 </div>
                 <span class="mins">${r.minutos} min</span>
               </div>
@@ -1533,8 +1532,8 @@ ${r}`,s=l=>{l.target.replaceWith(a`
     gap: clamp(1.1rem, 0.8rem + 1.2vw, 1.75rem);
     box-sizing: border-box;
     width: 100%;
-    max-width: 52rem;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
     padding: 0;
   }
   .eyebrow {
@@ -1665,61 +1664,61 @@ ${r}`,s=l=>{l.target.replaceWith(a`
     }
     .fila { grid-template-columns: 1fr; gap: 0.15rem; }
   }
-`,lt=i=>{let e=d(i.detallesextra),t=d(i.meta),r=d(e.metricas),n={...d(t.metricas),...r},s=d(n.documentacion);return s.metricasHabilesMinutos&&!n.metricasHabilesMinutos&&(n.metricasHabilesMinutos=d(s.metricasHabilesMinutos)),n},z=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e):0},ne=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e*60):0},ct=(i,e)=>{let t=d(e.metricasHabilesMinutos),r=d(e.documentacion),o=d(r.metricasHabilesMinutos),n=z(t.hastaAtencion??o.hastaAtencion)||z(i.diligenciaMinutos),s=d(e.reporteEmpresa),l=z(t.atencionActiva??o.atencionActiva)||ne(s.horasAtencion),c=z(t.totalSolucion??o.totalSolucion??i.tiempoTotalMinutos)||ne(s.horasSolucion)||z(i.tiempoestimacionminutos)||n+l+z(i.commitminutos);return[{icon:"mdi:clock-start",label:"Hasta atenci\xF3n",minutos:n,sub:"Creaci\xF3n \u2192 inicio atenci\xF3n"},{icon:"mdi:head-cog-outline",label:"Atenci\xF3n activa",minutos:l,sub:"Inicio atenci\xF3n \u2192 cierre"},{icon:"mdi:check-decagram",label:"Total soluci\xF3n h\xE1bil",minutos:c,sub:"Tiempo real laborado / estimado"}]},U=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,st)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e?.iticket){this.#e.append(a`<p class="vacio">Sin tiquete para métricas.</p>`);return}let t=lt(e),r=d(t.documentacion),o=d(t.reporteEmpresa),n=ct(e,t),s=[...e.tiempos??[]].filter(b=>Number(b.minutos??0)>0),l=!t.fechaCierre&&String(r.cierreEmpresa??e.estado??"").toLowerCase().includes("abierto")||!t.fechaCierre&&!e.fechaentrega,c=String(r.tiposolicitudapertura??d(e.normativa).tiposolicitudapertura??d(e.normativa).tipoSolicitud??"").trim(),g=[];t.fechaCreacion?(l||!t.fechaCierre)&&g.push(a`
+`,lt=i=>{let e=d(i.detallesextra),t=d(i.meta),r=d(e.metricas),a={...d(t.metricas),...r},s=d(a.documentacion);return s.metricasHabilesMinutos&&!a.metricasHabilesMinutos&&(a.metricasHabilesMinutos=d(s.metricasHabilesMinutos)),a},z=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e):0},ne=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e*60):0},ct=(i,e)=>{let t=d(e.metricasHabilesMinutos),r=d(e.documentacion),o=d(r.metricasHabilesMinutos),a=z(t.hastaAtencion??o.hastaAtencion)||z(i.diligenciaMinutos),s=d(e.reporteEmpresa),l=z(t.atencionActiva??o.atencionActiva)||ne(s.horasAtencion),c=z(t.totalSolucion??o.totalSolucion??i.tiempoTotalMinutos)||ne(s.horasSolucion)||z(i.tiempoestimacionminutos)||a+l+z(i.commitminutos);return[{icon:"mdi:clock-start",label:"Hasta atenci\xF3n",minutos:a,sub:"Creaci\xF3n \u2192 inicio atenci\xF3n"},{icon:"mdi:head-cog-outline",label:"Atenci\xF3n activa",minutos:l,sub:"Inicio atenci\xF3n \u2192 cierre"},{icon:"mdi:check-decagram",label:"Total soluci\xF3n h\xE1bil",minutos:c,sub:"Tiempo real laborado / estimado"}]},U=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,st)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e?.iticket){this.#e.append(n`<p class="vacio">Sin tiquete para métricas.</p>`);return}let t=lt(e),r=d(t.documentacion),o=d(t.reporteEmpresa),a=ct(e,t),s=[...e.tiempos??[]].filter(b=>Number(b.minutos??0)>0),l=!t.fechaCierre&&String(r.cierreEmpresa??e.estado??"").toLowerCase().includes("abierto")||!t.fechaCierre&&!e.fechaentrega,c=String(r.tiposolicitudapertura??d(e.normativa).tiposolicitudapertura??d(e.normativa).tipoSolicitud??"").trim(),g=[];t.fechaCreacion?(l||!t.fechaCierre)&&g.push(n`
         <is-callout color="info" icon="mdi:information-outline">
           Ticket abierto — sin cierre InSoft. Las métricas de atención activa y total se completan al registrar el cierre.
         </is-callout>
-      `):g.push(a`
+      `):g.push(n`
         <is-callout color="warning" icon="mdi:calendar-alert">
           Falta fecha de creación InSoft (<code>metricas.fechaCreacion</code>).
         </is-callout>
-      `);let h=[["Creaci\xF3n",t.fechaCreacion||$(e.fechasolicitud,!0)||"\u2014"],["Inicio atenci\xF3n",t.horaInicioAtencion||"\u2014"],["Cierre",t.fechaCierre||$(e.fechaentrega,!0)||"Abierto"],["Tipo apertura",c||"\u2014"],["Asignado",String(r.asignadoA||r.ingeniero||"\u2014")],["Solicitante",String(r.solicitante||e.solicitante||"\u2014")],["Clasificador",String(r.clasificador||"\u2014")],["Medio",String(r.medioAtencion||"\u2014")]].filter(([,b])=>String(b).trim()&&String(b)!=="\u2014"),f=[["Horas atenci\xF3n (empresa)",o.horasAtencion!=null?`${o.horasAtencion} h`:""],["Horas soluci\xF3n (empresa)",o.horasSolucion!=null?`${o.horasSolucion} h`:""],["Capturado",String(o.capturado||"")],["Fuente",String(o.fuente||"")]].filter(([,b])=>String(b).trim());this.#e.append(a`
+      `);let h=[["Creaci\xF3n",t.fechaCreacion||$(e.fechasolicitud,!0)||"\u2014"],["Inicio atenci\xF3n",t.horaInicioAtencion||"\u2014"],["Cierre",t.fechaCierre||$(e.fechaentrega,!0)||"Abierto"],["Tipo apertura",c||"\u2014"],["Asignado",String(r.asignadoA||r.ingeniero||"\u2014")],["Solicitante",String(r.solicitante||e.solicitante||"\u2014")],["Clasificador",String(r.clasificador||"\u2014")],["Medio",String(r.medioAtencion||"\u2014")]].filter(([,b])=>String(b).trim()&&String(b)!=="\u2014"),f=[["Horas atenci\xF3n (empresa)",o.horasAtencion!=null?`${o.horasAtencion} h`:""],["Horas soluci\xF3n (empresa)",o.horasSolucion!=null?`${o.horasSolucion} h`:""],["Capturado",String(o.capturado||"")],["Fuente",String(o.fuente||"")]].filter(([,b])=>String(b).trim());this.#e.append(n`
       <article class="metrics" aria-label="Métricas InSoft">
         <header>
           <p class="eyebrow">Estudio de métricas · tiempo hábil InSoft</p>
           <h1 class="titulo">${e.iticket}</h1>
           <p class="sub">${e.titulo||""}</p>
-          ${c?a`<p class="meta">Tipo solicitud apertura: ${c}</p>`:null}
+          ${c?n`<p class="meta">Tipo solicitud apertura: ${c}</p>`:null}
         </header>
 
-        ${g.length?a`<div class="avisos">${g}</div>`:null}
+        ${g.length?n`<div class="avisos">${g}</div>`:null}
 
         <div class="kpis" role="group" aria-label="Indicadores de tiempo hábil">
-          ${n.map(b=>a`
+          ${a.map(b=>n`
             <div class="kpi">
               <div class="kpi-lbl">
                 <is-icon icon="${b.icon}" aria-hidden="true"></is-icon>
                 <span>${b.label}</span>
               </div>
-              <div class="kpi-val">${b.minutos>0?I(b.minutos):"\u2014"}</div>
+              <div class="kpi-val">${b.minutos>0?q(b.minutos):"\u2014"}</div>
               <div class="kpi-sub">${b.sub}</div>
             </div>
           `)}
         </div>
 
-        ${h.length?a`
+        ${h.length?n`
           <section class="card" aria-label="Datos InSoft">
             <h2 class="card-h">
               <is-icon icon="mdi:clipboard-text-clock-outline" aria-hidden="true"></is-icon>
               Datos InSoft
             </h2>
             <dl class="filas">
-              ${h.map(([b,w])=>a`
+              ${h.map(([b,w])=>n`
                 <div class="fila"><dt>${b}</dt><dd>${w}</dd></div>
               `)}
             </dl>
-            ${t.notas?a`<p class="meta">${t.notas}</p>`:null}
+            ${t.notas?n`<p class="meta">${t.notas}</p>`:null}
           </section>
         `:null}
 
-        ${f.length?a`
+        ${f.length?n`
           <section class="card" aria-label="Reporte empresa">
             <h2 class="card-h">
               <is-icon icon="mdi:office-building-outline" aria-hidden="true"></is-icon>
               Reporte empresa
             </h2>
             <dl class="filas">
-              ${f.map(([b,w])=>a`
+              ${f.map(([b,w])=>n`
                 <div class="fila"><dt>${b}</dt><dd>${w}</dd></div>
               `)}
             </dl>
@@ -1731,10 +1730,10 @@ ${r}`,s=l=>{l.target.replaceWith(a`
             <is-icon icon="mdi:chart-timeline-variant" aria-hidden="true"></is-icon>
             Desglose de tiempos
           </h2>
-          ${s.length?Object.assign(document.createElement("tk-tiempos"),{tiempos:s}):a`<p class="vacio">Sin filas de tiempo estimadas en este tiquete.</p>`}
+          ${s.length?Object.assign(document.createElement("tk-tiempos"),{tiempos:s}):n`<p class="vacio">Sin filas de tiempo estimadas en este tiquete.</p>`}
         </section>
       </article>
-    `)}};m("tk-metrics",U);var Vt=new URL(".",document.baseURI).href,se=()=>{let e=new URLSearchParams(location.search).get("s");if(!e)return{};try{return JSON.parse(A.decode(e))}catch{return{}}},dt=(i,e=!1)=>{let t={...se(),...i},r=Object.fromEntries(Object.entries(t).filter(([,n])=>n!=null&&n!==""&&n!==!1)),o=new URL(location.href);return Object.keys(r).length?o.searchParams.set("s",A.encode(JSON.stringify(r))):o.searchParams.delete("s"),history[e?"replaceState":"pushState"]({},"",o),r},mt=i=>{let e=new URL(location.href);return e.searchParams.set("s",A.encode(JSON.stringify(i))),e.href},le={leer:se,escribir:dt,enlace:mt},j=(i,e="brand")=>{let t=document.querySelector("is-toast");if(t?.create){t.create(i,{color:e,duration:e==="warning"||e==="danger"?8e3:4e3});return}e==="danger"||e==="warning"?console.warn(`[tk] ${i}`):console.info(`[tk] ${i}`)};var L="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn";var ut="Jeff-Aporta/jagudeloe-tks-front",pt="03b625043f50705b81423faf429a15e568f77dab",de=`https://cdn.jsdelivr.net/gh/${ut}@${pt}/dist/cdn`,ce=i=>i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),ht=i=>{let e=`${i.iticket} \xB7 ${i.titulo??"Tiquete"}`,t=JSON.stringify(i).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
+    `)}};m("tk-metrics",U);var Vt=new URL(".",document.baseURI).href,se=()=>{let e=new URLSearchParams(location.search).get("s");if(!e)return{};try{return JSON.parse(A.decode(e))}catch{return{}}},dt=(i,e=!1)=>{let t={...se(),...i},r=Object.fromEntries(Object.entries(t).filter(([,a])=>a!=null&&a!==""&&a!==!1)),o=new URL(location.href);return Object.keys(r).length?o.searchParams.set("s",A.encode(JSON.stringify(r))):o.searchParams.delete("s"),history[e?"replaceState":"pushState"]({},"",o),r},mt=i=>{let e=new URL(location.href);return e.searchParams.set("s",A.encode(JSON.stringify(i))),e.href},le={leer:se,escribir:dt,enlace:mt},j=(i,e="brand")=>{let t=document.querySelector("is-toast");if(t?.create){t.create(i,{color:e,duration:e==="warning"||e==="danger"?8e3:4e3});return}e==="danger"||e==="warning"?console.warn(`[tk] ${i}`):console.info(`[tk] ${i}`)};var L="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn";var ut="Jeff-Aporta/jagudeloe-tks-front",pt="03b625043f50705b81423faf429a15e568f77dab",de=`https://cdn.jsdelivr.net/gh/${ut}@${pt}/dist/cdn`,ce=i=>i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),ht=i=>{let e=`${i.iticket} \xB7 ${i.titulo??"Tiquete"}`,t=JSON.stringify(i).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
 <html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
 <head>
 <meta charset="utf-8">
@@ -1807,7 +1806,7 @@ ${r}`,s=l=>{l.target.replaceWith(a`
   is-button {
     min-width: 2.25rem;
   }
-`,J=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,gt)}connectedCallback(){this.#r()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.toggleAttribute("activo",!!e?.iticket),this.isConnected&&this.#r()}async#i(){let e=this.#t;if(!e)return;let t=le.enlace({space:e.space,tk:e.iticket,full:!0}),r=navigator;if(r.share)try{await r.share({title:`${e.iticket} \xB7 ${e.titulo??""}`.trim(),url:t});return}catch{}try{await navigator.clipboard.writeText(t),j("Enlace copiado al portapapeles.","success")}catch{j("No se pudo copiar el enlace. C\xF3pialo de la barra de direcciones.","warning")}}async#o(e){let t=this.#t;if(t){e.setAttribute("loading","");try{await W.descargar(t),j(`${t.iticket}.html descargado.`,"success")}catch(r){j(`No se pudo generar el HTML: ${r instanceof Error?r.message:r}`,"danger")}finally{e.removeAttribute("loading")}}}#r(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);this.#t?.iticket&&this.#e.append(a`
+`,J=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,gt)}connectedCallback(){this.#r()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.toggleAttribute("activo",!!e?.iticket),this.isConnected&&this.#r()}async#i(){let e=this.#t;if(!e)return;let t=le.enlace({space:e.space,tk:e.iticket,full:!0}),r=navigator;if(r.share)try{await r.share({title:`${e.iticket} \xB7 ${e.titulo??""}`.trim(),url:t});return}catch{}try{await navigator.clipboard.writeText(t),j("Enlace copiado al portapapeles.","success")}catch{j("No se pudo copiar el enlace. C\xF3pialo de la barra de direcciones.","warning")}}async#o(e){let t=this.#t;if(t){e.setAttribute("loading","");try{await W.descargar(t),j(`${t.iticket}.html descargado.`,"success")}catch(r){j(`No se pudo generar el HTML: ${r instanceof Error?r.message:r}`,"danger")}finally{e.removeAttribute("loading")}}}#r(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);this.#t?.iticket&&this.#e.append(n`
       <is-button
         variant="text"
         color="neutral"
@@ -1838,7 +1837,11 @@ ${r}`,s=l=>{l.target.replaceWith(a`
     max-width: 100%;
     min-width: 0;
     container-type: inline-size;
-    --tk-measure: min(72ch, 100%);
+    /* Sin medida de lectura: el documento ocupa todo el ancho del visor. Con un
+       tope en unidades ch quedaba una franja muerta a la derecha. */
+    --tk-measure: 100%;
+    /* El video tambi\xE9n toma el ancho completo de la columna. */
+    --tk-video-max: 100%;
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
@@ -1966,20 +1969,20 @@ ${r}`,s=l=>{l.target.replaceWith(a`
   .fab-btn[aria-pressed="true"] {
     color: var(--is-accent, #1a6eb0);
   }
-`,bt=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],vt=i=>{let e=Array.isArray(i.content)&&i.content.length?[...i.content]:[...i.doc?.blocks??[]],t=(i.contexts??[]).flatMap(r=>[...r.content??[]]);return[...e,...t].filter(r=>r&&typeof r=="object").sort((r,o)=>(r.sortkey??0)-(o.sortkey??0))},kt=(i,e)=>{let t=d(i.payload),r=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(r==="solicitud"||r==="evidencias"||r==="causa"||r==="solucion"||r==="verificacion"||r==="otros")return r;let o=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(o))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(o))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(o))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(o))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(o))return"solucion";let n=String(i.kind??"").toLowerCase();return n==="html"||n==="image"||n==="image-group"?e==="otros"?"evidencias":e:n==="badge"||n==="badges"?e==="otros"?"solicitud":e:n==="code"||n==="sql"||n==="cambio-bd"||n==="file-tree"?e==="otros"?"solucion":e:n==="steps"||n==="stepper"?e==="otros"?"verificacion":e:n==="table"&&e==="otros"?"evidencias":n==="markdown"||n==="md"||n==="text"?o?"otros":e:"otros"},wt=i=>{let e="solicitud";return i.map(t=>{let r=kt(t,e);return e=r,{b:t,lane:r}})},yt=i=>{let e=[...i.rootCommits??[]];return e.length?e:(i.contexts??[]).flatMap(t=>[...t.commits??[]])},V=i=>String(i||"").trim().toLowerCase()==="metrics"?"metrics":"doc",Y=class extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#t=null;#e="doc";#i;constructor(){super(),this.#i=this.attachShadow({mode:"open"}),k(this.#i,ft)}connectedCallback(){this.#e=V(this.getAttribute("modo")),this.#n()}attributeChangedCallback(e,t,r){e==="modo"&&(this.#e=V(r)),this.isConnected&&this.#n()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#n()}set json(e){let t=d(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){let t=V(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#n())}#o=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#r(e){let t=wt(vt(e)),r=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),o=yt(e),n=bt.map(({lane:l,rotulo:c})=>{let g=t.filter(h=>h.lane===l).map(h=>h.b);return g.length?a`
+`,bt=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],vt=i=>{let e=Array.isArray(i.content)&&i.content.length?[...i.content]:[...i.doc?.blocks??[]],t=(i.contexts??[]).flatMap(r=>[...r.content??[]]);return[...e,...t].filter(r=>r&&typeof r=="object").sort((r,o)=>(r.sortkey??0)-(o.sortkey??0))},kt=(i,e)=>{let t=d(i.payload),r=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(r==="solicitud"||r==="evidencias"||r==="causa"||r==="solucion"||r==="verificacion"||r==="otros")return r;let o=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(o))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(o))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(o))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(o))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(o))return"solucion";let a=String(i.kind??"").toLowerCase();return a==="html"||a==="image"||a==="image-group"?e==="otros"?"evidencias":e:a==="badge"||a==="badges"?e==="otros"?"solicitud":e:a==="code"||a==="sql"||a==="cambio-bd"||a==="file-tree"?e==="otros"?"solucion":e:a==="steps"||a==="stepper"?e==="otros"?"verificacion":e:a==="table"&&e==="otros"?"evidencias":a==="markdown"||a==="md"||a==="text"?o?"otros":e:"otros"},wt=i=>{let e="solicitud";return i.map(t=>{let r=kt(t,e);return e=r,{b:t,lane:r}})},yt=i=>{let e=[...i.rootCommits??[]];return e.length?e:(i.contexts??[]).flatMap(t=>[...t.commits??[]])},V=i=>String(i||"").trim().toLowerCase()==="metrics"?"metrics":"doc",Y=class extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#t=null;#e="doc";#i;constructor(){super(),this.#i=this.attachShadow({mode:"open"}),k(this.#i,ft)}connectedCallback(){this.#e=V(this.getAttribute("modo")),this.#n()}attributeChangedCallback(e,t,r){e==="modo"&&(this.#e=V(r)),this.isConnected&&this.#n()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#n()}set json(e){let t=d(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){let t=V(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#n())}#o=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#r(e){let t=wt(vt(e)),r=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),o=yt(e),a=bt.map(({lane:l,rotulo:c})=>{let g=t.filter(h=>h.lane===l).map(h=>h.b);return g.length?n`
         <section aria-label="${c}">
           <h2 class="rotulo">${c}</h2>
           ${g.map(h=>Object.assign(document.createElement("tk-block"),{bloque:h}))}
         </section>
-      `:null}).filter(Boolean),s=o.length?a`
+      `:null}).filter(Boolean),s=o.length?n`
         <section aria-label="Commits">
           <h2 class="rotulo">Commits</h2>
           ${Object.assign(document.createElement("tk-commits"),{commits:o})}
         </section>
-      `:null;return a`
+      `:null;return n`
       <article class="documento" data-modo="doc">
         <header class="encabezado">${r}</header>
-        ${n.length>0?n:a`
+        ${a.length>0?a:n`
           <is-callout color="neutral" icon="mdi:text-box-remove-outline">
             Este tiquete todavía no tiene documentación publicada.
           </is-callout>
@@ -1990,16 +1993,16 @@ ${r}`,s=l=>{l.target.replaceWith(a`
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
-    `}#a(e){return a`
+    `}#a(e){return n`
       <div class="documento" data-modo="metrics">
         ${Object.assign(document.createElement("tk-metrics"),{ticket:e})}
       </div>
-    `}#n(){for(;this.#i.firstChild;)this.#i.removeChild(this.#i.firstChild);let e=this.#t;if(!e?.iticket){this.#i.append(a`
+    `}#n(){for(;this.#i.firstChild;)this.#i.removeChild(this.#i.firstChild);let e=this.#t;if(!e?.iticket){this.#i.append(n`
         <div class="vacio">
           <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
           <p>Selecciona un tiquete para ver su documentación.</p>
         </div>
-      `);return}let t=this.#e==="metrics",r=t?"mdi:file-document-outline":"mdi:chart-timeline-variant",o=t?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#i.append(a`
+      `);return}let t=this.#e==="metrics",r=t?"mdi:file-document-outline":"mdi:chart-timeline-variant",o=t?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#i.append(n`
       <div class="shell">
         ${t?this.#a(e):this.#r(e)}
         <div class="fab">

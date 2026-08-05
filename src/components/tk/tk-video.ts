@@ -7,7 +7,8 @@
  * clic. El JS del paquete se pide una vez por CDN; su CSS va copiado aquí
  * porque una hoja global no cruza el shadow DOM del bloque.
  *
- * Payload: { youtubeid, title, caption }
+ * Payload: { youtubeid, title, caption }. El `title` no se pinta: solo alimenta
+ * la etiqueta accesible del botón de reproducción.
  */
 
 import { blockCss, crearBloque, define, html } from './_shared.js';
@@ -119,7 +120,6 @@ define('tk-video', crearBloque(CSS, (root, p) => {
   // El botón es un <a> real: sin el JS del CDN el bloque sigue llevando a
   // YouTube. Al cargar, lite-youtube lo convierte en botón (patrón PE).
   root.append(html`
-    ${p.title && html`<h2 class="titulo">${p.title}</h2>`}
     <lite-youtube videoid="${youtubeid}" params="rel=0&amp;modestbranding=1" playlabel="${etiqueta}">
       <a
         class="lty-playbtn"

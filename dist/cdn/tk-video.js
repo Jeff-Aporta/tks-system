@@ -1,4 +1,4 @@
-import{blockCss as l,crearBloque as n,define as s,html as i}from"./_shared.js";const d="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js",c=`
+import{blockCss as l,crearBloque as n,define as s,html as r}from"./_shared.js";const d="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js",c=`
   ${l}
 
   /* Copia de lite-yt-embed.css (0.3.3), con el marco y el tope de ancho
@@ -74,15 +74,14 @@ import{blockCss as l,crearBloque as n,define as s,html as i}from"./_shared.js";c
     white-space: nowrap;
     clip-path: inset(50%);
   }
-`,u=/^[a-zA-Z0-9_-]{6,20}$/;let a=!1;const b=()=>{if(a||customElements.get("lite-youtube"))return;a=!0;const t=document.createElement("script");t.src=d,t.async=!0,document.head.append(t)};s("tk-video",n(c,(t,e)=>{const o=String(e.youtubeid??e.youtubeId??"").trim();if(!u.test(o))return;b();const r=`Reproducir: ${String(e.title??"video")}`;t.append(i`
-    ${e.title&&i`<h2 class="titulo">${e.title}</h2>`}
-    <lite-youtube videoid="${o}" params="rel=0&amp;modestbranding=1" playlabel="${r}">
+`,u=/^[a-zA-Z0-9_-]{6,20}$/;let a=!1;const b=()=>{if(a||customElements.get("lite-youtube"))return;a=!0;const e=document.createElement("script");e.src=d,e.async=!0,document.head.append(e)};s("tk-video",n(c,(e,t)=>{const o=String(t.youtubeid??t.youtubeId??"").trim();if(!u.test(o))return;b();const i=`Reproducir: ${String(t.title??"video")}`;e.append(r`
+    <lite-youtube videoid="${o}" params="rel=0&amp;modestbranding=1" playlabel="${i}">
       <a
         class="lty-playbtn"
         href="https://www.youtube.com/watch?v=${o}"
         target="_blank"
         rel="noopener noreferrer"
-      ><span class="lyt-visually-hidden">${r}</span></a>
+      ><span class="lyt-visually-hidden">${i}</span></a>
     </lite-youtube>
-    ${e.caption&&i`<p class="pie">${e.caption}</p>`}
+    ${t.caption&&r`<p class="pie">${t.caption}</p>`}
   `)}));
