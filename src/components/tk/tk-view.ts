@@ -173,14 +173,34 @@ const SECCIONES: ReadonlyArray<{ lane: TkDocLane; rotulo: string }> = [
   { lane: 'otros', rotulo: 'Detalle' },
 ];
 
+/**
+ * La misma captura puede llegar en varios bloques (seed por rol, contextos que
+ * repiten la evidencia del ticket). El documento la muestra una sola vez.
+ */
+const sinImagenesRepetidas = (bloques: TkBlock[]): TkBlock[] => {
+  const vistas = new Set<string>();
+  return bloques.filter((b) => {
+    const kind = String(b.kind ?? '').toLowerCase();
+    if (kind !== 'image' && kind !== 'image-group') return true;
+    const p = rec(b.payload);
+    const url = String(p.url ?? p.src ?? '').trim().split('?')[0] ?? '';
+    if (!url) return true;
+    if (vistas.has(url)) return false;
+    vistas.add(url);
+    return true;
+  });
+};
+
 const bloquesDe = (tk: TkTicket): TkBlock[] => {
   const propios = Array.isArray(tk.content) && tk.content.length
     ? [...tk.content]
     : [...(tk.doc?.blocks ?? [])];
   const deContextos = (tk.contexts ?? []).flatMap((c) => [...(c.content ?? [])]);
-  return [...propios, ...deContextos]
-    .filter((b) => b && typeof b === 'object')
-    .sort((a, b) => (a.sortkey ?? 0) - (b.sortkey ?? 0));
+  return sinImagenesRepetidas(
+    [...propios, ...deContextos]
+      .filter((b) => b && typeof b === 'object')
+      .sort((a, b) => (a.sortkey ?? 0) - (b.sortkey ?? 0)),
+  );
 };
 
 const carrilDe = (b: TkBlock, sticky: TkDocLane): TkDocLane => {

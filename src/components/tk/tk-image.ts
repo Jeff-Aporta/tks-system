@@ -9,10 +9,12 @@ import { blockCss, crearBloque, define, html, rec } from './_shared.js';
 
 const CSS = /* css */ `
   ${blockCss}
+  /* auto-fill (no auto-fit): con una sola evidencia la miniatura ocupa una
+     columna, no el ancho completo del documento. El detalle está en el lightbox. */
   .rejilla {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
   }
   figure {
     margin: 0;
@@ -33,7 +35,9 @@ const CSS = /* css */ `
     img {
       display: block;
       width: 100%;
-      height: auto;
+      height: var(--tk-image-alto, 9.5rem);
+      object-fit: cover;
+      object-position: top center;
       transition: opacity 160ms ease-out, transform 220ms ease;
 
       &[data-cargando] { opacity: 0; }
@@ -253,13 +257,20 @@ const lightbox = (): TkLightbox => {
   return caja;
 };
 
+/** La misma URL en varios bloques del payload es una sola evidencia. */
+const unicas = (figs: Figura[]): Figura[] => {
+  const vistas = new Set<string>();
+  return figs.filter((f) => {
+    const clave = f.url.split('?')[0] ?? f.url;
+    if (vistas.has(clave)) return false;
+    vistas.add(clave);
+    return true;
+  });
+};
+
 const figura = (fig: Figura, todas: Figura[], idx: number): DocumentFragment => {
   const alCargar = (e: Event): void => {
-    const img = e.target as HTMLImageElement;
-    img.removeAttribute('data-cargando');
-    if (img.naturalWidth && img.naturalHeight) {
-      img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
-    }
+    (e.target as HTMLImageElement).removeAttribute('data-cargando');
   };
 
   const alFallar = (e: Event): void => {
@@ -294,16 +305,16 @@ const figura = (fig: Figura, todas: Figura[], idx: number): DocumentFragment => 
 
 define('tk-image', crearBloque(CSS, (root, p, host) => {
   const hijos = (host as HTMLElement & { bloques?: readonly TkBlock[] }).bloques ?? [];
-  const figuras: Figura[] = (hijos.length
+  const figuras: Figura[] = unicas((hijos.length
     ? hijos.map((b) => leerFigura(rec(b.payload) as TkBlockPayload))
     : [leerFigura(p)]
-  ).filter((f): f is Figura => !!f);
+  ).filter((f): f is Figura => !!f));
 
   if (!figuras.length) return;
 
   root.append(html`
     ${p.title && html`<h2 class="titulo">${p.title}</h2>`}
-    <div class="${figuras.length > 1 ? 'rejilla' : ''}">
+    <div class="rejilla">
       ${figuras.map((f, i) => figura(f, figuras, i))}
     </div>
   `);

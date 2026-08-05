@@ -8,8 +8,8 @@
     "sourceProject": "app/src/assets (captura directa)",
     "beat": null,
     "sha256": "32371d2a1cd9502424fbbd87fc926763c93524ef1cda1ea396e74208af7b980e",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:02.973Z"
   },
   {
     "localPath": "resumen-tiquetes/reporte-tiquetes-asignados-02-de-03.png",
@@ -20,8 +20,8 @@
     "sourceProject": "app/src/assets (captura directa)",
     "beat": null,
     "sha256": "b733380a04dadd091b5312240d5202bf8c1d6ce100577e2b89644bd647314878",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:11.055Z"
   },
   {
     "localPath": "resumen-tiquetes/reporte-tiquetes-asignados-03-de-03.png",
@@ -32,8 +32,8 @@
     "sourceProject": "app/src/assets (captura directa)",
     "beat": null,
     "sha256": "dd0d84872f5ed2ad02af7d020277daf23d0e5c7534929a44a95bb0569ad96e4a",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:15.399Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1433179-analisis-de-imagenes-en-paty-ia-v4-solicitud.png",
@@ -43,8 +43,8 @@
     "descripcion": "analisis de imagenes en Paty IA V4",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "c6944fde1692e9f5d0cb7c6df25762fc452055c1ca2a5960132e78b1e9178f51",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:19.692Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1433179-analisis-de-imagenes-en-paty-ia-v4-resultado-evaluacion.png",
@@ -54,8 +54,8 @@
     "descripcion": "analisis de imagenes en Paty IA V4",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "6edcd060f01199cbd9e52f64f9f5bfdd68cbc10fb311cbe108e7c69f9afc5c73",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:25.485Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1436248-creacion-de-tabla-en-bd-para-system-prompts.png",
@@ -65,8 +65,8 @@
     "descripcion": "creacion de tabla en bd para system prompts",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "80ca46d952504c812f97769250d2735a3d661cabb7103b00ec1c729a63ca6ced",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:33.614Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1436259-proceso-para-actualizacion-de-contenido-de-prompts.png",
@@ -76,8 +76,8 @@
     "descripcion": "proceso para actualizacion de contenido de prompts",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "66ab4b59fd9e7a1941d99bd07ae603b6f2ea03447423b8eae93ceeb26815d2ce",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:39.307Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1437191-vincular-mensaje-calificado-con-mensajes-openai.png",
@@ -87,8 +87,8 @@
     "descripcion": "vincular mensaje calificado con mensajes openai",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "9ab1884cc44f68a8156c509e8a39e14132ac20fc7267511c974dd812a8c42b77",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:44.322Z"
   },
   {
     "localPath": "tiquetes/2026-05/tk1431662-seleccion-de-modelo-ia-por-tipo-de-consulta.png",
@@ -98,8 +98,8 @@
     "descripcion": "seleccion de modelo ia por tipo de consulta",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "be7166b0c82f17914911ac4f006d3c4e42fe7af1c118e11462a25ce3c92634a3",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:49.268Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1439822-ajustar-generacion-del-titulo-de-conversacion.png",
@@ -109,8 +109,8 @@
     "descripcion": "ajustar generacion del titulo de conversacion",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "b3b71766877d32fe89143b7ed2cd447c5ccb2da03fdd9fcd93233757dd36e55a",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:54.081Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1432903-registro-de-log-de-peticiones-del-sistema-de-chat.png",
@@ -120,8 +120,8 @@
     "descripcion": "registro de log de peticiones del sistema de chat",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "f7d774545b974347ef32bb4e6a4a25bbbc224894ba99c48e3b6ad9f1d218e8c1",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:08:59.014Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1441246-pruebas-con-imagenes-se-pierde-la-trazabilidad.png",
@@ -131,8 +131,8 @@
     "descripcion": "pruebas con imagenes se pierde la trazabilidad",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "89a6e06f562ccc4bfb4a98cacfc5d9c779ef281ecd84390efb8e1151cfe2dfe0",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:09.315Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1441252-ajustar-parametro-max-num-results.png",
@@ -142,8 +142,8 @@
     "descripcion": "ajustar parametro max num results",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "8d677f28d77d911f27c3f067c5fbcb0b874e33fa0e3dbe2e9febc696118bd607",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:15.750Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1442417-permisos-de-especialistas-en-la-app-qa-testing.png",
@@ -153,8 +153,8 @@
     "descripcion": "permisos de especialistas en la app qa testing",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "e193a92003478cf3cb675709c4a61700e149f991e1e8fa64d2ff1b7b0bf53447",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:21.136Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1444190-implementacion-de-audio-paty-ia-v4.png",
@@ -164,8 +164,8 @@
     "descripcion": "implementacion de audio Paty IA V4",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "5f1210bf9de76b2c36c5f55ba5ab1427a956bfd13b1619f36ffe28c4a9f711ad",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:25.872Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion.png",
@@ -175,8 +175,8 @@
     "descripcion": "no toma la instruccion segun la clasificacion",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "8765f82958c064fe09e86b03974566edef518d71c2b0676900270c6bdc503822",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:38.051Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes.png",
@@ -186,8 +186,8 @@
     "descripcion": "optimizacion del clasificador para imagenes",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "ac083eb4009680e5418df42ec1be5eff31e7f587de92d17ae76f95322376be6f",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:48.464Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1447428-conversaciones-no-obtiene-el-modulo.png",
@@ -197,8 +197,8 @@
     "descripcion": "conversaciones no obtiene el modulo",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "e8238421d6960d7fc5ebf591e04894981db15c17cce68601124c9e00ecac549c",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:07:38.607Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1447446-consultas-no-se-alimenta.png",
@@ -208,8 +208,8 @@
     "descripcion": "consultas no se alimenta",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "fe324a3a23ae8d0407ea4a89152957148e169bd17d4e053e01a3b97054b4219e",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:09:53.719Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1447460-mensajescalificados-no-registra.png",
@@ -219,8 +219,8 @@
     "descripcion": "mensajescalificados no registra",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "cab104cb3cabc4a9af8363252236cc27d978d63a2d241eb9523bd760bb937c6b",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:10:02.184Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion.png",
@@ -230,8 +230,8 @@
     "descripcion": "novedad al registrar en la tabla tiquetesconversacion",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "db3267b62d59bfbbfce58f2f0da9460f4648f5f67fb9c5c5b67f2c20aa1df74e",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:10:21.624Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1447812-cierre-de-conversacion-antes-de-tiempo.png",
@@ -241,8 +241,8 @@
     "descripcion": "cierre de conversacion antes de tiempo",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "79993427b7c9f9e90b87e05fbd76ee5182ff6d27d6d49f88249211122a47fb99",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:10:37.087Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1450247-plataforma-qa-paty-ia-para-produccion.png",
@@ -252,8 +252,8 @@
     "descripcion": "plataforma qa Paty IA para produccion",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "8a726786c8fac0567c30914947ea3e123f8384ec4e4d2e512fa6c3df52372f6a",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:10:41.714Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1451725-referencias-internas-en-la-respuesta.png",
@@ -263,8 +263,8 @@
     "descripcion": "referencias internas en la respuesta",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "d00df8c405ee425d81da7328a126ae36d6158918a8fa72db0d32fd38ae603be3",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:10:49.927Z"
   },
   {
     "localPath": "tiquetes/2026-08/tk1456744-compuerta-de-audio-respuesta-incorrecta.png",
@@ -274,8 +274,8 @@
     "descripcion": "compuerta de audio respuesta incorrecta",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/02-paty",
     "sha256": "1eb7d296ed9b90ef112ec5ee3b1be808f3b890fa8b94f13eecf2c54bfa2c6c5f",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:10:54.446Z"
   },
   {
     "localPath": "tiquetes/2026-08/tk1457955-extractor-de-consultas-duplica-registros.png",
@@ -285,8 +285,8 @@
     "descripcion": "extractor de consultas duplica registros",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/02-paty",
     "sha256": "63a7bb550816453c201c3621f8c2ce1f56c50e3b0283ef8e9ba3d03fbcdcdb40",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:11:00.868Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1453428-creacion-tipo-de-consulta-consulta-mcp-contapyme.png",
@@ -296,8 +296,8 @@
     "descripcion": "creacion tipo de consulta consulta mcp contapyme",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/02-paty",
     "sha256": "abf1cdb492ec2f661110d3b24e9b9dea0cf0c01671811f31799feec6814c5ce7",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:11:06.537Z"
   },
   {
     "localPath": "tiquetes/2026-06/tk1436238-modificacion-flujo-de-clasificacion-tipo-consulta.png",
@@ -307,7 +307,51 @@
     "descripcion": "contexto conversacional para el clasificador (TK: modificacion flujo de clasificacion tipo consulta)",
     "sourceProject": "VideosYT/proyectos/documentales/is-tkts/01-paty",
     "sha256": "c9c0f348cd1f75bac4a4730f05dfacaa304c5d4db1be0eeb4ebdec662abdf21c",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:11:12.468Z"
+  },
+  {
+    "localPath": "tiquetes/2026-06/tk1437976-integracion-mcp-de-prueba-para-paty-ia.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1437976-integracion-mcp-de-prueba-para-paty-ia.png",
+    "ticket": "TK-1437976",
+    "fechaAperturaAprox": "2026-06-16",
+    "descripcion": "integracion MCP de prueba para Paty IA (conector staging)",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "d64d3649018aa12c37c3198924a79f23a34a80483e29aac2e46e152fbfbd4463",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:22:55.506Z"
+  },
+  {
+    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador.png",
+    "ticket": "TK-1458818",
+    "fechaAperturaAprox": "2026-08-05",
+    "descripcion": "Tiquete completo: ficha del TK y las dos vistas (chat del cliente y consola PatyIA) donde el mensaje del usuario llega como el literal \"(nota de voz)\" en vez de la transcripcion",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "dddd99c2baff1b499ec207bfac9767f5b1af3b9222acc52a08e4d24b513facb2",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:44:09.874Z"
+  },
+  {
+    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-respuesta-patyia.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-respuesta-patyia.png",
+    "ticket": "TK-1458818",
+    "fechaAperturaAprox": "2026-08-05",
+    "descripcion": "Chat de Soporte ContaPyme: la nota de voz de 0:15 se entrega y PatyIA responde \"No recibi texto junto a la nota de voz\", porque nunca le llego la transcripcion",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "713fe3705edda82c1cbc67f23ee41317a7e96f07a1bdf5792d072aa1ddc59ccf",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:44:13.032Z"
+  },
+  {
+    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-trazas-operaciones.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-trazas-operaciones.png",
+    "ticket": "TK-1458818",
+    "fechaAperturaAprox": "2026-08-05",
+    "descripcion": "Consola PatyIA con las trazas: mensaje \"(nota de voz)\", usarMcp con motivo \"No se puede determinar la accion solo con nota de voz\" y clasificarConsulta devolviendo REQUIERE_CONTEXTO",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "8ddf43cb6ecf966fb86501d909c1286ed7838f67ba3eb04284f1f5fa5c69c13d",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-05T22:44:17.426Z"
   }
 ]
