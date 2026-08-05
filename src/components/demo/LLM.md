@@ -67,20 +67,34 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
     catálogo. En `<= 48rem` el atributo `compact` colapsa el panel izquierdo
     y mueve el nav al `<is-drawer>` (hamburguesa).
 11. **tk-nav**: lista plana ordenada por `fechaSolicitud` desc. El filtro de
-    espacio (Todo / PatyIA / Clientes) vive en tabs del header de `tk-app`
-    (`is-tab-group` → `nav.contexto`). Buscador con `<is-input>`.
+    espacio (Todo / PatyIA / Clientes / **ISP Svelte**) vive en tabs del
+    header de `tk-app` (`is-tab-group` → `nav.contexto`). Buscador con
+    `<is-input>`.
+    - `TkSpace = 'patyia' | 'clientesis' | 'isp-svelte'`.
+    - `isp-svelte` es **virtual**: muchos tickets tienen `space` real
+      `clientesis`/`patyia`. El filtro usa heurística
+      (`space === 'isp-svelte'` **o** `TK-ISP-*` **o** título/resumen ISP-Svelte),
+      no solo igualdad de space.
+    - Cadena completa al añadir un space: tipo `TkSpace` → `api.SPACES` /
+      `listarTodos` → tab + panel en `tk-app` → `contexto` en `tk-nav` →
+      etiqueta en `tk-ticket-head` / `tk-view` → ruta worker.
 12. **tk-view**: arma secciones por `docLane` (solicitud, causa, solución,
     verificación, otros). Un bloque sin carril cae en «Detalle».
-
-### Documento y modos (`tk-view`, bloques)
-
+    - Tags que monta con `document.createElement` (`tk-ticket-head`,
+      `tk-block`, `tk-commits`, `tk-metrics`): **import side-effect** en
+      `tk-view.ts` **y** `<script>` en `index.html` del shell. Sin eso el
+      CE no hace upgrade → UI vacía.
 13. **Dos modos en `tk-view`**: `doc` (diligencia/solución: bloques + commits)
     y `metrics` (estudio InSoft: KPIs, datos, tiempos). Se cambia con FAB
     flotante; evento `tk-modo`; atributo `modo`. **No** mezclar tiempos
     InSoft dentro del modo `doc`.
 14. **`tk-metrics`** es el contenedor del modo metrics. Vive en
-    `src/components/tk/tk-metrics.ts` y **debe** estar en `all.ts` /
-    `FUENTES` de `tests/render.test.mjs`.
+    `src/components/tk/tk-metrics.ts` y **debe** estar en:
+    - `all.ts` (bundle `tk.all.js` de demos/export),
+    - `FUENTES` de `tests/render.test.mjs`,
+    - `index.html` (`./dist/cdn/tk-metrics.js`),
+    - `import './tk-metrics.js'` desde `tk-view.ts`.
+    Omitir cualquiera → FAB de métricas pinta un nodo vacío.
 15. **`docLane`** es el contrato de secciones. El worker puede enriquecerlo
     (`ensureLanes`); el visor agrupa por carril. No inventar carriles
     nuevos sin alinear worker + visor.
@@ -115,7 +129,11 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 22. **Commits en PowerShell**: no usar HEREDOC bash
     (`git commit -m "$(cat <<'EOF'…"`). Usar
     `git commit -m "mensaje en una línea"` o aquí-string de PowerShell.
-
+23. **Registro de custom elements**: `define()` es idempotente, pero
+    **solo corre si el módulo se importa**. `createElement('tk-x')` sin
+    haber cargado `tk-x.js` crea un HTMLElement desconocido (sin shadow,
+    sin contenido). Mitigación: import en el padre + script en `index.html`
+    + test de invariante.
 ## Anti-patrones explícitos
 
 ### Demo
@@ -183,6 +201,20 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 - **No meter KPIs/tiempos InSoft en modo `doc`**. Eso es `tk-metrics` /
   modo `metrics`. Duplicar `tk-tiempos` en doc fue un error de producto.
 
+- **No montar un `tk-*` solo con `createElement` sin cargar su módulo**.
+  El browser no registra el CE solo por el nombre del tag. Obliga:
+  `import './tk-x.js'` en el padre que lo crea **y** `<script>` en
+  `index.html` del shell (doble red de seguridad). Test:
+  `tests/tk-invariants.test.mjs`.
+
+- **No añadir la pestaña ISP Svelte sin el resto de la cadena** (tipo,
+  `SPACES`, filtro heurístico en nav, worker). Tab solo en HTML = vacío
+  o tickets mal filtrados.
+
+- **No filtrar ISP solo con `String(f.space) === 'isp-svelte'`**. Los
+  tickets ISP suelen tener space real `clientesis`; la heurística
+  (`TK-ISP-*`, título/resumen) es obligatoria.
+
 - **No pintar hints del file-tree como texto visible permanente**. Solo
   `<is-tooltip>`. Texto al lado del path ensucia el árbol.
 
@@ -233,6 +265,9 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 | Secciones en «Detalle» o desordenadas | `docLane` ausente | Worker `ensureLanes` (on por defecto); `?lanes=0` solo raw. |
 | File-tree incompleto vs commits | Paths a mano / stubs | `npm run tk:sync-file-trees -- --apply` en backend-tks. |
 | Modo metrics sin componente | `tk-metrics` fuera de `all.ts` / FUENTES | Registrar en barril + test. |
+| FAB métricas → vista **totalmente vacía** | `tk-metrics.js` **no** estaba en `index.html` y `tk-view` no lo importaba; `createElement` sin upgrade | Script en `index.html` + `import './tk-metrics.js'` en `tk-view` + invariantes. |
+| Falta pestaña ISP Svelte en header | Solo existía ruta worker; front sin tab/`SPACES`/`contexto` | Cadena completa: tipo + api + tab + nav heurístico + chips. |
+| Tab ISP vacío o tickets “desaparecen” | Filtro solo por `space === 'isp-svelte'` | Heurística `esIspSvelte` (id / título / space virtual). |
 | CDN `@main` sirve build viejo | Cache jsDelivr | Esperar o pin `@<sha>`. |
 | Textos con `c├│digo` / `qu├®` / `ÔÇö` | UTF-8 leído como CP850 y regrabado | `fixMojibake` en worker (`enrichTicketJson`) y en `api.ts` del visor. Pares en `mojibake-pairs.ts`. No “arreglar” a mano carácter a carácter. |
 
@@ -264,23 +299,31 @@ Si el `tk-*` necesita un `is-*` que no existe aún:
 ## Tests automatizados
 
 `tests/` **no** está en `.gitignore`: se versionan. Convención del repo:
-`*.test.mjs` con `node:test` (no `*.test.ts` — no hay runner TS).
+`*.test.mjs` con `node:test` (**no** `*.test.ts` — no hay runner TS; si
+alguien pide `.test.ts`, responder con `.test.mjs`).
 
 `npm run test` corre:
 
 - `tests/render.test.mjs` — humo del visor: parsing, despacho por `kind`,
   saneado de HTML, escape de markdown, registro de custom elements,
   modos doc/metrics, tabla → ficha vs grid sin chrome de toolbar.
-- `tests/tk-invariants.test.mjs` — invariantes de **fuente**:
-  `toolbar-tools="false"` en `tk-table`, prohibición de `quick-filter`/
-  `show-toolbar`, `tk-metrics` en `all.ts`, hints vía `is-tooltip` en
-  file-tree. Avisa inconsistencias antes del browser.
+- `tests/tk-invariants.test.mjs` — invariantes de **fuente** (avisan
+  inconsistencia sin abrir el browser):
+  - `toolbar-tools="false"` en `tk-table`; prohibido `quick-filter` /
+    `show-toolbar`.
+  - `tk-metrics` en `all.ts`, en `index.html`, e importado por `tk-view`.
+  - Tags que `tk-view` crea con `createElement` tienen script en
+    `index.html` (red de seguridad del shell).
+  - Cadena ISP Svelte: `TkSpace`, `SPACES` en `api.ts`, tab en `tk-app`,
+    `contexto`/`esIspSvelte` en `tk-nav`.
+  - Hints vía `is-tooltip` en file-tree.
 - `tests/export.test.mjs` — el HTML descargable: import map completo,
   cada URI `data:` decodifica al `.js` compilado, JSON del ticket saneado.
 - `tests/demo.test.mjs` — invariantes del demo: paths relativos, manifest
   ↔ preview, encoding UTF-8 sin BOM, sin mojibake, is-* cargado por CDN,
   boot scripts balanceados, `<is-palette-selector>` Y `<is-drawer>`
   presentes (no reimplementación).
+- `tests/mojibake.test.mjs` — pares CP850 → UTF-8.
 
 Si rompes uno de estos, **el CI te lo dice antes de llegar al browser**.
 
@@ -288,7 +331,7 @@ Si rompes uno de estos, **el CI te lo dice antes de llegar al browser**.
 
 | Repo | Path local | LLM |
 |---|---|---|
-| Visor WC (este) | `Personal/apps/jagudeloe/frontend-webcomponents` | este archivo + [`LLM.md`](../../../LLM.md) raíz |
+| Visor WC (este) | `Personal/apps/jagudeloe/frontend-webcomponents` | este archivo + [`LLM.md`](../../../LLM.md) raíz del paquete |
 | Worker TKS | `Personal/apps/jagudeloe/backend-tks` | `../backend-tks/LLM.md` |
 | Kit `is-*` | `Personal/apps/AppWebcomponents` | `components/data/LLM.md` (grids) + `LLM.md` raíz |
 
@@ -296,9 +339,9 @@ Si rompes uno de estos, **el CI te lo dice antes de llegar al browser**.
 
 Si un bug escapa a producción:
 
-1. Reproducir el bug en HTML estático.
-2. Añadir un caso al test correspondiente (ej. `tests/demo.test.mjs` para
-   rutas del demo).
+1. Reproducir el bug (browser o HTML estático).
+2. Añadir un caso al test correspondiente — preferir
+   `tests/tk-invariants.test.mjs` si es “olvidamos un script/import/tab”.
 3. Verificar que el test falla en `main` y pasa en tu branch.
 4. Hacer el fix **solo** después de tener el test rojo.
 
