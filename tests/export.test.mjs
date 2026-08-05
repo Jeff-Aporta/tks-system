@@ -18,8 +18,8 @@ const TICKET = {
   titulo: 'Calificación de mensajes en el hilo',
   estado: 'cerrado',
   content: [
-    { kind: 'markdown', sortKey: 0, payload: { docLane: 'solicitud', text: 'El asesor necesita **calificar** cada respuesta.' } },
-    { kind: 'url', sortKey: 1, payload: { docLane: 'solucion', href: 'https://insoft.com.co', label: 'Portal' } },
+    { kind: 'markdown', sortkey: 0, payload: { docLane: 'solicitud', text: 'El asesor necesita **calificar** cada respuesta.' } },
+    { kind: 'url', sortkey: 1, payload: { docLane: 'solucion', href: 'https://insoft.com.co', label: 'Portal' } },
   ],
 };
 

@@ -14,7 +14,7 @@ const CSS = /* css */ `
   ${proseCss}
   is-stepper { display: block; }
   .desc {
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 0.875em;
   }
 `;

@@ -107,7 +107,7 @@ const CSS = /* css */ `
   .resumen {
     max-width: min(100%, var(--tk-measure, 68ch));
     min-width: 0;
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 1rem;
     line-height: 1.7;
   }
@@ -188,14 +188,20 @@ class TkTicketHead extends HTMLElement {
           <h1>${String(tk.titulo ?? tk.iticket)}</h1>
           <div class="chips">
             ${chip(String(tk.estado ?? ''), color, 'mdi:circle-slice-8')}
-            ${chip(tk.space === 'patyia' ? 'PatyIA' : 'Clientes', 'brand', 'mdi:folder-outline')}
+            ${chip(
+              tk.space === 'patyia' ? 'PatyIA'
+                : tk.space === 'isp-svelte' ? 'ISP Svelte'
+                  : 'Clientes',
+              'brand',
+              'mdi:folder-outline',
+            )}
             ${chip(String(tk.solicitante ?? ''), 'neutral', 'mdi:account-outline')}
           </div>
         </div>
       </div>
       <div class="cifras">
-        ${cifra('Solicitado', fecha(tk.fechaSolicitud, true), 'mdi:calendar-arrow-right')}
-        ${cifra('Entregado', fecha(tk.fechaEntrega, true), 'mdi:calendar-check')}
+        ${cifra('Solicitado', fecha(tk.fechasolicitud, true), 'mdi:calendar-arrow-right')}
+        ${cifra('Entregado', fecha(tk.fechaentrega, true), 'mdi:calendar-check')}
         ${cifra('Tiempo total', minutos(tk.tiempoTotalMinutos ?? tk.diligenciaMinutos), 'mdi:timer-outline')}
         ${cifra('Commits', commits ? String(commits) : '', 'mdi:source-commit')}
       </div>

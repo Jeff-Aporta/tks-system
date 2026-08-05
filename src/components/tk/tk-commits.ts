@@ -58,13 +58,17 @@ const CSS = /* css */ `
   a.hash:hover { text-decoration: underline; }
   .desc {
     display: -webkit-box;
-    max-width: 36rem;
+    max-width: 100%;
     overflow: hidden;
     line-height: 1.45;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow-wrap: anywhere;
   }
+  /* La descripción es la única columna elástica: absorbe todo el ancho
+     sobrante para que hash/fecha/cifras no queden flotando en una tabla
+     angosta dentro de un panel ancho. */
+  th:nth-child(3), td:nth-child(3) { width: 100%; }
   .chip {
     display: inline-block;
     padding: 0.1em 0.45em;
@@ -148,8 +152,8 @@ class TkCommits extends HTMLElement {
     let del = 0;
     let mins = 0;
     for (const c of commits) {
-      ins += Number(c.insCount ?? 0);
-      del += Number(c.delCount ?? 0);
+      ins += Number(c.inscount ?? 0);
+      del += Number(c.delcount ?? 0);
       mins += Number(c.minutos ?? 0);
     }
 
@@ -179,8 +183,8 @@ class TkCommits extends HTMLElement {
                   </td>
                   <td class="fecha">${commitFecha(c)}</td>
                   <td><span class="desc" title="${String(c.descripcion ?? '')}">${String(c.descripcion ?? '')}</span></td>
-                  <td class="num"><span class="chip ins">+${Number(c.insCount ?? 0)}</span></td>
-                  <td class="num"><span class="chip del">−${Number(c.delCount ?? 0)}</span></td>
+                  <td class="num"><span class="chip ins">+${Number(c.inscount ?? 0)}</span></td>
+                  <td class="num"><span class="chip del">−${Number(c.delcount ?? 0)}</span></td>
                   <td class="num">${Number(c.minutos ?? 0)} min</td>
                 </tr>
               `;

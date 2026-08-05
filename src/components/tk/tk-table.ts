@@ -33,7 +33,7 @@ const CSS = /* css */ `
     }
     dt:first-of-type, dt:first-of-type + dd { border-top: 0; }
     dt {
-      color: var(--is-text-muted, #9aa7b4);
+      color: var(--is-text, #e6edf3);
       font-weight: 550;
     }
     dd { margin: 0; min-width: 0; }

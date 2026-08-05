@@ -41,9 +41,9 @@ const CSS = /* css */ `
   }
   .hallazgos { display: grid; gap: 0.45em; min-width: 0; }
   .hallazgo {
-    max-width: min(100%, var(--tk-measure, 68ch));
+    max-width: 100%;
     min-width: 0;
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 0.9em;
     line-height: 1.55;
     overflow-wrap: anywhere;

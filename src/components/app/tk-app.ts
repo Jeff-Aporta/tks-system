@@ -41,20 +41,14 @@ const CSS = /* css */ `
     align-items: center;
     gap: 0.45rem;
     min-width: 0;
+    color: var(--is-text, #e6edf3);
+    font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     font-size: 0.9375rem;
     font-weight: 640;
     letter-spacing: -0.015em;
+    white-space: nowrap;
 
     is-icon { flex: none; color: var(--is-accent, #1a6eb0); font-size: 1.25rem; }
-    small {
-      overflow: hidden;
-      color: var(--is-text-muted, #9aa7b4);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
   .relleno { flex: 1; min-width: 0.5rem; }
   .acciones-tk {
@@ -184,7 +178,7 @@ const CSS = /* css */ `
   }
 
   @media (max-width: 28rem) {
-    .marca small { display: none; }
+    .filtros { max-width: min(18rem, 52vw); }
   }
 `;
 
@@ -388,16 +382,17 @@ class TkApp extends HTMLElement {
         </is-button>
         <span class="marca">
           <is-icon icon="mdi:ticket-confirmation-outline" aria-hidden="true"></is-icon>
-          Tiquetes
-          <small>jagudeloe</small>
+          Tiquetes jagudeloe
         </span>
         <is-tab-group class="filtros" active="all" without-scroll-controls>
           <is-tab slot="nav" panel="all">Todo</is-tab>
           <is-tab slot="nav" panel="patyia">PatyIA</is-tab>
           <is-tab slot="nav" panel="clientesis">Clientes</is-tab>
+          <is-tab slot="nav" panel="isp-svelte">ISP Svelte</is-tab>
           <is-tab-panel name="all"></is-tab-panel>
           <is-tab-panel name="patyia"></is-tab-panel>
           <is-tab-panel name="clientesis"></is-tab-panel>
+          <is-tab-panel name="isp-svelte"></is-tab-panel>
         </is-tab-group>
         <span class="relleno"></span>
         <span class="acciones-tk">${this.#acciones}</span>

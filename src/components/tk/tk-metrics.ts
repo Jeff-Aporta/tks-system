@@ -8,6 +8,7 @@
  */
 
 import { css, define, fecha, html, minutos, rec } from './_shared.js';
+import './tk-tiempos.js';
 
 const CSS = /* css */ `
   :host {
@@ -169,7 +170,7 @@ type MetricasBag = {
 };
 
 const bagMetricas = (tk: TkTicket): MetricasBag => {
-  const extra = rec(tk.detallesExtra);
+  const extra = rec(tk.detallesextra);
   const meta = rec(tk.meta);
   const fromExtra = rec(extra.metricas);
   const fromMeta = rec(meta.metricas);
@@ -205,8 +206,8 @@ const kpiItems = (tk: TkTicket, m: MetricasBag) => {
   const total =
     num(hab.totalSolucion ?? habDoc.totalSolucion ?? tk.tiempoTotalMinutos)
     || horasAMin(empresa.horasSolucion)
-    || num(tk.tiempoEstimacionMinutos)
-    || (hasta + activa + num(tk.commitMinutos));
+    || num(tk.tiempoestimacionminutos)
+    || (hasta + activa + num(tk.commitminutos));
 
   return [
     {
@@ -262,11 +263,11 @@ class TkMetrics extends HTMLElement {
     const kpis = kpiItems(tk, m);
     const tiempos = [...(tk.tiempos ?? [])].filter((t) => Number(t.minutos ?? 0) > 0);
     const abierto = !m.fechaCierre && String(doc.cierreEmpresa ?? tk.estado ?? '').toLowerCase().includes('abierto')
-      || (!m.fechaCierre && !tk.fechaEntrega);
+      || (!m.fechaCierre && !tk.fechaentrega);
 
     const tipoApertura = String(
-      doc.tipoSolicitudApertura
-        ?? rec(tk.normativa).tipoSolicitudApertura
+      doc.tiposolicitudapertura
+        ?? rec(tk.normativa).tiposolicitudapertura
         ?? rec(tk.normativa).tipoSolicitud
         ?? '',
     ).trim();
@@ -287,9 +288,9 @@ class TkMetrics extends HTMLElement {
     }
 
     const filasDoc = [
-      ['Creación', m.fechaCreacion || fecha(tk.fechaSolicitud, true) || '—'],
+      ['Creación', m.fechaCreacion || fecha(tk.fechasolicitud, true) || '—'],
       ['Inicio atención', m.horaInicioAtencion || '—'],
-      ['Cierre', m.fechaCierre || fecha(tk.fechaEntrega, true) || 'Abierto'],
+      ['Cierre', m.fechaCierre || fecha(tk.fechaentrega, true) || 'Abierto'],
       ['Tipo apertura', tipoApertura || '—'],
       ['Asignado', String(doc.asignadoA || doc.ingeniero || '—')],
       ['Solicitante', String(doc.solicitante || tk.solicitante || '—')],

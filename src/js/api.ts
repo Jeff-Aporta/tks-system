@@ -22,7 +22,7 @@ const ESPERA_MS = 12_000;
 // corriendo. Para apuntar a un worker local se pasa `?api=http://127.0.0.1:8786`.
 const base = new URLSearchParams(location.search).get('api') ?? BASE_REMOTA;
 
-const SPACES: readonly TkSpace[] = ['patyia', 'clientesis'];
+const SPACES: readonly TkSpace[] = ['patyia', 'clientesis', 'isp-svelte'];
 
 /** Un solo aviso de degradación por sesión: repetirlo es ruido, no información. */
 let avisadoSinRed = false;
@@ -116,13 +116,22 @@ export const api: TkApiCliente = {
       p.status === 'fulfilled');
     if (!ok.length) throw new Error('Ningún espacio de tiquetes respondió');
 
-    const filas = ok.flatMap((p) => [...p.value.data]);
-    // Un solo espacio degradado degrada el conjunto: el usuario debe saberlo.
+    // Primero patyia/clientesis (space real); luego isp-svelte solo añade
+    // ids nuevos. El filtro de pestaña usa heurística, no solo `space`.
+    const porId = new Map<string, TkTicketRow>();
+    for (const p of ok) {
+      for (const fila of p.value.data) {
+        const id = String(fila.iticket ?? '');
+        if (!id || porId.has(id)) continue;
+        porId.set(id, fila);
+      }
+    }
+    const filas = [...porId.values()];
     const origen: TkOrigen = ok.some((p) => p.value.origen === 'cache-vencida')
       ? 'cache-vencida'
       : ok.every((p) => p.value.origen === 'red') ? 'red' : 'cache';
 
-    filas.sort((a, b) => String(b.fechaSolicitud ?? '').localeCompare(String(a.fechaSolicitud ?? '')));
+    filas.sort((a, b) => String(b.fechasolicitud ?? '').localeCompare(String(a.fechasolicitud ?? '')));
     return {
       data: filas,
       origen,
