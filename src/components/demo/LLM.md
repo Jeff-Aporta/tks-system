@@ -198,9 +198,10 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 - **No exportar `tk-*` como `tk-all.js` con guión**. Archivo real:
   `tk.all.js` (punto). Es lo que carga los previews.
 
-- **No añadir `tk-*` sin registrarlo en `all.ts` y en `FUENTES` del
-  `render.test.mjs`**. Si falta en `FUENTES`, jsdom no lo carga y el test
-  de `tk-view` falla o miente.
+- **No dejar mojibake CP850 en contenido** (`c├│digo`). Siempre pasar por
+  `fixMojibake` / `fixMojibakeDeep`. Prohibido “corregir” solo en CSS o
+  con replace ad-hoc de una palabra.
+
 
 ## Errores reales que nos costó tiempo
 
@@ -233,6 +234,7 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 | File-tree incompleto vs commits | Paths a mano / stubs | `npm run tk:sync-file-trees -- --apply` en backend-tks. |
 | Modo metrics sin componente | `tk-metrics` fuera de `all.ts` / FUENTES | Registrar en barril + test. |
 | CDN `@main` sirve build viejo | Cache jsDelivr | Esperar o pin `@<sha>`. |
+| Textos con `c├│digo` / `qu├®` / `ÔÇö` | UTF-8 leído como CP850 y regrabado | `fixMojibake` en worker (`enrichTicketJson`) y en `api.ts` del visor. Pares en `mojibake-pairs.ts`. No “arreglar” a mano carácter a carácter. |
 
 ## Cómo añadir un componente nuevo
 

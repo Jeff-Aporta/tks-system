@@ -12,6 +12,7 @@
  */
 import { cache } from './cache.js';
 import { aviso } from './estado.js';
+import { fixMojibakeDeep } from './fix-mojibake.js';
 
 const BASE_REMOTA = 'https://jagudeloe-tks.jeffaporta.workers.dev';
 const ESPERA_MS = 12_000;
@@ -72,20 +73,21 @@ const conCache = async <T>(
   const guardado = await cache.leer<T>(clave);
 
   if (guardado && !guardado.vencida) {
-    return { data: guardado.data, origen: 'cache', guardadoEn: guardado.guardadoEn };
+    return { data: fixMojibakeDeep(guardado.data), origen: 'cache', guardadoEn: guardado.guardadoEn };
   }
 
   try {
     const data = await pedir<T>(ruta);
     if (!valido(data)) throw new Error('Respuesta inesperada del worker');
-    const guardadoEn = await cache.escribir(clave, data);
-    return { data, origen: 'red', guardadoEn };
+    const limpio = fixMojibakeDeep(data);
+    const guardadoEn = await cache.escribir(clave, limpio);
+    return { data: limpio, origen: 'red', guardadoEn };
   } catch (e) {
     const motivo = e instanceof Error ? e.message : String(e);
     if (guardado) {
       avisarDegradado(guardado.guardadoEn);
       return {
-        data: guardado.data,
+        data: fixMojibakeDeep(guardado.data),
         origen: 'cache-vencida',
         guardadoEn: guardado.guardadoEn,
         error: motivo,
