@@ -95,7 +95,7 @@ import{blockCss as l,css as h,define as p,estadoColor as u,fecha as c,html as r,
   .resumen {
     max-width: min(100%, var(--tk-measure, 68ch));
     min-width: 0;
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 1rem;
     line-height: 1.7;
   }
@@ -131,14 +131,14 @@ import{blockCss as l,css as h,define as p,estadoColor as u,fecha as c,html as r,
           <h1>${String(i.titulo??i.iticket)}</h1>
           <div class="chips">
             ${n(String(i.estado??""),t,"mdi:circle-slice-8")}
-            ${n(i.space==="patyia"?"PatyIA":"Clientes","brand","mdi:folder-outline")}
+            ${n(i.space==="patyia"?"PatyIA":i.space==="isp-svelte"?"ISP Svelte":"Clientes","brand","mdi:folder-outline")}
             ${n(String(i.solicitante??""),"neutral","mdi:account-outline")}
           </div>
         </div>
       </div>
       <div class="cifras">
-        ${a("Solicitado",c(i.fechaSolicitud,!0),"mdi:calendar-arrow-right")}
-        ${a("Entregado",c(i.fechaEntrega,!0),"mdi:calendar-check")}
+        ${a("Solicitado",c(i.fechasolicitud,!0),"mdi:calendar-arrow-right")}
+        ${a("Entregado",c(i.fechaentrega,!0),"mdi:calendar-check")}
         ${a("Tiempo total",f(i.tiempoTotalMinutos??i.diligenciaMinutos),"mdi:timer-outline")}
         ${a("Commits",o?String(o):"","mdi:source-commit")}
       </div>

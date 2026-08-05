@@ -3,7 +3,7 @@ import{blockCss as p,crearBloque as l,define as a,html as s,md as d,proseCss as 
   ${m}
   is-stepper { display: block; }
   .desc {
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 0.875em;
   }
 `;a("tk-stepper",l(u,(o,e)=>{const r=n(e.stepper??e),i=(Array.isArray(r.steps)?r.steps:[]).map(n);i.length&&o.append(s`

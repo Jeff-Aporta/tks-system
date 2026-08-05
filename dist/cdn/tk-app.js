@@ -1,4 +1,4 @@
-import{css as h,define as c,html as r}from"./_shared.js";import{aviso as p,estado as n}from"./estado.js";import{api as o}from"./api.js";const m="(max-width: 48rem)",l=280,u=`
+import{css as h,define as c,html as n}from"./_shared.js";import{aviso as p,estado as r}from"./estado.js";import{api as o}from"./api.js";const m="(max-width: 48rem)",l=280,u=`
   :host {
     display: grid;
     overflow: hidden;
@@ -23,20 +23,14 @@ import{css as h,define as c,html as r}from"./_shared.js";import{aviso as p,estad
     align-items: center;
     gap: 0.45rem;
     min-width: 0;
+    color: var(--is-text, #e6edf3);
+    font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     font-size: 0.9375rem;
     font-weight: 640;
     letter-spacing: -0.015em;
+    white-space: nowrap;
 
     is-icon { flex: none; color: var(--is-accent, #1a6eb0); font-size: 1.25rem; }
-    small {
-      overflow: hidden;
-      color: var(--is-text-muted, #9aa7b4);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
   .relleno { flex: 1; min-width: 0.5rem; }
   .acciones-tk {
@@ -166,20 +160,20 @@ import{css as h,define as c,html as r}from"./_shared.js";import{aviso as p,estad
   }
 
   @media (max-width: 28rem) {
-    .marca small { display: none; }
+    .filtros { max-width: min(18rem, 52vw); }
   }
-`;class f extends HTMLElement{static get observedAttributes(){return["full"]}#i;#t=null;#s=null;#a=null;#h=null;#e=null;#o=null;#r=null;#l=null;#n=!1;#d=null;#c=!1;#p=l;constructor(){super(),this.#i=this.attachShadow({mode:"open"}),h(this.#i,u)}connectedCallback(){this.#y(),this.#w(),addEventListener("popstate",()=>{this.#f()})}disconnectedCallback(){this.#l?.removeEventListener("change",this.#g)}get full(){return this.hasAttribute("full")}#g=()=>{this.#v(!!this.#l?.matches)};#v(t){this.toggleAttribute("compact",t),!t&&this.#n&&this.#u(),t||this.#m("rail");const i=this.#a;if(i)if(i.disabled=t,t){const a=Number(i.positionInPixels);Number.isFinite(a)&&a>0&&(this.#p=a),i.positionInPixels=0}else{const a=this.#p>0?this.#p:l;i.positionInPixels=a}}#m(t){if(!this.#t||!this.#s||!this.#h)return;const i=t==="rail"?this.#s:this.#h;this.#t.parentElement!==i&&i.appendChild(this.#t)}#b(){!this.#e||this.#n||(this.#m("drawer"),this.#e.show?.(),this.#e.setAttribute("open",""))}#u(){!this.#e||!this.#n||(this.#e.hide?.(),this.#e.removeAttribute("open"))}async#w(){n.leer().full&&this.setAttribute("full",""),this.full||await this.#k(),await this.#f()}async#k(){try{const{data:t}=await o.listarTodos();this.#t&&(this.#t.filas=t)}catch(t){p(`No se pudo cargar el cat\xE1logo: ${t instanceof Error?t.message:t}`,"danger")}}async#f(){const{tk:t,space:i}=n.leer();if(this.#t&&(this.#t.seleccionado=t??""),!t){this.#d&&(this.#d.ticket=null),this.#r&&(this.#r.ticket=null);return}await this.#x(t,i??"patyia")}async#x(t,i){if(this.#c)return;this.#c=!0;const a=this.#i.querySelector(".visor");a?.replaceChildren(r`
+`;class f extends HTMLElement{static get observedAttributes(){return["full"]}#e;#t=null;#s=null;#a=null;#h=null;#i=null;#o=null;#n=null;#l=null;#r=!1;#d=null;#c=!1;#p=l;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),h(this.#e,u)}connectedCallback(){this.#x(),this.#w(),addEventListener("popstate",()=>{this.#f()})}disconnectedCallback(){this.#l?.removeEventListener("change",this.#v)}get full(){return this.hasAttribute("full")}#v=()=>{this.#g(!!this.#l?.matches)};#g(t){this.toggleAttribute("compact",t),!t&&this.#r&&this.#u(),t||this.#m("rail");const e=this.#a;if(e)if(e.disabled=t,t){const a=Number(e.positionInPixels);Number.isFinite(a)&&a>0&&(this.#p=a),e.positionInPixels=0}else{const a=this.#p>0?this.#p:l;e.positionInPixels=a}}#m(t){if(!this.#t||!this.#s||!this.#h)return;const e=t==="rail"?this.#s:this.#h;this.#t.parentElement!==e&&e.appendChild(this.#t)}#b(){!this.#i||this.#r||(this.#m("drawer"),this.#i.show?.(),this.#i.setAttribute("open",""))}#u(){!this.#i||!this.#r||(this.#i.hide?.(),this.#i.removeAttribute("open"))}async#w(){r.leer().full&&this.setAttribute("full",""),this.full||await this.#k(),await this.#f()}async#k(){try{const{data:t}=await o.listarTodos();this.#t&&(this.#t.filas=t)}catch(t){p(`No se pudo cargar el cat\xE1logo: ${t instanceof Error?t.message:t}`,"danger")}}async#f(){const{tk:t,space:e}=r.leer();if(this.#t&&(this.#t.seleccionado=t??""),!t){this.#d&&(this.#d.ticket=null),this.#n&&(this.#n.ticket=null);return}await this.#y(t,e??"patyia")}async#y(t,e){if(this.#c)return;this.#c=!0;const a=this.#e.querySelector(".visor");a?.replaceChildren(n`
       <div class="cargando">
         <is-spinner aria-hidden="true"></is-spinner>
         Cargando ${t}…
       </div>
-    `);try{const{data:e}=await o.ticket(i,t);this.#d=Object.assign(document.createElement("tk-view"),{ticket:e}),this.#r&&(this.#r.ticket=e),a?.replaceChildren(this.#d),document.title=`${e.iticket} \xB7 ${e.titulo??"Tiquete"}`}catch(e){this.#r&&(this.#r.ticket=null),a?.replaceChildren(r`
+    `);try{const{data:i}=await o.ticket(e,t);this.#d=Object.assign(document.createElement("tk-view"),{ticket:i}),this.#n&&(this.#n.ticket=i),a?.replaceChildren(this.#d),document.title=`${i.iticket} \xB7 ${i.titulo??"Tiquete"}`}catch(i){this.#n&&(this.#n.ticket=null),a?.replaceChildren(n`
         <div class="cargando">
           <is-callout color="danger" icon="mdi:alert-circle-outline">
-            No se pudo abrir ${t}: ${e instanceof Error?e.message:String(e)}
+            No se pudo abrir ${t}: ${i instanceof Error?i.message:String(i)}
           </is-callout>
         </div>
-      `)}finally{this.#c=!1}}#y(){for(;this.#i.firstChild;)this.#i.removeChild(this.#i.firstChild);const t=document.createElement("div");if(t.className="visor",this.full){this.#i.append(t);return}this.#t=document.createElement("tk-nav"),this.#t.addEventListener("tk-seleccion",e=>{const{iticket:s,space:d}=e.detail;n.escribir({tk:s,space:d}),this.#f(),this.#u()}),this.#r=document.createElement("tk-actions"),this.#s=document.createElement("aside"),this.#s.className="rail",this.#s.slot="start",this.#s.setAttribute("aria-label","Cat\xE1logo de tiquetes"),this.#s.appendChild(this.#t),t.slot="end",this.#a=document.createElement("is-split-panel"),this.#a.className="split",this.#a.setAttribute("orientation","horizontal"),this.#a.setAttribute("primary","start"),this.#a.setAttribute("position-in-pixels",String(l)),this.#a.setAttribute("storage-key","tk-app-nav"),this.#a.append(this.#s,t),this.#i.append(r`
+      `)}finally{this.#c=!1}}#x(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);const t=document.createElement("div");if(t.className="visor",this.full){this.#e.append(t);return}this.#t=document.createElement("tk-nav"),this.#t.addEventListener("tk-seleccion",i=>{const{iticket:s,space:d}=i.detail;r.escribir({tk:s,space:d}),this.#f(),this.#u()}),this.#n=document.createElement("tk-actions"),this.#s=document.createElement("aside"),this.#s.className="rail",this.#s.slot="start",this.#s.setAttribute("aria-label","Cat\xE1logo de tiquetes"),this.#s.appendChild(this.#t),t.slot="end",this.#a=document.createElement("is-split-panel"),this.#a.className="split",this.#a.setAttribute("orientation","horizontal"),this.#a.setAttribute("primary","start"),this.#a.setAttribute("position-in-pixels",String(l)),this.#a.setAttribute("storage-key","tk-app-nav"),this.#a.append(this.#s,t),this.#e.append(n`
       <header>
         <is-button
           class="nav-btn"
@@ -195,23 +189,24 @@ import{css as h,define as c,html as r}from"./_shared.js";import{aviso as p,estad
         </is-button>
         <span class="marca">
           <is-icon icon="mdi:ticket-confirmation-outline" aria-hidden="true"></is-icon>
-          Tiquetes
-          <small>jagudeloe</small>
+          Tiquetes jagudeloe
         </span>
         <is-tab-group class="filtros" active="all" without-scroll-controls>
           <is-tab slot="nav" panel="all">Todo</is-tab>
           <is-tab slot="nav" panel="patyia">PatyIA</is-tab>
           <is-tab slot="nav" panel="clientesis">Clientes</is-tab>
+          <is-tab slot="nav" panel="isp-svelte">ISP Svelte</is-tab>
           <is-tab-panel name="all"></is-tab-panel>
           <is-tab-panel name="patyia"></is-tab-panel>
           <is-tab-panel name="clientesis"></is-tab-panel>
+          <is-tab-panel name="isp-svelte"></is-tab-panel>
         </is-tab-group>
         <span class="relleno"></span>
-        <span class="acciones-tk">${this.#r}</span>
+        <span class="acciones-tk">${this.#n}</span>
         <is-theme-toggle></is-theme-toggle>
       </header>
       <div class="cuerpo">${this.#a}</div>
       <is-drawer id="navDrawer" placement="start" label="Catálogo de tiquetes" light-dismiss>
         <div class="drawer__mount"></div>
       </is-drawer>
-    `),this.#o=this.#i.querySelector(".nav-btn"),this.#e=this.#i.querySelector("#navDrawer"),this.#h=this.#i.querySelector(".drawer__mount"),this.#i.querySelector(".filtros")?.addEventListener("is-tab-show",e=>{const s=String(e.detail?.name??"all");this.#t&&(this.#t.contexto=s)}),this.#o?.addEventListener("click",()=>{this.#n?this.#u():this.#b()}),this.#e?.addEventListener("is-show",()=>{this.#n=!0,this.#o?.setAttribute("aria-expanded","true"),queueMicrotask(()=>{this.#t?.shadowRoot?.querySelector("input, is-input")?.focus?.()})});const a=()=>{this.#n=!1,this.#o?.setAttribute("aria-expanded","false"),this.#m("rail")};this.#e?.addEventListener("is-after-hide",a),this.#e?.addEventListener("is-hide",()=>{this.#n&&a()}),this.#l=matchMedia(m),this.#l.addEventListener("change",this.#g),this.#v(this.#l.matches)}}c("tk-app",f);
+    `),this.#o=this.#e.querySelector(".nav-btn"),this.#i=this.#e.querySelector("#navDrawer"),this.#h=this.#e.querySelector(".drawer__mount"),this.#e.querySelector(".filtros")?.addEventListener("is-tab-show",i=>{const s=String(i.detail?.name??"all");this.#t&&(this.#t.contexto=s)}),this.#o?.addEventListener("click",()=>{this.#r?this.#u():this.#b()}),this.#i?.addEventListener("is-show",()=>{this.#r=!0,this.#o?.setAttribute("aria-expanded","true"),queueMicrotask(()=>{this.#t?.shadowRoot?.querySelector("input, is-input")?.focus?.()})});const a=()=>{this.#r=!1,this.#o?.setAttribute("aria-expanded","false"),this.#m("rail")};this.#i?.addEventListener("is-after-hide",a),this.#i?.addEventListener("is-hide",()=>{this.#r&&a()}),this.#l=matchMedia(m),this.#l.addEventListener("change",this.#v),this.#g(this.#l.matches)}}c("tk-app",f);

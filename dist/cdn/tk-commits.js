@@ -1,4 +1,4 @@
-import{css as m,define as c,fecha as h,html as a,rec as l}from"./_shared.js";const u=`
+import{css as c,define as m,fecha as h,html as r,rec as l}from"./_shared.js";const u=`
   :host {
     display: block;
     width: 100%;
@@ -49,13 +49,17 @@ import{css as m,define as c,fecha as h,html as a,rec as l}from"./_shared.js";con
   a.hash:hover { text-decoration: underline; }
   .desc {
     display: -webkit-box;
-    max-width: 36rem;
+    max-width: 100%;
     overflow: hidden;
     line-height: 1.45;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow-wrap: anywhere;
   }
+  /* La descripci\xF3n es la \xFAnica columna el\xE1stica: absorbe todo el ancho
+     sobrante para que hash/fecha/cifras no queden flotando en una tabla
+     angosta dentro de un panel ancho. */
+  th:nth-child(3), td:nth-child(3) { width: 100%; }
   .chip {
     display: inline-block;
     padding: 0.1em 0.45em;
@@ -73,7 +77,7 @@ import{css as m,define as c,fecha as h,html as a,rec as l}from"./_shared.js";con
     background: color-mix(in srgb, #ef4444 16%, transparent);
   }
   .fecha { color: var(--is-text-muted, #9aa7b4); white-space: nowrap; }
-`,p={ISS:"Dev-InSoft/ISS-AyudasCPIA","ISS-AyudasCPIA":"Dev-InSoft/ISS-AyudasCPIA",PatyIA:"Dev-InSoft/ISS-AyudasCPIA","ISA-DOC":"Dev-InSoft/ISA-DOC","isa-patyia":"Jeff-Aporta/isa-patyia",ISA:"Jeff-Aporta/isa-patyia","ISW-ClientesIS":"Dev-InSoft/ISW-ClientesIS","ISP-ClientesIS":"Dev-InSoft/ISP-ClientesIS","ISP-CLientesISServer":"Dev-InSoft/ISP-CLientesISServer","ISS-ClientesIS-ContaPymeU":"Dev-InSoft/ISS-ClientesIS-ContaPymeU","ISP-SvelteComponents":"Dev-InSoft/ISP-SvelteComponents"},f=(o,t)=>{const n=t.trim();if(!n)return"#";const s=o.trim();return`https://github.com/${p[s]??`Dev-InSoft/${s||"repo"}`}/commit/${n}`},b=o=>{const t=l(o.meta),n=String(o.fecha??t.fecha??"");if(!n)return"\u2014";const s=new Date(n);if(Number.isNaN(s.getTime()))return h(n);const r=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return`${s.getDate()} ${r[s.getMonth()]}`},S=o=>{const t=l(o.meta);return String(t.repo??o.proyecto??"PatyIA")};class g extends HTMLElement{#e=[];#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),m(this.#t,u)}connectedCallback(){this.#n()}get commits(){return this.#e}set commits(t){this.#e=Array.isArray(t)?t:[],this.isConnected&&this.#n()}#n(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const t=this.#e.filter(e=>String(e.hash??"").trim());if(!t.length)return;let n=0,s=0,r=0;for(const e of t)n+=Number(e.insCount??0),s+=Number(e.delCount??0),r+=Number(e.minutos??0);this.#t.append(a`
+`,p={ISS:"Dev-InSoft/ISS-AyudasCPIA","ISS-AyudasCPIA":"Dev-InSoft/ISS-AyudasCPIA",PatyIA:"Dev-InSoft/ISS-AyudasCPIA","ISA-DOC":"Dev-InSoft/ISA-DOC","isa-patyia":"Jeff-Aporta/isa-patyia",ISA:"Jeff-Aporta/isa-patyia","ISW-ClientesIS":"Dev-InSoft/ISW-ClientesIS","ISP-ClientesIS":"Dev-InSoft/ISP-ClientesIS","ISP-CLientesISServer":"Dev-InSoft/ISP-CLientesISServer","ISS-ClientesIS-ContaPymeU":"Dev-InSoft/ISS-ClientesIS-ContaPymeU","ISP-SvelteComponents":"Dev-InSoft/ISP-SvelteComponents"},f=(o,t)=>{const n=t.trim();if(!n)return"#";const s=o.trim();return`https://github.com/${p[s]??`Dev-InSoft/${s||"repo"}`}/commit/${n}`},b=o=>{const t=l(o.meta),n=String(o.fecha??t.fecha??"");if(!n)return"\u2014";const s=new Date(n);if(Number.isNaN(s.getTime()))return h(n);const a=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return`${s.getDate()} ${a[s.getMonth()]}`},S=o=>{const t=l(o.meta);return String(t.repo??o.proyecto??"PatyIA")};class g extends HTMLElement{#e=[];#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),c(this.#t,u)}connectedCallback(){this.#n()}get commits(){return this.#e}set commits(t){this.#e=Array.isArray(t)?t:[],this.isConnected&&this.#n()}#n(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const t=this.#e.filter(e=>String(e.hash??"").trim());if(!t.length)return;let n=0,s=0,a=0;for(const e of t)n+=Number(e.inscount??0),s+=Number(e.delcount??0),a+=Number(e.minutos??0);this.#t.append(r`
       <div class="panel" role="region" aria-label="Commits del tiquete">
         <table>
           <thead>
@@ -87,7 +91,7 @@ import{css as m,define as c,fecha as h,html as a,rec as l}from"./_shared.js";con
             </tr>
           </thead>
           <tbody>
-            ${t.map(e=>{const i=String(e.hash??""),d=f(S(e),i);return a`
+            ${t.map(e=>{const i=String(e.hash??""),d=f(S(e),i);return r`
                 <tr>
                   <td>
                     <a class="hash" href="${d}" target="_blank" rel="noopener noreferrer">
@@ -96,8 +100,8 @@ import{css as m,define as c,fecha as h,html as a,rec as l}from"./_shared.js";con
                   </td>
                   <td class="fecha">${b(e)}</td>
                   <td><span class="desc" title="${String(e.descripcion??"")}">${String(e.descripcion??"")}</span></td>
-                  <td class="num"><span class="chip ins">+${Number(e.insCount??0)}</span></td>
-                  <td class="num"><span class="chip del">−${Number(e.delCount??0)}</span></td>
+                  <td class="num"><span class="chip ins">+${Number(e.inscount??0)}</span></td>
+                  <td class="num"><span class="chip del">−${Number(e.delcount??0)}</span></td>
                   <td class="num">${Number(e.minutos??0)} min</td>
                 </tr>
               `})}
@@ -107,9 +111,9 @@ import{css as m,define as c,fecha as h,html as a,rec as l}from"./_shared.js";con
               <td>${t.length===1?"1 commit":`${t.length} commits`}</td>
               <td class="num"><span class="chip ins">+${n}</span></td>
               <td class="num"><span class="chip del">−${s}</span></td>
-              <td class="num">${r} min</td>
+              <td class="num">${a} min</td>
             </tr>
           </tbody>
         </table>
       </div>
-    `)}}c("tk-commits",g);
+    `)}}m("tk-commits",g);

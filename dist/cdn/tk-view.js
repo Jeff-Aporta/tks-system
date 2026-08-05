@@ -1,4 +1,4 @@
-import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
+import{css as p,define as f,html as a,rec as m}from"./_shared.js";import"./tk-metrics.js";import"./tk-ticket-head.js";import"./tk-commits.js";import"./tk-block.js";const h=`
   :host {
     display: block;
     position: relative;
@@ -6,7 +6,7 @@ import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
     max-width: 100%;
     min-width: 0;
     container-type: inline-size;
-    --tk-measure: 78ch;
+    --tk-measure: min(72ch, 100%);
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
@@ -51,7 +51,7 @@ import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
     gap: 0.75em;
     margin: 0 0 0.15rem;
     min-width: 0;
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 0.72rem;
     font-weight: 650;
     letter-spacing: 0.11em;
@@ -72,14 +72,14 @@ import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
     display: grid;
     gap: 0.6rem;
     padding: 3rem 1rem;
-    color: var(--is-text-muted, #9aa7b4);
+    color: var(--is-text, #e6edf3);
     text-align: center;
   }
   .firma {
     margin-top: 0.5rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--is-border-soft, #1f242b);
-    color: var(--is-text-muted, #9aa7b4);
+    color: var(--is-text, #e6edf3);
     font-size: 0.75rem;
     line-height: 1.5;
     overflow-wrap: anywhere;
@@ -134,7 +134,7 @@ import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
   .fab-btn[aria-pressed="true"] {
     color: var(--is-accent, #1a6eb0);
   }
-`,g=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],v=r=>{const e=Array.isArray(r.content)&&r.content.length?[...r.content]:[...r.doc?.blocks??[]],t=(r.contexts??[]).flatMap(i=>[...i.content??[]]);return[...e,...t].filter(i=>i&&typeof i=="object").sort((i,n)=>(i.sortKey??0)-(n.sortKey??0))},k=(r,e)=>{const t=m(r.payload),i=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(i==="solicitud"||i==="evidencias"||i==="causa"||i==="solucion"||i==="verificacion"||i==="otros")return i;const n=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(n))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(n))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(n))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(n))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(n))return"solucion";const o=String(r.kind??"").toLowerCase();return o==="html"||o==="image"||o==="image-group"?e==="otros"?"evidencias":e:o==="badge"||o==="badges"?e==="otros"?"solicitud":e:o==="code"||o==="sql"||o==="cambio-bd"||o==="file-tree"?e==="otros"?"solucion":e:o==="steps"||o==="stepper"?e==="otros"?"verificacion":e:o==="table"&&e==="otros"?"evidencias":o==="markdown"||o==="md"||o==="text"?n?"otros":e:"otros"},x=r=>{let e="solicitud";return r.map(t=>{const i=k(t,e);return e=i,{b:t,lane:i}})},w=r=>{const e=[...r.rootCommits??[]];return e.length?e:(r.contexts??[]).flatMap(t=>[...t.commits??[]])},c=r=>String(r||"").trim().toLowerCase()==="metrics"?"metrics":"doc";class T extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#o=null;#e="doc";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),p(this.#t,f)}connectedCallback(){this.#e=c(this.getAttribute("modo")),this.#i()}attributeChangedCallback(e,t,i){e==="modo"&&(this.#e=c(i)),this.isConnected&&this.#i()}get ticket(){return this.#o}set ticket(e){this.#o=e,this.isConnected&&this.#i()}set json(e){const t=m(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){const t=c(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#i())}#r=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#n(e){const t=x(v(e)),i=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),n=w(e),o=g.map(({lane:b,rotulo:l})=>{const d=t.filter(s=>s.lane===b).map(s=>s.b);return d.length?a`
+`,g=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],v=r=>{const e=Array.isArray(r.content)&&r.content.length?[...r.content]:[...r.doc?.blocks??[]],t=(r.contexts??[]).flatMap(i=>[...i.content??[]]);return[...e,...t].filter(i=>i&&typeof i=="object").sort((i,n)=>(i.sortkey??0)-(n.sortkey??0))},k=(r,e)=>{const t=m(r.payload),i=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(i==="solicitud"||i==="evidencias"||i==="causa"||i==="solucion"||i==="verificacion"||i==="otros")return i;const n=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(n))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(n))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(n))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(n))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(n))return"solucion";const o=String(r.kind??"").toLowerCase();return o==="html"||o==="image"||o==="image-group"?e==="otros"?"evidencias":e:o==="badge"||o==="badges"?e==="otros"?"solicitud":e:o==="code"||o==="sql"||o==="cambio-bd"||o==="file-tree"?e==="otros"?"solucion":e:o==="steps"||o==="stepper"?e==="otros"?"verificacion":e:o==="table"&&e==="otros"?"evidencias":o==="markdown"||o==="md"||o==="text"?n?"otros":e:"otros"},x=r=>{let e="solicitud";return r.map(t=>{const i=k(t,e);return e=i,{b:t,lane:i}})},w=r=>{const e=[...r.rootCommits??[]];return e.length?e:(r.contexts??[]).flatMap(t=>[...t.commits??[]])},c=r=>String(r||"").trim().toLowerCase()==="metrics"?"metrics":"doc";class T extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#o=null;#e="doc";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),p(this.#t,h)}connectedCallback(){this.#e=c(this.getAttribute("modo")),this.#i()}attributeChangedCallback(e,t,i){e==="modo"&&(this.#e=c(i)),this.isConnected&&this.#i()}get ticket(){return this.#o}set ticket(e){this.#o=e,this.isConnected&&this.#i()}set json(e){const t=m(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){const t=c(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#i())}#r=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#n(e){const t=x(v(e)),i=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),n=w(e),o=g.map(({lane:b,rotulo:l})=>{const d=t.filter(s=>s.lane===b).map(s=>s.b);return d.length?a`
         <section aria-label="${l}">
           <h2 class="rotulo">${l}</h2>
           ${d.map(s=>Object.assign(document.createElement("tk-block"),{bloque:s}))}
@@ -154,7 +154,7 @@ import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
         `}
         ${u}
         <footer class="firma">
-          ${e.iticket} · ${e.space==="patyia"?"PatyIA":"Clientes"} ·
+          ${e.iticket} · ${e.space==="patyia"?"PatyIA":e.space==="isp-svelte"?"ISP Svelte":"Clientes"} ·
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
@@ -183,4 +183,4 @@ import{css as p,define as h,html as a,rec as m}from"./_shared.js";const f=`
           </button>
         </div>
       </div>
-    `)}}h("tk-view",T);
+    `)}}f("tk-view",T);

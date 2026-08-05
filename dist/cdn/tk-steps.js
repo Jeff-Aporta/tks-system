@@ -1,6 +1,6 @@
-import{blockCss as n,crearBloque as l,define as o,html as i,md as c,proseCss as d,raw as m,rec as h}from"./_shared.js";const p=`
-  ${n}
-  ${d}
+import{blockCss as l,crearBloque as n,define as o,html as i,md as d,proseCss as c,raw as m,rec as h}from"./_shared.js";const p=`
+  ${l}
+  ${c}
   ol { margin: 0; padding: 0; list-style: none; }
   .fase {
     position: relative;
@@ -30,9 +30,9 @@ import{blockCss as n,crearBloque as l,define as o,html as i,md as c,proseCss as 
   }
   .hallazgos { display: grid; gap: 0.45em; min-width: 0; }
   .hallazgo {
-    max-width: min(100%, var(--tk-measure, 68ch));
+    max-width: 100%;
     min-width: 0;
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 0.9em;
     line-height: 1.55;
     overflow-wrap: anywhere;
@@ -40,7 +40,7 @@ import{blockCss as n,crearBloque as l,define as o,html as i,md as c,proseCss as 
     &.prosa > :last-child { margin-bottom: 0; }
   }
   h3 { overflow-wrap: anywhere; }
-`,g=(t,r)=>{const e=h(t),s=Array.isArray(e.items)?e.items:Array.isArray(e.steps)?e.steps:e.text?[e.text]:[];return{title:String(e.title??e.label??`Fase ${r+1}`),items:s}},u=t=>t==null?null:typeof t=="string"?i`<div class="hallazgo prosa">${m(c(t))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:t});o("tk-steps",l(p,(t,r)=>{const s=(Array.isArray(r.phases)?r.phases:Array.isArray(r.steps)?r.steps:[]).map(g).filter(a=>a.items.length||a.title);s.length&&t.append(i`
+`,g=(t,r)=>{const e=h(t),s=Array.isArray(e.items)?e.items:Array.isArray(e.steps)?e.steps:e.text?[e.text]:[];return{title:String(e.title??e.label??`Fase ${r+1}`),items:s}},u=t=>t==null?null:typeof t=="string"?i`<div class="hallazgo prosa">${m(d(t))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:t});o("tk-steps",n(p,(t,r)=>{const s=(Array.isArray(r.phases)?r.phases:Array.isArray(r.steps)?r.steps:[]).map(g).filter(a=>a.items.length||a.title);s.length&&t.append(i`
     ${r.title&&i`<h2 class="titulo">${r.title}</h2>`}
     <ol>
       ${s.map(a=>i`
