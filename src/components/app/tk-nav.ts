@@ -132,12 +132,21 @@ const PUNTOS: Readonly<Record<string, string>> = {
 const ETIQUETA: Readonly<Record<string, string>> = {
   patyia: 'PatyIA',
   clientesis: 'Clientes',
+  'isp-svelte': 'ISP Svelte',
+};
+
+/** ¿Pertenece al espacio virtual ISP-SvelteComponents? */
+const esIspSvelte = (f: TkTicketRow): boolean => {
+  if (String(f.space) === 'isp-svelte') return true;
+  if (/^TK-ISP-/i.test(String(f.iticket ?? ''))) return true;
+  const blob = `${f.titulo ?? ''} ${f.resumen ?? ''}`;
+  return /isp[\s-]?svelte/i.test(blob) || /ispsveltecomponents/i.test(blob);
 };
 
 type TkContexto = 'all' | TkSpace;
 
 const porFechaDesc = (a: TkTicketRow, b: TkTicketRow): number =>
-  String(b.fechaSolicitud ?? '').localeCompare(String(a.fechaSolicitud ?? ''));
+  String(b.fechasolicitud ?? '').localeCompare(String(a.fechasolicitud ?? ''));
 
 class TkNav extends HTMLElement {
   #filas: readonly TkTicketRow[] = [];
@@ -169,7 +178,7 @@ class TkNav extends HTMLElement {
 
   get contexto(): TkContexto { return this.#contexto; }
   set contexto(v: TkContexto | string) {
-    const next = (v === 'patyia' || v === 'clientesis' ? v : 'all') as TkContexto;
+    const next = (v === 'patyia' || v === 'clientesis' || v === 'isp-svelte' ? v : 'all') as TkContexto;
     if (this.#contexto === next) return;
     this.#contexto = next;
     if (this.isConnected) this.#render();
@@ -186,7 +195,11 @@ class TkNav extends HTMLElement {
     const q = this.#busqueda.trim().toLowerCase();
     const ctx = this.#contexto;
     return [...this.#filas]
-      .filter((f) => (ctx === 'all' ? true : String(f.space) === ctx))
+      .filter((f) => {
+        if (ctx === 'all') return true;
+        if (ctx === 'isp-svelte') return esIspSvelte(f);
+        return String(f.space) === ctx;
+      })
       .filter((f) => {
         if (!q) return true;
         return [f.iticket, f.titulo, f.resumen]
@@ -261,8 +274,8 @@ class TkNav extends HTMLElement {
               ${mostrarAmbito
                 ? html`<span class="ambito">${ETIQUETA[String(f.space)] ?? f.space}</span>`
                 : null}
-              ${f.fechaSolicitud
-                ? html`<span class="fecha">${fecha(f.fechaSolicitud)}</span>`
+              ${f.fechasolicitud
+                ? html`<span class="fecha">${fecha(f.fechasolicitud)}</span>`
                 : null}
             </span>
             <span class="titulo">${String(f.titulo ?? 'Sin título')}</span>

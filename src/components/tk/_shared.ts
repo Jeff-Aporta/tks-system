@@ -61,7 +61,7 @@ export const blockCss = /* css */ `
   .pie {
     margin: 0.65em 0 0;
     max-width: min(100%, var(--tk-measure, 68ch));
-    color: var(--is-text-muted, #9aa7b4);
+    color: var(--is-text, #e6edf3);
     font-size: 0.8125em;
     line-height: 1.5;
     overflow-wrap: anywhere;
@@ -328,36 +328,64 @@ export const md = (src: unknown): string => {
 /** CSS del HTML producido por `md()` — lo adoptan los bloques con prosa. */
 export const proseCss = /* css */ `
   .prosa {
-    max-width: min(100%, var(--tk-measure, 68ch));
+    max-width: 100%;
     min-width: 0;
+    color: var(--is-text, #e6edf3);
     overflow-wrap: anywhere;
     word-break: break-word;
 
     > :first-child { margin-top: 0; }
     > :last-child { margin-bottom: 0; }
 
+    /* Solo la prosa continua usa medida de lectura; cards/tablas/listas
+       aprovechan el ancho del visor (evita columna estrecha + scroll extra). */
+    > p,
+    > blockquote {
+      max-width: min(100%, var(--tk-measure, 72ch));
+    }
+
     h3, h4, h5, h6 {
-      margin: 1.35em 0 0.45em;
+      margin: 1.1em 0 0.4em;
+      max-width: 100%;
       font-weight: 620;
       letter-spacing: -0.01em;
       line-height: 1.3;
       overflow-wrap: anywhere;
     }
     h3 { font-size: 1.0625em; }
-    h4 { font-size: 0.9375em; color: var(--is-text-muted, #9aa7b4); }
-    p { margin: 0 0 0.8em; overflow-wrap: anywhere; }
+    h4 { font-size: 0.9375em; }
+    p { margin: 0 0 0.75em; overflow-wrap: anywhere; }
     ul, ol {
-      margin: 0 0 0.85em;
+      margin: 0 0 0.75em;
       padding-left: 1.15em;
       max-width: 100%;
     }
+    /* Listas-tarjeta del HTML InSoft (border + list-style:none): full width,
+       menos aire vertical entre ítems. */
+    ul[style*="list-style:none"],
+    ul[style*="list-style: none"] {
+      display: grid;
+      gap: 0.4rem;
+      padding-left: 0;
+      margin: 0.35rem 0 0.65rem;
+      max-width: 100%;
+    }
+    ul[style*="list-style:none"] > li,
+    ul[style*="list-style: none"] > li {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 !important;
+      padding: 0.4rem 0.7rem !important;
+      line-height: 1.45;
+    }
     li {
-      margin: 0.3em 0;
+      margin: 0.25em 0;
       padding-left: 0.15em;
       overflow-wrap: anywhere;
 
       &::marker { color: var(--is-accent, #1a6eb0); }
-      > p { margin: 0.2em 0; }
+      > p { margin: 0.15em 0; }
     }
     a {
       color: var(--tk-link, #6fb2e8);
@@ -413,10 +441,10 @@ export const proseCss = /* css */ `
     }
     blockquote {
       margin: 0 0 1em;
-      max-width: 100%;
+      max-width: min(100%, var(--tk-measure, 72ch));
       padding: 0.15em 0 0.15em 0.95em;
       border-left: 2px solid color-mix(in srgb, var(--is-accent, #1a6eb0) 70%, transparent);
-      color: var(--is-text-muted, #9aa7b4);
+      color: var(--is-text, #e6edf3);
     }
     hr {
       margin: 1.4em 0;
@@ -433,14 +461,30 @@ export const proseCss = /* css */ `
       font-size: 0.9em;
       -webkit-overflow-scrolling: touch;
     }
+    /* Anchos fijos de plantilla email (680px): fluidizar en el visor. */
+    table[width],
+    table[style*="680px"],
+    table[style*="600px"],
+    div[style*="680px"],
+    div[style*="600px"] {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
     th, td {
       padding: 0.5em 0.75em;
       border-bottom: 1px solid var(--is-border-soft, #1f242b);
       text-align: left;
       vertical-align: top;
     }
-    th { font-weight: 600; color: var(--is-text-muted, #9aa7b4); }
-    del { color: var(--is-text-muted, #9aa7b4); }
+    th { font-weight: 600; color: var(--is-text, #e6edf3); }
+    del { color: var(--is-text, #e6edf3); opacity: 0.72; text-decoration: line-through; }
+
+    is-callout {
+      max-width: 100%;
+      --_pad-y: 0.5em;
+      --_pad-x: 0.75em;
+      --spacing: 0.75em;
+    }
   }
 `;
 

@@ -29,7 +29,7 @@ interface TkBlockPayload {
 interface TkBlock {
   readonly kind?: TkBlockKind;
   readonly payload?: TkBlockPayload;
-  readonly sortKey?: number;
+  readonly sortkey?: number;
   readonly blocks?: readonly TkBlock[];
   readonly iid?: number;
   readonly iContext?: number | null;
@@ -39,12 +39,12 @@ interface TkCommit {
   readonly hash: string;
   readonly proyecto?: string;
   readonly descripcion?: string;
-  readonly insCount?: number;
-  readonly delCount?: number;
+  readonly inscount?: number;
+  readonly delcount?: number;
   readonly minutos?: number;
   readonly fecha?: string | null;
   readonly meta?: Record<string, unknown>;
-  readonly sortKey?: number;
+  readonly sortkey?: number;
 }
 
 interface TkTiempo {
@@ -52,14 +52,14 @@ interface TkTiempo {
   readonly detail?: string;
   readonly minutos: number;
   readonly phase?: string;
-  readonly sortKey?: number;
+  readonly sortkey?: number;
 }
 
 interface TkContext {
-  readonly asesorNombre?: string;
-  readonly horaInicio?: string | null;
-  readonly horaFin?: string | null;
-  readonly bChecked?: boolean;
+  readonly asesornombre?: string;
+  readonly horainicio?: string | null;
+  readonly horafin?: string | null;
+  readonly bchecked?: boolean;
   readonly commits?: readonly TkCommit[];
   readonly content?: readonly TkBlock[];
 }
@@ -71,11 +71,11 @@ interface TkTicket {
   readonly solicitante?: string;
   readonly resumen?: string;
   readonly descripcion?: string;
-  readonly fechaSolicitud?: string | null;
-  readonly fechaEntrega?: string | null;
+  readonly fechasolicitud?: string | null;
+  readonly fechaentrega?: string | null;
   readonly estado?: string;
   readonly activo?: boolean;
-  readonly detallesExtra?: Record<string, unknown>;
+  readonly detallesextra?: Record<string, unknown>;
   readonly meta?: Record<string, unknown>;
   readonly normativa?: Record<string, unknown>;
   readonly contexts?: readonly TkContext[];
@@ -83,11 +83,11 @@ interface TkTicket {
   readonly tiempos?: readonly TkTiempo[];
   readonly content?: readonly TkBlock[];
   readonly doc?: { readonly blocks?: readonly TkBlock[] };
-  readonly commitMinutos?: number;
+  readonly commitminutos?: number;
   readonly estimacionMinutos?: number;
   readonly diligenciaMinutos?: number;
   readonly extraMinutos?: number;
-  readonly tiempoEstimacionMinutos?: number;
+  readonly tiempoestimacionminutos?: number;
   readonly tiempoTotalMinutos?: number;
 }
 
@@ -121,8 +121,8 @@ interface TkResultado<T> {
   readonly error?: string;
 }
 
-/** Espacio de trabajo en BD. `general` no existe: es la unión en la UI. */
-type TkSpace = 'patyia' | 'clientesis';
+/** Espacio de trabajo en BD + virtual `isp-svelte` (pestaña dedicada). */
+type TkSpace = 'patyia' | 'clientesis' | 'isp-svelte';
 
 /* ── Estado de navegación (?s= en la URL) ────────────────────────── */
 

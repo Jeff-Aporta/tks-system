@@ -14,6 +14,11 @@
  */
 
 import { css, define, html, rec } from './_shared.js';
+// Dependencias de createElement: sin import, el tag queda sin upgrade en el shell.
+import './tk-metrics.js';
+import './tk-ticket-head.js';
+import './tk-commits.js';
+import './tk-block.js';
 
 type TkVistaModo = 'doc' | 'metrics';
 
@@ -25,7 +30,7 @@ const CSS = /* css */ `
     max-width: 100%;
     min-width: 0;
     container-type: inline-size;
-    --tk-measure: 78ch;
+    --tk-measure: min(72ch, 100%);
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
@@ -70,7 +75,7 @@ const CSS = /* css */ `
     gap: 0.75em;
     margin: 0 0 0.15rem;
     min-width: 0;
-    color: var(--is-text-soft, #c3ced9);
+    color: var(--is-text, #e6edf3);
     font-size: 0.72rem;
     font-weight: 650;
     letter-spacing: 0.11em;
@@ -91,14 +96,14 @@ const CSS = /* css */ `
     display: grid;
     gap: 0.6rem;
     padding: 3rem 1rem;
-    color: var(--is-text-muted, #9aa7b4);
+    color: var(--is-text, #e6edf3);
     text-align: center;
   }
   .firma {
     margin-top: 0.5rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--is-border-soft, #1f242b);
-    color: var(--is-text-muted, #9aa7b4);
+    color: var(--is-text, #e6edf3);
     font-size: 0.75rem;
     line-height: 1.5;
     overflow-wrap: anywhere;
@@ -171,7 +176,7 @@ const bloquesDe = (tk: TkTicket): TkBlock[] => {
   const deContextos = (tk.contexts ?? []).flatMap((c) => [...(c.content ?? [])]);
   return [...propios, ...deContextos]
     .filter((b) => b && typeof b === 'object')
-    .sort((a, b) => (a.sortKey ?? 0) - (b.sortKey ?? 0));
+    .sort((a, b) => (a.sortkey ?? 0) - (b.sortkey ?? 0));
 };
 
 const carrilDe = (b: TkBlock, sticky: TkDocLane): TkDocLane => {
@@ -336,7 +341,11 @@ class TkView extends HTMLElement {
         `}
         ${seccionCommits}
         <footer class="firma">
-          ${tk.iticket} · ${tk.space === 'patyia' ? 'PatyIA' : 'Clientes'} ·
+          ${tk.iticket} · ${
+            tk.space === 'patyia' ? 'PatyIA'
+              : tk.space === 'isp-svelte' ? 'ISP Svelte'
+                : 'Clientes'
+          } ·
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
