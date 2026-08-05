@@ -18,6 +18,7 @@ export default [
   { tag: 'tk-image',      title: 'Imagen',            category: 'blocks',   page: 'tk-image.html',      script: '../tk/tk-image.ts' },
   { tag: 'tk-code',       title: 'Código',            category: 'blocks',   page: 'tk-code.html',       script: '../tk/tk-code.ts' },
   { tag: 'tk-url',        title: 'Enlace',            category: 'blocks',   page: 'tk-url.html',        script: '../tk/tk-url.ts' },
+  { tag: 'tk-video',      title: 'Video',             category: 'blocks',   page: 'tk-video.html',      script: '../tk/tk-video.ts' },
   { tag: 'tk-cambio-bd',  title: 'Cambio en BD',      category: 'blocks',   page: 'tk-cambio-bd.html',  script: '../tk/tk-cambio-bd.ts' },
   { tag: 'tk-steps',      title: 'Fases',             category: 'blocks',   page: 'tk-steps.html',      script: '../tk/tk-steps.ts' },
   { tag: 'tk-file-tree',  title: 'Árbol de archivos', category: 'blocks',   page: 'tk-file-tree.html',  script: '../tk/tk-file-tree.ts' },

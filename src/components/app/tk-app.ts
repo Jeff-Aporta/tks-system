@@ -219,6 +219,11 @@ class TkApp extends HTMLElement {
   }
 
   connectedCallback(): void {
+    // El estado `full` de la URL se aplica ANTES del primer render: si se
+    // lee después (en #arrancar, async), #render() ya construyó header +
+    // split panel, y como no hay attributeChangedCallback que reaccione,
+    // quedan ahí para siempre aunque el atributo `full` se ponga después.
+    if (estado.leer().full) this.setAttribute('full', '');
     this.#render();
     void this.#arrancar();
     addEventListener('popstate', () => void this.#sincronizar());
@@ -273,8 +278,9 @@ class TkApp extends HTMLElement {
   }
 
   async #arrancar(): Promise<void> {
-    const estadoUrl = estado.leer();
-    if (estadoUrl.full) this.setAttribute('full', '');
+    // El atributo `full` ya se puso en connectedCallback (antes de #render());
+    // esto es solo por si #arrancar() se llama fuera de ese flujo.
+    if (estado.leer().full) this.setAttribute('full', '');
     if (!this.full) await this.#cargarCatalogo();
     await this.#sincronizar();
   }

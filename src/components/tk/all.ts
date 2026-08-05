@@ -16,6 +16,7 @@ import './tk-table.js';
 import './tk-image.js';
 import './tk-code.js';
 import './tk-url.js';
+import './tk-video.js';
 import './tk-cambio-bd.js';
 import './tk-steps.js';
 import './tk-file-tree.js';

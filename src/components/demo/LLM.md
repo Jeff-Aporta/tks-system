@@ -270,6 +270,26 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 | Tab ISP vacío o tickets “desaparecen” | Filtro solo por `space === 'isp-svelte'` | Heurística `esIspSvelte` (id / título / space virtual). |
 | CDN `@main` sirve build viejo | Cache jsDelivr | Esperar o pin `@<sha>`. |
 | Textos con `c├│digo` / `qu├®` / `ÔÇö` | UTF-8 leído como CP850 y regrabado | `fixMojibake` en worker (`enrichTicketJson`) y en `api.ts` del visor. Pares en `mojibake-pairs.ts`. No “arreglar” a mano carácter a carácter. |
+| `tk-video` no aparece pese a estar en `content[]` | Falta el script en `index.html` (mismo bug de siempre: `all.ts` no basta) | Confirmar `<script type="module" src="./dist/cdn/tk-video.js">` en `index.html`, no solo en `all.ts` |
+| `?s=...` con `full:true` ("modo vista", sin header ni panel) sigue mostrando header y panel izquierdo | `connectedCallback` llamaba `#render()` antes de que `#arrancar()` (async) leyera la URL y pusiera el atributo `full`; sin `attributeChangedCallback`, el shell ya estaba armado | Leer `estado.leer().full` y `setAttribute('full','')` **antes** de `#render()` en `connectedCallback`. Test: `tests/full-mode.test.mjs`. |
+
+## Problemas abiertos (sin resolver, no inventar que se arregló)
+
+- **2026-08-06 — TK-1457955 con bloque `video` "se queda en loop" en
+  `?s=eyJ0ayI6...`.** Se descartó, con evidencia, que fuera: API lenta/caída
+  (responde 200 en ~1s), video sin procesar en YouTube (`processingStatus:
+  succeeded`, `embeddable: true`), o `tk-video.js` faltante en `index.html`.
+  No se llegó a ver la consola del navegador (extensión de Chrome
+  desconectada esa sesión).
+  **Fix probable aplicado**: `tk-video.ts` pasó de `<iframe
+  src="youtube-nocookie.com/embed/...">` con autoload a
+  `lite-youtube-embed` (carga diferida — el iframe real de YouTube solo se
+  pide al hacer clic en play). Un iframe de YouTube autocargado es un
+  sospechoso razonable de "loop" visual (el player de YouTube hace su
+  propio polling/postMessage pesado al iniciar). **No confirmado en
+  navegador todavía** — si vuelve a pasar con `lite-youtube-embed` ya
+  puesto, la causa es otra y hay que sí o sí conseguir la consola del
+  navegador antes de seguir adivinando.
 
 ## Cómo añadir un componente nuevo
 

@@ -50,6 +50,8 @@ const MAPA: Readonly<Record<string, string>> = {
   stepper: 'tk-stepper',
   url: 'tk-url',
   link: 'tk-url',
+  video: 'tk-video',
+  youtube: 'tk-video',
   'cambio-bd': 'tk-cambio-bd',
   chart: 'tk-chart',
   diagram: 'tk-diagram',
@@ -59,7 +61,7 @@ const MAPA: Readonly<Record<string, string>> = {
 const tieneContenido = (b: TkBlock): boolean => {
   const p = rec(b.payload);
   if (Array.isArray(b.blocks) && b.blocks.length) return true;
-  for (const clave of ['text', 'body', 'html', 'code', 'sql', 'url', 'src', 'href', 'label', 'source']) {
+  for (const clave of ['text', 'body', 'html', 'code', 'sql', 'url', 'src', 'href', 'label', 'source', 'youtubeid', 'youtubeId']) {
     if (String(p[clave] ?? '').trim()) return true;
   }
   for (const clave of ['rows', 'items', 'badges', 'paths', 'files', 'tree', 'phases', 'steps', 'milestones', 'events', 'resumen']) {
