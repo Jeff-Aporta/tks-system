@@ -1,4 +1,4 @@
-import{css as p,define as f,html as a,rec as c}from"./_shared.js";import"./tk-metrics.js";import"./tk-ticket-head.js";import"./tk-commits.js";import"./tk-block.js";const h=`
+import{css as g,define as f,html as s,rec as l}from"./_shared.js";import"./tk-metrics.js";import"./tk-ticket-head.js";import"./tk-commits.js";import"./tk-block.js";const h=`
   :host {
     display: block;
     position: relative;
@@ -9,8 +9,8 @@ import{css as p,define as f,html as a,rec as c}from"./_shared.js";import"./tk-me
     /* Sin medida de lectura: el documento ocupa todo el ancho del visor. Con un
        tope en unidades ch quedaba una franja muerta a la derecha. */
     --tk-measure: 100%;
-    /* El video tambi\xE9n toma el ancho completo de la columna. */
-    --tk-video-max: 100%;
+    /* Video: tope legible centrado \u2014 100% se com\xEDa la columna (TK view). */
+    --tk-video-max: 36rem;
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
@@ -138,40 +138,40 @@ import{css as p,define as f,html as a,rec as c}from"./_shared.js";import"./tk-me
   .fab-btn[aria-pressed="true"] {
     color: var(--is-accent, #1a6eb0);
   }
-`,g=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],v=r=>{const e=new Set;return r.filter(t=>{const i=String(t.kind??"").toLowerCase();if(i!=="image"&&i!=="image-group")return!0;const n=c(t.payload),o=String(n.url??n.src??"").trim().split("?")[0]??"";return o?e.has(o)?!1:(e.add(o),!0):!0})},k=r=>{const e=Array.isArray(r.content)&&r.content.length?[...r.content]:[...r.doc?.blocks??[]],t=(r.contexts??[]).flatMap(i=>[...i.content??[]]);return v([...e,...t].filter(i=>i&&typeof i=="object").sort((i,n)=>(i.sortkey??0)-(n.sortkey??0)))},x=(r,e)=>{const t=c(r.payload),i=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(i==="solicitud"||i==="evidencias"||i==="causa"||i==="solucion"||i==="verificacion"||i==="otros")return i;const n=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(n))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(n))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(n))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(n))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(n))return"solucion";const o=String(r.kind??"").toLowerCase();return o==="html"||o==="image"||o==="image-group"?e==="otros"?"evidencias":e:o==="badge"||o==="badges"?e==="otros"?"solicitud":e:o==="code"||o==="sql"||o==="cambio-bd"||o==="file-tree"?e==="otros"?"solucion":e:o==="steps"||o==="stepper"?e==="otros"?"verificacion":e:o==="table"&&e==="otros"?"evidencias":o==="markdown"||o==="md"||o==="text"?n?"otros":e:"otros"},w=r=>{let e="solicitud";return r.map(t=>{const i=x(t,e);return e=i,{b:t,lane:i}})},T=r=>{const e=[...r.rootCommits??[]];return e.length?e:(r.contexts??[]).flatMap(t=>[...t.commits??[]])},l=r=>String(r||"").trim().toLowerCase()==="metrics"?"metrics":"doc";class C extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#o=null;#e="doc";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),p(this.#t,h)}connectedCallback(){this.#e=l(this.getAttribute("modo")),this.#i()}attributeChangedCallback(e,t,i){e==="modo"&&(this.#e=l(i)),this.isConnected&&this.#i()}get ticket(){return this.#o}set ticket(e){this.#o=e,this.isConnected&&this.#i()}set json(e){const t=c(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){const t=l(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#i())}#r=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#n(e){const t=w(k(e)),i=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),n=T(e),o=g.map(({lane:b,rotulo:d})=>{const m=t.filter(s=>s.lane===b).map(s=>s.b);return m.length?a`
-        <section aria-label="${d}">
-          <h2 class="rotulo">${d}</h2>
-          ${m.map(s=>Object.assign(document.createElement("tk-block"),{bloque:s}))}
+`,k=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],v=i=>{const e=new Set;return i.filter(t=>{const o=String(t.kind??"").toLowerCase();if(o!=="image"&&o!=="image-group")return!0;const n=l(t.payload),r=String(n.url??n.src??"").trim().split("?")[0]??"";return r?e.has(r)?!1:(e.add(r),!0):!0})},x=i=>{const e=Array.isArray(i.content)&&i.content.length?[...i.content]:[...i.doc?.blocks??[]],t=(i.contexts??[]).flatMap(o=>[...o.content??[]]);return v([...e,...t].filter(o=>o&&typeof o=="object").sort((o,n)=>(o.sortkey??0)-(n.sortkey??0)))},w=(i,e)=>{const t=l(i.payload),o=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(o==="solicitud"||o==="evidencias"||o==="causa"||o==="solucion"||o==="verificacion"||o==="otros")return o;const n=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(n))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(n))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(n))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(n))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(n))return"solucion";const r=String(i.kind??"").toLowerCase();return r==="html"||r==="image"||r==="image-group"?e==="otros"?"evidencias":e:r==="badge"||r==="badges"?e==="otros"?"solicitud":e:r==="code"||r==="sql"||r==="cambio-bd"||r==="file-tree"?e==="otros"?"solucion":e:r==="steps"||r==="stepper"?e==="otros"?"verificacion":e:r==="table"&&e==="otros"?"evidencias":r==="markdown"||r==="md"||r==="text"?n?"otros":e:"otros"},T=i=>{let e="solicitud";return i.map(t=>{const o=w(t,e);return e=o,{b:t,lane:o}})},y=i=>{const e=String(i.kind??"").toLowerCase();return e==="image"||e==="image-group"},b=i=>{const e=l(i.payload),t=String(e.caption??"").trim()||String(e.title??"").trim(),o=Array.isArray(i.blocks)?i.blocks:[];return String(i.kind??"").toLowerCase()==="image-group"&&o.length?i:{...i,kind:"image",payload:{...e,caption:t,title:""},blocks:void 0}},C=i=>{const e=[];let t=[];const o=()=>{if(t.length){if(t.length===1)e.push(t[0]);else{const n=t.flatMap(a=>String(a.kind??"").toLowerCase()==="image-group"&&Array.isArray(a.blocks)&&a.blocks.length?a.blocks.map(b):[b(a)]),r=l(t[0].payload).docLane;e.push({kind:"image-group",sortkey:t[0].sortkey,payload:r?{docLane:r}:{},blocks:n})}t=[]}};for(const n of i)y(n)?t.push(n):(o(),e.push(n));return o(),e},S=i=>{const e=[...i.rootCommits??[]];return e.length?e:(i.contexts??[]).flatMap(t=>[...t.commits??[]])},m=i=>String(i||"").trim().toLowerCase()==="metrics"?"metrics":"doc";class L extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#i=null;#e="doc";#t;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),g(this.#t,h)}connectedCallback(){this.#e=m(this.getAttribute("modo")),this.#o()}attributeChangedCallback(e,t,o){e==="modo"&&(this.#e=m(o)),this.isConnected&&this.#o()}get ticket(){return this.#i}set ticket(e){this.#i=e,this.isConnected&&this.#o()}set json(e){const t=l(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){const t=m(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#o())}#r=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#n(e){const t=T(x(e)),o=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),n=S(e),r=k.map(({lane:d,rotulo:u})=>{const p=C(t.filter(c=>c.lane===d).map(c=>c.b));return p.length?s`
+        <section aria-label="${u}" data-lane="${d}">
+          <h2 class="rotulo">${u}</h2>
+          ${p.map(c=>Object.assign(document.createElement("tk-block"),{bloque:c}))}
         </section>
-      `:null}).filter(Boolean),u=n.length?a`
+      `:null}).filter(Boolean),a=n.length?s`
         <section aria-label="Commits">
           <h2 class="rotulo">Commits</h2>
           ${Object.assign(document.createElement("tk-commits"),{commits:n})}
         </section>
-      `:null;return a`
+      `:null;return s`
       <article class="documento" data-modo="doc">
-        <header class="encabezado">${i}</header>
-        ${o.length>0?o:a`
+        <header class="encabezado">${o}</header>
+        ${r.length>0?r:s`
           <is-callout color="neutral" icon="mdi:text-box-remove-outline">
             Este tiquete todavía no tiene documentación publicada.
           </is-callout>
         `}
-        ${u}
+        ${a}
         <footer class="firma">
           ${e.iticket} · ${e.space==="patyia"?"PatyIA":e.space==="isp-svelte"?"ISP Svelte":"Clientes"} ·
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
-    `}#a(e){return a`
+    `}#a(e){return s`
       <div class="documento" data-modo="metrics">
         ${Object.assign(document.createElement("tk-metrics"),{ticket:e})}
       </div>
-    `}#i(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const e=this.#o;if(!e?.iticket){this.#t.append(a`
+    `}#o(){for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);const e=this.#i;if(!e?.iticket){this.#t.append(s`
         <div class="vacio">
           <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
           <p>Selecciona un tiquete para ver su documentación.</p>
         </div>
-      `);return}const t=this.#e==="metrics",i=t?"mdi:file-document-outline":"mdi:chart-timeline-variant",n=t?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#t.append(a`
+      `);return}const t=this.#e==="metrics",o=t?"mdi:file-document-outline":"mdi:chart-timeline-variant",n=t?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#t.append(s`
       <div class="shell">
         ${t?this.#a(e):this.#n(e)}
         <div class="fab">
@@ -183,8 +183,8 @@ import{css as p,define as f,html as a,rec as c}from"./_shared.js";import"./tk-me
             aria-pressed="${t?"true":"false"}"
             onclick=${this.#r}
           >
-            <is-icon icon="${i}" aria-hidden="true"></is-icon>
+            <is-icon icon="${o}" aria-hidden="true"></is-icon>
           </button>
         </div>
       </div>
-    `)}}f("tk-view",C);
+    `)}}f("tk-view",L);

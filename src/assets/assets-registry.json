@@ -353,5 +353,16 @@
     "sha256": "8ddf43cb6ecf966fb86501d909c1286ed7838f67ba3eb04284f1f5fa5c69c13d",
     "uploadedR2": true,
     "uploadedAt": "2026-08-05T22:44:17.426Z"
+  },
+  {
+    "localPath": "tiquetes/2026-07/tk1453428-solicitud-tipo-consulta-mcp-contapyme-en-staging.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1453428-solicitud-tipo-consulta-mcp-contapyme-en-staging.png",
+    "ticket": "TK-1453428",
+    "fechaAperturaAprox": "2026-07-24",
+    "descripcion": "Solicitud original en el hilo InSoft: la asesora pide crear el tipo de consulta CONSULTA_MCP_CONTAPYME en Staging, con objetivo, ejemplos, alcance y comportamiento esperado; incluye la ruta del prompt y la ficha del tiquete",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "08da63da3e3819da7c360b5dcb85054e6ce49999fee78186c8c8a420480770ef",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-06T04:38:56.820Z"
   }
 ]

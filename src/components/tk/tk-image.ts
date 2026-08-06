@@ -9,12 +9,14 @@ import { blockCss, crearBloque, define, html, rec } from './_shared.js';
 
 const CSS = /* css */ `
   ${blockCss}
-  /* auto-fill (no auto-fit): con una sola evidencia la miniatura ocupa una
-     columna, no el ancho completo del documento. El detalle está en el lightbox. */
+  /* auto-fill + tope fijo (no 1fr): con pocas evidencias las miniaturas
+     quedan en celdas ~18rem, no estiradas al ancho del documento. */
   .rejilla {
     display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 18rem));
+    justify-content: start;
+    align-items: start;
   }
   figure {
     margin: 0;
@@ -22,6 +24,7 @@ const CSS = /* css */ `
     border: 1px solid var(--is-border-soft, #1f242b);
     border-radius: var(--tk-radius, 0.625rem);
     background: var(--is-bg-soft, #14181d);
+    min-width: 0;
   }
   .lienzo {
     display: block;
@@ -35,7 +38,7 @@ const CSS = /* css */ `
     img {
       display: block;
       width: 100%;
-      height: var(--tk-image-alto, 9.5rem);
+      height: var(--tk-image-alto, 10.5rem);
       object-fit: cover;
       object-position: top center;
       transition: opacity 160ms ease-out, transform 220ms ease;
@@ -53,7 +56,11 @@ const CSS = /* css */ `
     border-top: 1px solid var(--is-border-soft, #1f242b);
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125em;
-    line-height: 1.5;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .rota {
     padding: 1.2em;

@@ -1,15 +1,20 @@
 import{blockCss as l,crearBloque as n,define as s,html as r}from"./_shared.js";const d="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js",c=`
   ${l}
 
-  /* Copia de lite-yt-embed.css (0.3.3), con el marco y el tope de ancho
-     del visor: a pantalla completa el video se com\xEDa la columna. */
+  /* Copia de lite-yt-embed.css (0.3.3). Tope de ancho + centrado: el visor
+     no debe dejar que el 16:9 se coma la columna del tiquete. */
+  :host {
+    display: block;
+    max-width: 100%;
+  }
   lite-youtube {
     position: relative;
     display: block;
     contain: content;
     box-sizing: border-box;
     width: 100%;
-    max-width: min(100%, var(--tk-video-max, 45rem));
+    max-width: min(100%, var(--tk-video-max, 36rem));
+    margin-inline: 0;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border: 1px solid var(--is-border, #2a3038);
@@ -73,6 +78,11 @@ import{blockCss as l,crearBloque as n,define as s,html as r}from"./_shared.js";c
     overflow: hidden;
     white-space: nowrap;
     clip-path: inset(50%);
+  }
+  .pie {
+    margin-inline: 0;
+    max-width: min(100%, var(--tk-video-max, 36rem));
+    text-align: start;
   }
 `,u=/^[a-zA-Z0-9_-]{6,20}$/;let a=!1;const b=()=>{if(a||customElements.get("lite-youtube"))return;a=!0;const e=document.createElement("script");e.src=d,e.async=!0,document.head.append(e)};s("tk-video",n(c,(e,t)=>{const o=String(t.youtubeid??t.youtubeId??"").trim();if(!u.test(o))return;b();const i=`Reproducir: ${String(t.title??"video")}`;e.append(r`
     <lite-youtube videoid="${o}" params="rel=0&amp;modestbranding=1" playlabel="${i}">

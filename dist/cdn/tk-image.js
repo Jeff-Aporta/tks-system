@@ -1,11 +1,13 @@
-import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_shared.js";const h=`
+import{blockCss as c,crearBloque as d,define as m,html as a,rec as u}from"./_shared.js";const h=`
   ${c}
-  /* auto-fill (no auto-fit): con una sola evidencia la miniatura ocupa una
-     columna, no el ancho completo del documento. El detalle est\xE1 en el lightbox. */
+  /* auto-fill + tope fijo (no 1fr): con pocas evidencias las miniaturas
+     quedan en celdas ~18rem, no estiradas al ancho del documento. */
   .rejilla {
     display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 18rem));
+    justify-content: start;
+    align-items: start;
   }
   figure {
     margin: 0;
@@ -13,6 +15,7 @@ import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_sha
     border: 1px solid var(--is-border-soft, #1f242b);
     border-radius: var(--tk-radius, 0.625rem);
     background: var(--is-bg-soft, #14181d);
+    min-width: 0;
   }
   .lienzo {
     display: block;
@@ -26,7 +29,7 @@ import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_sha
     img {
       display: block;
       width: 100%;
-      height: var(--tk-image-alto, 9.5rem);
+      height: var(--tk-image-alto, 10.5rem);
       object-fit: cover;
       object-position: top center;
       transition: opacity 160ms ease-out, transform 220ms ease;
@@ -44,7 +47,11 @@ import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_sha
     border-top: 1px solid var(--is-border-soft, #1f242b);
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125em;
-    line-height: 1.5;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .rota {
     padding: 1.2em;
@@ -141,24 +148,24 @@ import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_sha
     .nav.next { right: 0.15rem; }
     .cerrar { top: 0.15rem; right: 0.15rem; }
   }
-`,l=e=>{const t=String(e.url??e.src??"").trim();return t?{url:t,alt:String(e.alt??e.caption??e.title??"Evidencia del tiquete"),caption:String(e.caption??"")}:null};class p extends HTMLElement{#t;#e=[];#r=0;#a=t=>{this.hasAttribute("open")&&(t.key==="Escape"?this.cerrar():t.key==="ArrowRight"?this.#i(1):t.key==="ArrowLeft"&&this.#i(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});const t=new CSSStyleSheet;t.replaceSync(g),this.#t.adoptedStyleSheets=[t]}connectedCallback(){document.addEventListener("keydown",this.#a),this.addEventListener("click",t=>{t.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#a)}abrir(t,r=0){this.#e=t,this.#r=Math.max(0,Math.min(r,t.length-1)),this.setAttribute("open",""),this.#o(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#i(t){this.#e.length<2||(this.#r=(this.#r+t+this.#e.length)%this.#e.length,this.#o())}#o(){const t=this.#e[this.#r];if(!t)return;const r=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(a`
+`,l=e=>{const t=String(e.url??e.src??"").trim();return t?{url:t,alt:String(e.alt??e.caption??e.title??"Evidencia del tiquete"),caption:String(e.caption??"")}:null};class p extends HTMLElement{#t;#e=[];#i=0;#a=t=>{this.hasAttribute("open")&&(t.key==="Escape"?this.cerrar():t.key==="ArrowRight"?this.#r(1):t.key==="ArrowLeft"&&this.#r(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});const t=new CSSStyleSheet;t.replaceSync(g),this.#t.adoptedStyleSheets=[t]}connectedCallback(){document.addEventListener("keydown",this.#a),this.addEventListener("click",t=>{t.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#a)}abrir(t,i=0){this.#e=t,this.#i=Math.max(0,Math.min(i,t.length-1)),this.setAttribute("open",""),this.#o(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#r(t){this.#e.length<2||(this.#i=(this.#i+t+this.#e.length)%this.#e.length,this.#o())}#o(){const t=this.#e[this.#i];if(!t)return;const i=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(a`
       <div class="marco" role="dialog" aria-modal="true" aria-label="${t.alt}">
-        ${r?a`<span class="contador">${this.#r+1} / ${this.#e.length}</span>`:null}
+        ${i?a`<span class="contador">${this.#i+1} / ${this.#e.length}</span>`:null}
         <button class="cerrar" type="button" aria-label="Cerrar" onclick=${()=>this.cerrar()}>
           <is-icon icon="mdi:close" aria-hidden="true"></is-icon>
         </button>
-        ${r?a`
-          <button class="nav prev" type="button" aria-label="Anterior" onclick=${()=>this.#i(-1)}>
+        ${i?a`
+          <button class="nav prev" type="button" aria-label="Anterior" onclick=${()=>this.#r(-1)}>
             <is-icon icon="mdi:chevron-left" aria-hidden="true"></is-icon>
           </button>
-          <button class="nav next" type="button" aria-label="Siguiente" onclick=${()=>this.#i(1)}>
+          <button class="nav next" type="button" aria-label="Siguiente" onclick=${()=>this.#r(1)}>
             <is-icon icon="mdi:chevron-right" aria-hidden="true"></is-icon>
           </button>
         `:null}
         <img class="foto" src="${t.url}" alt="${t.alt}">
         ${t.caption||t.alt?a`<p class="leyenda">${t.caption||t.alt}</p>`:null}
       </div>
-    `)}}customElements.get("tk-lightbox")||customElements.define("tk-lightbox",p);const b=()=>{let e=document.querySelector("tk-lightbox");return e||(e=document.createElement("tk-lightbox"),document.body.append(e)),e},f=e=>{const t=new Set;return e.filter(r=>{const o=r.url.split("?")[0]??r.url;return t.has(o)?!1:(t.add(o),!0)})},v=(e,t,r)=>{const o=i=>{i.target.removeAttribute("data-cargando")},n=i=>{const s=i.target;(s.closest(".lienzo")??s).replaceWith(a`
+    `)}}customElements.get("tk-lightbox")||customElements.define("tk-lightbox",p);const b=()=>{let e=document.querySelector("tk-lightbox");return e||(e=document.createElement("tk-lightbox"),document.body.append(e)),e},f=e=>{const t=new Set;return e.filter(i=>{const o=i.url.split("?")[0]??i.url;return t.has(o)?!1:(t.add(o),!0)})},v=(e,t,i)=>{const o=r=>{r.target.removeAttribute("data-cargando")},n=r=>{const s=r.target;(s.closest(".lienzo")??s).replaceWith(a`
       <p class="rota">La evidencia ya no está disponible.</p>
     `)};return a`
     <figure>
@@ -166,7 +173,7 @@ import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_sha
         class="lienzo"
         type="button"
         aria-label="Ampliar: ${e.alt}"
-        onclick=${()=>b().abrir(t,r)}
+        onclick=${()=>b().abrir(t,i)}
       >
         <img
           src="${e.url}"
@@ -180,9 +187,9 @@ import{blockCss as c,crearBloque as d,define as u,html as a,rec as m}from"./_sha
       </button>
       ${e.caption&&a`<figcaption>${e.caption}</figcaption>`}
     </figure>
-  `};u("tk-image",d(h,(e,t,r)=>{const o=r.bloques??[],n=f((o.length?o.map(i=>l(m(i.payload))):[l(t)]).filter(i=>!!i));n.length&&e.append(a`
+  `};m("tk-image",d(h,(e,t,i)=>{const o=i.bloques??[],n=f((o.length?o.map(r=>l(u(r.payload))):[l(t)]).filter(r=>!!r));n.length&&e.append(a`
     ${t.title&&a`<h2 class="titulo">${t.title}</h2>`}
     <div class="rejilla">
-      ${n.map((i,s)=>v(i,n,s))}
+      ${n.map((r,s)=>v(r,n,s))}
     </div>
   `)}));

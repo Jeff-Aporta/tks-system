@@ -33,8 +33,8 @@ const CSS = /* css */ `
     /* Sin medida de lectura: el documento ocupa todo el ancho del visor. Con un
        tope en unidades ch quedaba una franja muerta a la derecha. */
     --tk-measure: 100%;
-    /* El video también toma el ancho completo de la columna. */
-    --tk-video-max: 100%;
+    /* Video: tope legible centrado — 100% se comía la columna (TK view). */
+    --tk-video-max: 36rem;
     color: var(--is-text, #e6edf3);
     font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     overflow-wrap: break-word;
@@ -266,6 +266,69 @@ const bloquesConCarril = (bloques: TkBlock[]): Array<{ b: TkBlock; lane: TkDocLa
   });
 };
 
+/**
+ * Imágenes sueltas en serie (típico en Evidencias) se pintaban una debajo de
+ * otra a ancho completo. Se fusionan en un `image-group` para grid + lightbox.
+ * El `title` del bloque pasa a `caption` si no había pie (es la etiqueta visible).
+ */
+const esImagen = (b: TkBlock): boolean => {
+  const k = String(b.kind ?? '').toLowerCase();
+  return k === 'image' || k === 'image-group';
+};
+
+const comoHijoImagen = (b: TkBlock): TkBlock => {
+  const p = rec(b.payload);
+  const caption = String(p.caption ?? '').trim() || String(p.title ?? '').trim();
+  const hijos = Array.isArray(b.blocks) ? b.blocks : [];
+  if (String(b.kind ?? '').toLowerCase() === 'image-group' && hijos.length) {
+    return b;
+  }
+  return {
+    ...b,
+    kind: 'image',
+    payload: { ...p, caption, title: '' },
+    blocks: undefined,
+  };
+};
+
+const fusionarImagenes = (bloques: TkBlock[]): TkBlock[] => {
+  const out: TkBlock[] = [];
+  let run: TkBlock[] = [];
+
+  const flush = (): void => {
+    if (!run.length) return;
+    if (run.length === 1) {
+      out.push(run[0]!);
+    } else {
+      const hijos = run.flatMap((b) => {
+        const k = String(b.kind ?? '').toLowerCase();
+        if (k === 'image-group' && Array.isArray(b.blocks) && b.blocks.length) {
+          return b.blocks.map(comoHijoImagen);
+        }
+        return [comoHijoImagen(b)];
+      });
+      const lane = rec(run[0]!.payload).docLane;
+      out.push({
+        kind: 'image-group',
+        sortkey: run[0]!.sortkey,
+        payload: lane ? { docLane: lane } : {},
+        blocks: hijos,
+      });
+    }
+    run = [];
+  };
+
+  for (const b of bloques) {
+    if (esImagen(b)) run.push(b);
+    else {
+      flush();
+      out.push(b);
+    }
+  }
+  flush();
+  return out;
+};
+
 const commitsDe = (tk: TkTicket): TkCommit[] => {
   const root = [...(tk.rootCommits ?? [])];
   if (root.length) return root;
@@ -336,10 +399,12 @@ class TkView extends HTMLElement {
     const commits = commitsDe(tk);
 
     const secciones = SECCIONES.map(({ lane, rotulo }) => {
-      const propios = bloques.filter((x) => x.lane === lane).map((x) => x.b);
+      const propios = fusionarImagenes(
+        bloques.filter((x) => x.lane === lane).map((x) => x.b),
+      );
       if (!propios.length) return null;
       return html`
-        <section aria-label="${rotulo}">
+        <section aria-label="${rotulo}" data-lane="${lane}">
           <h2 class="rotulo">${rotulo}</h2>
           ${propios.map((b) => Object.assign(document.createElement('tk-block'), { bloque: b }))}
         </section>

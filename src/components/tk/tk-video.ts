@@ -19,15 +19,20 @@ const LITE_YT_JS = 'https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/li
 const CSS = /* css */ `
   ${blockCss}
 
-  /* Copia de lite-yt-embed.css (0.3.3), con el marco y el tope de ancho
-     del visor: a pantalla completa el video se comía la columna. */
+  /* Copia de lite-yt-embed.css (0.3.3). Tope de ancho + centrado: el visor
+     no debe dejar que el 16:9 se coma la columna del tiquete. */
+  :host {
+    display: block;
+    max-width: 100%;
+  }
   lite-youtube {
     position: relative;
     display: block;
     contain: content;
     box-sizing: border-box;
     width: 100%;
-    max-width: min(100%, var(--tk-video-max, 45rem));
+    max-width: min(100%, var(--tk-video-max, 36rem));
+    margin-inline: 0;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border: 1px solid var(--is-border, #2a3038);
@@ -91,6 +96,11 @@ const CSS = /* css */ `
     overflow: hidden;
     white-space: nowrap;
     clip-path: inset(50%);
+  }
+  .pie {
+    margin-inline: 0;
+    max-width: min(100%, var(--tk-video-max, 36rem));
+    text-align: start;
   }
 `;
 
