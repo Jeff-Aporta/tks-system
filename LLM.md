@@ -27,8 +27,9 @@
 9. **Video**: tope `--tk-video-max: 36rem` en `tk-view` / `tk-video`; alinear
    a la izquierda (`margin-inline: 0`); embed con `lite-youtube-embed` (no
    iframe YouTube al cargar). Ver `tests/video-layout.test.mjs`.
-10. **SEO / marca**: `index.html` lleva title, description, canonical, favicon,
-    apple-touch, OG/Twitter; assets en `src/assets/brand/`. URL canónica:
+10. **SEO / marca**: `index.html` lleva title, description, canonical, favicon
+    vía **Iconify API** (`api.iconify.design/...svg`, no `favicon.svg` local),
+    apple-touch/OG en `src/assets/brand/`. Canonical:
     `https://jeff-aporta.github.io/jagudeloe-tks-front/`. Ver
     `tests/index-meta.test.mjs`.
 11. En PowerShell: commits con `-m "..."` plano (sin HEREDOC bash).

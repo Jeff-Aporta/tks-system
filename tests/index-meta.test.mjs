@@ -31,8 +31,13 @@ test('index.html trae title, description, canonical y marca', async () => {
   );
   assert.match(
     html,
-    /rel=["']icon["'][^>]+href=["']\.\/src\/assets\/brand\/favicon\.svg["']/,
-    'favicon.svg en brand/',
+    /rel=["']icon["'][^>]+href=["']https:\/\/api\.iconify\.design\/[^"']+\.svg[^"']*["']/,
+    'favicon vía Iconify API (sin favicon.svg local)',
+  );
+  assert.doesNotMatch(
+    html,
+    /favicon\.svg/,
+    'prohibido favicon.svg local: usar api.iconify.design',
   );
   assert.match(
     html,
@@ -73,14 +78,14 @@ test('index.html trae Open Graph y Twitter Card', async () => {
   assert.match(html, /name=["']twitter:image["']/, 'twitter:image');
 });
 
-test('assets de marca existen en disco', async () => {
+test('assets de marca existen en disco (sin favicon.svg local)', async () => {
   const brand = join(raiz, 'src', 'assets', 'brand');
-  for (const nombre of [
-    'favicon.svg',
-    'icon-512.png',
-    'apple-touch-icon.png',
-    'og.jpg',
-  ]) {
+  for (const nombre of ['icon-512.png', 'apple-touch-icon.png', 'og.jpg']) {
     await access(join(brand, nombre));
   }
+  await assert.rejects(
+    () => access(join(brand, 'favicon.svg')),
+    /ENOENT/,
+    'favicon.svg no debe existir: el icono va por Iconify API',
+  );
 });

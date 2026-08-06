@@ -238,9 +238,10 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
   `tests/evidencias.test.mjs`.
 
 - **No publicar el shell sin SEO de marca**. `index.html` debe traer
-  canonical, favicon SVG/PNG, apple-touch, OG y Twitter apuntando a
-  `https://jeff-aporta.github.io/jagudeloe-tks-front/` y
-  `src/assets/brand/*`. Test: `tests/index-meta.test.mjs`.
+  canonical, favicon vía Iconify API (`api.iconify.design/...svg` — **no**
+  `favicon.svg` local), apple-touch/OG en `src/assets/brand/` y Twitter
+  apuntando a `https://jeff-aporta.github.io/jagudeloe-tks-front/`.
+  Test: `tests/index-meta.test.mjs`.
 
 ### Convenciones de TS
 
@@ -297,7 +298,7 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 | Video centrado como hero en el documento | `margin-inline: auto` / `text-align: center` en el pie | Alinear al flujo del texto (`start` / `0`). Mismo test. |
 | Evidencias en columna apilada a todo el ancho | Cada `image` era un `tk-block` aparte; rejilla con `1fr` / `auto-fit` | `fusionarImagenes` → `image-group`; CSS `auto-fill` + max `18rem` + `justify-content: start`. `tests/evidencias.test.mjs`. |
 | Misma captura repetida 2–3 veces | Seed R2 con la misma URL en varios bloques **y** pintado 1:1 | Deduplicar por URL en `tk-image` / vista; el origen de datos también debe limpiarse. Mismo test. |
-| Share / pestaña sin marca (favicon/OG genéricos) | `index.html` sin meta ni `src/assets/brand/` | Canonical + icons + og/twitter a Pages. `tests/index-meta.test.mjs`. |
+| Share / pestaña sin marca (favicon/OG genéricos) | `index.html` sin meta / Iconify / brand | Canonical + favicon Iconify API + og/twitter. `tests/index-meta.test.mjs`. |
 
 ## Problemas abiertos (sin resolver, no inventar que se arregló)
 
