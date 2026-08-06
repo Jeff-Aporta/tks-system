@@ -21,10 +21,19 @@
    `api.spaces` + filtro `tk-nav` + tipo `TkSpace` van juntos.
 6. Hints de árbol: solo `<is-tooltip>`.
 7. Cambios de kit → AppWebcomponents → push → luego consumir en este repo.
-8. Evidencias: miniatura acotada (rejilla `auto-fill` + alto fijo) y una sola
-   figura por captura; el detalle se ve en el lightbox.
-9. En PowerShell: commits con `-m "..."` plano (sin HEREDOC bash).
-10. Tras bug: test rojo en `tests/*.test.mjs` antes del fix (`tests/` **sí** se versiona).
+8. **Evidencias**: `tk-view` fusiona `image` consecutivos → `image-group`;
+   rejilla `auto-fill` + tope `18rem` + `justify-content: start`; una figura
+   por URL; detalle en lightbox. Ver `tests/evidencias.test.mjs`.
+9. **Video**: tope `--tk-video-max: 36rem` en `tk-view` / `tk-video`; alinear
+   a la izquierda (`margin-inline: 0`); embed con `lite-youtube-embed` (no
+   iframe YouTube al cargar). Ver `tests/video-layout.test.mjs`.
+10. **SEO / marca**: `index.html` lleva title, description, canonical, favicon,
+    apple-touch, OG/Twitter; assets en `src/assets/brand/`. URL canónica:
+    `https://jeff-aporta.github.io/jagudeloe-tks-front/`. Ver
+    `tests/index-meta.test.mjs`.
+11. En PowerShell: commits con `-m "..."` plano (sin HEREDOC bash).
+12. Tras bug: test rojo en `tests/*.test.mjs` antes del fix (`tests/` **sí** se
+    versiona; no está en `.gitignore`).
 
 ## Qué no hacer (resumen)
 
@@ -38,9 +47,18 @@
 - No texto inline de hints en `tk-file-tree`.
 - No inventar auth frente al worker (usar login lab).
 - No `tk-all.js` con guión → es `tk.all.js`.
-- No pintar la evidencia a ancho completo (`auto-fit` estira la única
-  miniatura) ni repetir la misma URL en varios bloques: ver
-  `tests/evidencias.test.mjs`.
+- **No** `--tk-video-max: 100%` ni centrar el video a pantalla completa: el
+  documento se come el viewport.
+- **No** dejar `image` sueltos en serie sin fusionar: cada uno a ancho completo
+  = “una columna estirada”, no galería.
+- **No** `grid-template-columns: … 1fr` ni `auto-fit` solo para evidencias:
+  con una miniatura estira al 100%. Usar `auto-fill` + max fijo (`18rem`).
+- **No** pintar la evidencia a ancho completo ni repetir la misma URL en varios
+  bloques: ver `tests/evidencias.test.mjs`.
+- **No** iframe YouTube autocargado en `tk-video` (sospecha de “loop” pesado);
+  usar `lite-youtube`.
+- **No** publicar el shell sin meta/canonical/favicon/og: el share queda sin
+  marca.
 - No `*.test.ts` aquí: el runner es `node:test` + `*.test.mjs`.
 
 Detalle y tabla de errores: **demo/LLM.md**.

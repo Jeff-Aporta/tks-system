@@ -221,6 +221,27 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 - **No reinventar auth del worker en el front**. Login lab:
   `POST /api/auth/login` en `jagudeloe-tks`. Ver `../backend-tks/LLM.md`.
 
+- **No poner `--tk-video-max: 100%`**. El video se come el documento. Tope
+  canónico: `36rem` en `:host` de `tk-view` y en el CSS de `tk-video`.
+  Alinear a la izquierda (`margin-inline: 0`); no centrar como hero.
+
+- **No montar iframe YouTube al cargar**. Usar `lite-youtube-embed` (click →
+  iframe). Un iframe autocargado fue el sospechoso del “loop” en TK-1457955.
+
+- **No pintar cada `image` como bloque full-width suelto**. `fusionarImagenes`
+  en `tk-view` une corridas consecutivas en `image-group`. Reinventar otra
+  galería o saltarse el merge = regresiones visuales.
+
+- **No usar `1fr` / `auto-fit` en la rejilla de evidencias**. Con 1–2
+  miniaturas estiran al ancho del doc. Contrato: `repeat(auto-fill,
+  minmax(min(14rem, 100%), 18rem))` + `justify-content: start`. Tests:
+  `tests/evidencias.test.mjs`.
+
+- **No publicar el shell sin SEO de marca**. `index.html` debe traer
+  canonical, favicon SVG/PNG, apple-touch, OG y Twitter apuntando a
+  `https://jeff-aporta.github.io/jagudeloe-tks-front/` y
+  `src/assets/brand/*`. Test: `tests/index-meta.test.mjs`.
+
 ### Convenciones de TS
 
 - **No usar `currentColor` en SVGs producidos por `is-icon`**. El componente
@@ -272,6 +293,11 @@ control que ya existe en `is-webcomponents/`: `is-button`, `is-tag`,
 | Textos con `c├│digo` / `qu├®` / `ÔÇö` | UTF-8 leído como CP850 y regrabado | `fixMojibake` en worker (`enrichTicketJson`) y en `api.ts` del visor. Pares en `mojibake-pairs.ts`. No “arreglar” a mano carácter a carácter. |
 | `tk-video` no aparece pese a estar en `content[]` | Falta el script en `index.html` (mismo bug de siempre: `all.ts` no basta) | Confirmar `<script type="module" src="./dist/cdn/tk-video.js">` en `index.html`, no solo en `all.ts` |
 | `?s=...` con `full:true` ("modo vista", sin header ni panel) sigue mostrando header y panel izquierdo | `connectedCallback` llamaba `#render()` antes de que `#arrancar()` (async) leyera la URL y pusiera el atributo `full`; sin `attributeChangedCallback`, el shell ya estaba armado | Leer `estado.leer().full` y `setAttribute('full','')` **antes** de `#render()` en `connectedCallback`. Test: `tests/full-mode.test.mjs`. |
+| Video del ticket a pantalla completa / “gigante” | `--tk-video-max: 100%` (o sin tope) en `tk-view` / `tk-video` | `--tk-video-max: 36rem`; `margin-inline: 0`. Test: `tests/video-layout.test.mjs`. |
+| Video centrado como hero en el documento | `margin-inline: auto` / `text-align: center` en el pie | Alinear al flujo del texto (`start` / `0`). Mismo test. |
+| Evidencias en columna apilada a todo el ancho | Cada `image` era un `tk-block` aparte; rejilla con `1fr` / `auto-fit` | `fusionarImagenes` → `image-group`; CSS `auto-fill` + max `18rem` + `justify-content: start`. `tests/evidencias.test.mjs`. |
+| Misma captura repetida 2–3 veces | Seed R2 con la misma URL en varios bloques **y** pintado 1:1 | Deduplicar por URL en `tk-image` / vista; el origen de datos también debe limpiarse. Mismo test. |
+| Share / pestaña sin marca (favicon/OG genéricos) | `index.html` sin meta ni `src/assets/brand/` | Canonical + icons + og/twitter a Pages. `tests/index-meta.test.mjs`. |
 
 ## Problemas abiertos (sin resolver, no inventar que se arregló)
 
@@ -344,6 +370,12 @@ alguien pide `.test.ts`, responder con `.test.mjs`).
   boot scripts balanceados, `<is-palette-selector>` Y `<is-drawer>`
   presentes (no reimplementación).
 - `tests/mojibake.test.mjs` — pares CP850 → UTF-8.
+- `tests/evidencias.test.mjs` — dedupe por URL, `fusionarImagenes` en
+  fuente, rejilla `auto-fill` + tope fijo (no `1fr` / no solo con N>1).
+- `tests/video-layout.test.mjs` — tope `36rem`, alineación izquierda,
+  `lite-youtube` (no iframe YouTube al arrancar).
+- `tests/index-meta.test.mjs` — canonical, favicon, OG/Twitter, assets brand.
+- `tests/full-mode.test.mjs` — atributo `full` antes del primer `#render()`.
 
 Si rompes uno de estos, **el CI te lo dice antes de llegar al browser**.
 
