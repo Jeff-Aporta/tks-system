@@ -364,5 +364,60 @@
     "sha256": "08da63da3e3819da7c360b5dcb85054e6ce49999fee78186c8c8a420480770ef",
     "uploadedR2": true,
     "uploadedAt": "2026-08-06T04:38:56.820Z"
+  },
+  {
+    "localPath": "tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion-cierre.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion-cierre.png",
+    "ticket": "TK-1444317",
+    "fechaAperturaAprox": "2026-07-01",
+    "descripcion": "Evidencia de cierre: no toma la instruccion segun la clasificacion",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "da1e587633613c2e503016e51cc422994d4d153b17b0e8f770c27c2f7f37ee89",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes-cierre.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes-cierre.png",
+    "ticket": "TK-1446339",
+    "fechaAperturaAprox": "2026-07-01",
+    "descripcion": "Evidencia de cierre: optimizacion del clasificador para imagenes",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "3eaf8fd206938ace8f4044b3b6c3bd8db42e7a63c3948f7154e2da9bd0ab9537",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion-cierre.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion-cierre.png",
+    "ticket": "TK-1447467",
+    "fechaAperturaAprox": "2026-07-01",
+    "descripcion": "Evidencia de cierre: novedad al registrar en la tabla tiquetesconversacion",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "90c888ead4f65c7ad9e1237d4cec14130b9ae5e52e14b3599d49137c1eed7480",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-07/tk1449482-refactor-en-isw-clientes-is.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1449482-refactor-en-isw-clientes-is.png",
+    "ticket": "TK-1449482",
+    "fechaAperturaAprox": "2026-07-01",
+    "descripcion": "refactor en ISW Clientes IS",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "4c2c55002d4b5c01d8f5b5544b5b42d13046581b14352a00109355ee4c7e0fa1",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-07/tk1449483-refactor-en-isp-svelte-components.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1449483-refactor-en-isp-svelte-components.png",
+    "ticket": "TK-1449483",
+    "fechaAperturaAprox": "2026-07-01",
+    "descripcion": "refactor en ISP Svelte Components",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "86fa3f6d786c20deaedc537665d222c0dae93bf090a24d2dfd68c511dce103b5",
+    "uploadedR2": false,
+    "uploadedAt": null
   }
 ]
