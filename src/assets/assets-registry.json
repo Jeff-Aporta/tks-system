@@ -373,8 +373,8 @@
     "descripcion": "Evidencia de cierre: no toma la instruccion segun la clasificacion",
     "sourceProject": "app/src/assets (captura directa)",
     "sha256": "da1e587633613c2e503016e51cc422994d4d153b17b0e8f770c27c2f7f37ee89",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:39.973Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes-cierre.png",
@@ -384,8 +384,8 @@
     "descripcion": "Evidencia de cierre: optimizacion del clasificador para imagenes",
     "sourceProject": "app/src/assets (captura directa)",
     "sha256": "3eaf8fd206938ace8f4044b3b6c3bd8db42e7a63c3948f7154e2da9bd0ab9537",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:43.564Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion-cierre.png",
@@ -395,8 +395,8 @@
     "descripcion": "Evidencia de cierre: novedad al registrar en la tabla tiquetesconversacion",
     "sourceProject": "app/src/assets (captura directa)",
     "sha256": "90c888ead4f65c7ad9e1237d4cec14130b9ae5e52e14b3599d49137c1eed7480",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:46.620Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1449482-refactor-en-isw-clientes-is.png",
@@ -406,8 +406,8 @@
     "descripcion": "refactor en ISW Clientes IS",
     "sourceProject": "app/src/assets (captura directa)",
     "sha256": "4c2c55002d4b5c01d8f5b5544b5b42d13046581b14352a00109355ee4c7e0fa1",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:49.745Z"
   },
   {
     "localPath": "tiquetes/2026-07/tk1449483-refactor-en-isp-svelte-components.png",
@@ -417,7 +417,84 @@
     "descripcion": "refactor en ISP Svelte Components",
     "sourceProject": "app/src/assets (captura directa)",
     "sha256": "86fa3f6d786c20deaedc537665d222c0dae93bf090a24d2dfd68c511dce103b5",
-    "uploadedR2": false,
-    "uploadedAt": null
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:52.748Z"
+  },
+  {
+    "localPath": "tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido.png",
+    "ticket": "TK-1426728",
+    "fechaAperturaAprox": "2026-05-19",
+    "descripcion": "Reporte del asesor: al agregar un nodo bajo un capitulo en la pestana Contenido del catalogo de cursos, el registro se inserta pero el titulo del recurso queda vacio",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "582e5fda32248ccd0db8297c489b12ade26cd03577a43099318d5bb438c50863",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:55.692Z"
+  },
+  {
+    "localPath": "tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido-cierre.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido-cierre.png",
+    "ticket": "TK-1426728",
+    "fechaAperturaAprox": "2026-05-19",
+    "descripcion": "Informe de cierre: contexto, intento de replicacion en varios escenarios y conclusion de que el error reportado no se pudo replicar",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "df4bf733352fb540073c8b57705df2164a8d9e233376c9a9c6a3336680a7a964",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:13:58.902Z"
+  },
+  {
+    "localPath": "tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-commits.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-commits.png",
+    "ticket": "TK-1428161",
+    "fechaAperturaAprox": "2026-05-21",
+    "descripcion": "Los 10 commits del ticket sobre ISW-ClientesIS (+234/-178, 3h 30min) que persisten visible y orderby de columnas por controlador en localStorage",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "4dc114c8397677c84ec48d6602dc5cfdfff97c012d59faf05e9fd307087857c7",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:14:02.271Z"
+  },
+  {
+    "localPath": "tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-cierre.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-cierre.png",
+    "ticket": "TK-1428161",
+    "fechaAperturaAprox": "2026-05-21",
+    "descripcion": "Informe de cierre: contexto del selector de columnas, analisis tecnico de la persistencia y solucion con un helper unico por grilla",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "5beb8de2333088ff7e4691e76711ebdc7d184925567538f7dd659bae8b18c378",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:14:05.825Z"
+  },
+  {
+    "localPath": "tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-commits.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-commits.png",
+    "ticket": "TK-1429349",
+    "fechaAperturaAprox": "2026-05-25",
+    "descripcion": "Los 20 commits del ticket sobre ISP-ClientesISServer (+682/-570, 60min) que separan controladores y reemplazan los helpers dinamicos por SQL declarado",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "ffb9ce450c33d580435058f4ffc52b1622e4655c8e4baa4591dd51d908b029c7",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:14:08.991Z"
+  },
+  {
+    "localPath": "tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-cierre.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-cierre.png",
+    "ticket": "TK-1429349",
+    "fechaAperturaAprox": "2026-05-25",
+    "descripcion": "Informe de cierre: desacoplamiento de helpers (sqlNesting, nestedConfig, buildJData), SQL quemado por controlador y comparativa de volumen de codigo",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "dbe00f2b20d3e4e76ad151943262de7b541211cf53ee81692506bb17c1181e22",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:14:12.213Z"
+  },
+  {
+    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-ficha-y-consola.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-ficha-y-consola.png",
+    "ticket": "TK-1458818",
+    "fechaAperturaAprox": "2026-08-05",
+    "descripcion": "Ficha del TK en estado Abierto junto a las dos vistas: el chat de Soporte ContaPyme con la nota de voz y la consola PatyIA con el mensaje \"(nota de voz)\" sin transcripcion",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "f9c757998a9faa2e479f84a922267d18bedaac24143c35bc60f6e12b85203597",
+    "uploadedR2": true,
+    "uploadedAt": "2026-08-09T01:14:15.544Z"
   }
 ]

@@ -10,7 +10,3 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Capturas accidentales sueltas en assets/
-src/assets/image.png
-src/assets/image copy*.png
-
