@@ -67,5 +67,11 @@ const bundle = await esbuild.build({
   loader: { '.ts': 'ts' },
 });
 writeFileSync(join(OUT, 'tk.all.js'), bundle.outputFiles[0].text);
+// `all.min.js` — mismo bundle, con el nombre que usa `is-webcomponents` en su
+// propio `dist/cdn/all.min.js`. Un HTML atómico puede cargar los dos kits con
+// la misma convención de nombre: `is-webcomponents/dist/cdn/all.min.js` y
+// `is-tkts/dist/cdn/all.min.js`. `tk.all.js` se conserva para no romper los
+// enlaces ya publicados (export.ts, index.html) mientras se migran.
+writeFileSync(join(OUT, 'all.min.js'), bundle.outputFiles[0].text);
 
-console.log(`dist/cdn: ${archivos.length} módulos + tk.all.js compilados.`);
+console.log(`dist/cdn: ${archivos.length} módulos + tk.all.js + all.min.js compilados.`);
