@@ -215,14 +215,38 @@ const sinImagenesRepetidas = (bloques: TkBlock[]): TkBlock[] => {
   });
 };
 
+const KINDS_VIDEO = new Set(['video', 'youtube']);
+
+/**
+ * Los videos del tiquete solo se muestran en modo libre: `?mode-tkt=free`.
+ *
+ * Por defecto se ocultan. La documentación de un tiquete se comparte con
+ * clientes y se imprime; el video es material de divulgación, no parte del
+ * expediente, y arrastra un embed de YouTube en cada ficha.
+ *
+ * La decisión es del componente a propósito: si dependiera de que cada página
+ * filtrara los bloques antes de pasarlos, bastaría una que se olvidara para
+ * publicar el video. Aquí no hay forma de olvidarlo.
+ */
+const modoLibre = (): boolean => {
+  try {
+    return new URLSearchParams(location.search).get('mode-tkt') === 'free';
+  } catch {
+    // Documento sin `location` utilizable: el criterio prudente es ocultarlo.
+    return false;
+  }
+};
+
 const bloquesDe = (tk: TkTicket): TkBlock[] => {
   const propios = Array.isArray(tk.content) && tk.content.length
     ? [...tk.content]
     : [...(tk.doc?.blocks ?? [])];
   const deContextos = (tk.contexts ?? []).flatMap((c) => [...(c.content ?? [])]);
+  const libre = modoLibre();
   return sinImagenesRepetidas(
     [...propios, ...deContextos]
       .filter((b) => b && typeof b === 'object')
+      .filter((b) => libre || !KINDS_VIDEO.has(String(b.kind ?? '').toLowerCase()))
       .sort((a, b) => (a.sortkey ?? 0) - (b.sortkey ?? 0)),
   );
 };

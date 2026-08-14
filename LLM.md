@@ -85,6 +85,19 @@ Eventos: `tk-datos` (`{ origen, ticket }`) y `tk-error` (`{ error }`).
 
 Guardián: `tests/tk-view-autocarga.test.mjs`.
 
+### Videos del tiquete: ocultos salvo `?mode-tkt=free`
+
+Los bloques `video` / `youtube` **no se pintan** por defecto. Solo aparecen si la
+URL trae `?mode-tkt=free` (valor exacto; `?mode-tkt=1` no vale).
+
+Motivo: desde ago/2026 el video del tiquete se publica **no listado** y deja de
+ser parte del expediente. La ficha se comparte con cliente y se imprime; el
+embed sobra ahí y arrastra YouTube a cada documento.
+
+**La regla vive en `<tk-view>`, no en quien lo embebe.** Si dependiera de que
+cada página filtrara los bloques antes de pasarlos, bastaría una que se olvide
+para publicar el video. Guardián: `tests/video-mode-tkt.test.mjs`.
+
 ## Qué no hacer (resumen)
 
 - No `show-toolbar` / `quick-filter` en `tk-table`.
