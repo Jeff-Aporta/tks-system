@@ -8,8 +8,21 @@
  */
 import { b64url } from '../components/tk/_shared.js';
 
-/** Raíz del proyecto: base para resolver los fuentes al exportar. */
-export const raiz = new URL('.', document.baseURI).href;
+/**
+ * Raíz del proyecto: base para resolver los fuentes al exportar.
+ *
+ * Se calcula defensivamente porque este módulo ya no lo carga solo el visor:
+ * `<tk-view>` lo arrastra vía `api.js`, y una ficha suelta puede vivir en un
+ * documento sin base resoluble (`about:blank` en tests con jsdom, o un `srcdoc`).
+ * Ahí `new URL('.', baseURI)` lanza y tumbaba la carga entera del componente.
+ */
+export const raiz = (() => {
+  try {
+    return new URL('.', document.baseURI).href;
+  } catch {
+    return '';
+  }
+})();
 
 const leer = (): TkEstadoUrl => {
   const params = new URLSearchParams(location.search);

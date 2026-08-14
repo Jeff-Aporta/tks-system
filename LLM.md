@@ -36,6 +36,55 @@
 12. Tras bug: test rojo en `tests/*.test.mjs` antes del fix (`tests/` **sí** se
     versiona; no está en `.gitignore`).
 
+## Fichas sueltas: `<tk-view>` se carga solo (14-ago-2026)
+
+Una página que embebe la ficha de un tiquete **no escribe JavaScript**. Declara
+el tiquete y el componente resuelve:
+
+```html
+<link rel="stylesheet" href="…/is-webcomponents@main/dist/cdn/is-base.min.css">
+<link rel="stylesheet" href="…/is-webcomponents@main/dist/cdn/palettes.min.css">
+<link rel="stylesheet" href="…/tks-system@main/dist/cdn/documento.css">
+<script type="module" src="…/is-webcomponents@main/dist/cdn/all.min.js"></script>
+<script type="module" src="…/tks-system@main/dist/cdn/tk.all.js"></script>
+
+<tk-view embebido sanear
+         tk="TK-1426669" space="clientesis"
+         fallback="./TK-1426669-tk.json"></tk-view>
+```
+
+| Atributo | Default | Qué hace |
+|---|---|---|
+| `tk` | — | Id del tiquete. Su presencia activa la autocarga. |
+| `space` | `patyia` | `patyia` \| `clientesis` \| `isp-svelte`. |
+| `fallback` | — | JSON local; último recurso si el worker no responde. |
+| `cache-horas` | `24` | Vigencia de la caché para esa lectura. |
+| `sanear` | apagado | Aplica R51 (nombres propios → cargo/rol) al dato del worker. |
+
+Eventos: `tk-datos` (`{ origen, ticket }`) y `tk-error` (`{ error }`).
+
+**SÍ hacer**
+- Reusar `api.ticket()`: ya trae caché en IndexedDB, degradación a copia vencida
+  y aviso. El plazo se pasa por lectura (`{ vigenciaMs }`), no se hardcodea.
+- Sanear con `js/sanear.ts` — es la única copia de la regla R51. Si un generador
+  necesita el mismo saneo, importa de ahí.
+- El lienzo de una ficha suelta va en `css/documento.css` → `dist/cdn/documento.css`.
+  `is-base.css` no pinta `html`/`body` a propósito.
+
+**NO hacer**
+- **No** incrustar el JSON del tiquete en el HTML. Congela el dato: cualquier
+  cambio en el sistema solo se veía regenerando el archivo.
+- **No** replicar en cada página el fetch, la caché y el saneo. Todo eso vive en
+  el componente; la página solo declara atributos.
+- **No** calcular en el arranque de un módulo algo que dependa de una URL
+  resoluble (`new URL('.', document.baseURI)`). `estado.ts` lo hacía y, al pasar
+  a ser dependencia de `<tk-view>`, tumbaba el componente en cualquier documento
+  sin base (`about:blank`, `srcdoc`, jsdom). Va en `try/catch`.
+- **No** esperar que el `fallback` funcione con la página abierta por `file://`:
+  el navegador bloquea leer un archivo hermano. El worker sí responde ahí.
+
+Guardián: `tests/tk-view-autocarga.test.mjs`.
+
 ## Qué no hacer (resumen)
 
 - No `show-toolbar` / `quick-filter` en `tk-table`.

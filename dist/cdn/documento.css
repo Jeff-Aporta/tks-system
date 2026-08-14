@@ -1,0 +1,28 @@
+/**
+ * documento.css — lienzo para una ficha suelta (`<tk-view>` fuera del visor).
+ *
+ * `is-base.css` del kit solo declara tokens: a propósito no pinta `html`/`body`,
+ * porque el fondo es decisión de la app. Una ficha portable no tiene app, así
+ * que ese lienzo lo pone este archivo y la página no necesita `<style>` propio.
+ */
+
+html,
+body {
+  margin: 0;
+  background: var(--is-bg, #0b0d10);
+}
+
+body {
+  min-height: 100vh;
+  color: var(--is-text, #e6edf3);
+  font-family: var(--is-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  /* La ficha es un documento: ancho cómodo y centrado, sin chrome alrededor. */
+  --tk-radius: 0.625rem;
+  --tk-measure: 68ch;
+}
+
+tk-view {
+  display: block;
+  max-width: 72rem;
+  margin: 0 auto;
+}

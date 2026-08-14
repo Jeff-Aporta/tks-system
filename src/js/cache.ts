@@ -50,14 +50,16 @@ const transaccion = async <T>(
 export const cache: TkCacheApi = {
   vigenciaMs: VIGENCIA_MS,
 
-  async leer<T>(clave: string): Promise<TkCacheEntrada<T> | null> {
+  async leer<T>(clave: string, vigenciaMs: number = VIGENCIA_MS): Promise<TkCacheEntrada<T> | null> {
     try {
       const reg = await transaccion<Registro | undefined>('readonly', (s) => s.get(clave) as IDBRequest<Registro | undefined>);
       if (!reg) return null;
       return {
         data: reg.data as T,
         guardadoEn: reg.guardadoEn,
-        vencida: Date.now() - reg.guardadoEn > VIGENCIA_MS,
+        // El plazo lo decide quien lee: el visor refresca cada 15 min, pero una
+        // ficha suelta no necesita pegarle al worker más de una vez al día.
+        vencida: Date.now() - reg.guardadoEn > vigenciaMs,
       };
     } catch {
       // Navegación privada o cuota agotada: la caché es una mejora, no un requisito.

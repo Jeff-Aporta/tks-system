@@ -1,4 +1,4 @@
-var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),K.set(e,t)),i.adoptedStyleSheets=[...i.adoptedStyleSheets,t]},u=`
+var re=new Map,k=(i,e)=>{let t=re.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),re.set(e,t)),i.adoptedStyleSheets=[...i.adoptedStyleSheets,t]},u=`
   :host {
     display: block;
     max-width: 100%;
@@ -34,11 +34,11 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     line-height: 1.5;
     overflow-wrap: anywhere;
   }
-`;var M=Symbol("tk-html-crudo"),v=i=>({[M]:String(i??"")}),G=i=>typeof i=="object"&&i!==null&&M in i,n=(i,...e)=>{let t=[],r=[],o="";for(let l=0;l<i.length;l++){if(o+=i[l],l>=e.length)continue;let c=e[l];if(c==null||c===!1||c===!0)continue;if(typeof c=="function"&&/\s+on([a-zA-Z][\w-]*)=\s*$/.test(o)){let f=o.match(/\s+on([a-zA-Z][\w-]*)=\s*$/);o=o.slice(0,o.length-f[0].length),o+=` data-tk-ev="${r.length}"`,r.push({evento:f[1].toLowerCase(),fn:c});continue}if(G(c)){o+=c[M];continue}let g=Array.isArray(c)?c:[c];for(let f of g)f==null||f===!1||f===!0||(f instanceof Node?(o+=`<template data-tk-nodo="${t.length}"></template>`,t.push(f)):G(f)?o+=f[M]:o+=S(f))}let a=document.createElement("template");a.innerHTML=o;let s=a.content;for(let l of[...s.querySelectorAll("template[data-tk-nodo]")]){let c=Number(l.dataset.tkNodo);l.replaceWith(t[c]??document.createComment("tk:nodo"))}for(let l of[...s.querySelectorAll("[data-tk-ev]")]){let c=Number(l.dataset.tkEv),h=r[c];h&&l.addEventListener(h.evento,h.fn),l.removeAttribute("data-tk-ev")}return s},T=i=>{let e=document.createElement("script");return e.type="application/json",e.textContent=JSON.stringify(i),e},S=i=>String(i??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"),d=i=>i&&typeof i=="object"&&!Array.isArray(i)?i:{},C=i=>{let e=[],t=String(i??"").replace(/`([^`]+)`/g,(r,o)=>(e.push(o),` ${e.length-1} `));return t=S(t).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,(r,o,a)=>`<a href="${S(a)}" target="_blank" rel="noopener noreferrer">${o}</a>`).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[\s(])\*([^*\n]+)\*/g,"$1<em>$2</em>").replace(/~~([^~]+)~~/g,"<del>$1</del>"),t.replace(/ (\d+) /g,(r,o)=>`<code>${S(e[Number(o)])}</code>`)},x=i=>{let e=String(i??"").replace(/\r\n?/g,`
+`;var I=Symbol("tk-html-crudo"),v=i=>({[I]:String(i??"")}),oe=i=>typeof i=="object"&&i!==null&&I in i,n=(i,...e)=>{let t=[],r=[],o="";for(let l=0;l<i.length;l++){if(o+=i[l],l>=e.length)continue;let c=e[l];if(c==null||c===!1||c===!0)continue;if(typeof c=="function"&&/\s+on([a-zA-Z][\w-]*)=\s*$/.test(o)){let f=o.match(/\s+on([a-zA-Z][\w-]*)=\s*$/);o=o.slice(0,o.length-f[0].length),o+=` data-tk-ev="${r.length}"`,r.push({evento:f[1].toLowerCase(),fn:c});continue}if(oe(c)){o+=c[I];continue}let g=Array.isArray(c)?c:[c];for(let f of g)f==null||f===!1||f===!0||(f instanceof Node?(o+=`<template data-tk-nodo="${t.length}"></template>`,t.push(f)):oe(f)?o+=f[I]:o+=S(f))}let a=document.createElement("template");a.innerHTML=o;let s=a.content;for(let l of[...s.querySelectorAll("template[data-tk-nodo]")]){let c=Number(l.dataset.tkNodo);l.replaceWith(t[c]??document.createComment("tk:nodo"))}for(let l of[...s.querySelectorAll("[data-tk-ev]")]){let c=Number(l.dataset.tkEv),h=r[c];h&&l.addEventListener(h.evento,h.fn),l.removeAttribute("data-tk-ev")}return s},A=i=>{let e=document.createElement("script");return e.type="application/json",e.textContent=JSON.stringify(i),e},S=i=>String(i??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"),d=i=>i&&typeof i=="object"&&!Array.isArray(i)?i:{},T=i=>{let e=[],t=String(i??"").replace(/`([^`]+)`/g,(r,o)=>(e.push(o),` ${e.length-1} `));return t=S(t).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,(r,o,a)=>`<a href="${S(a)}" target="_blank" rel="noopener noreferrer">${o}</a>`).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[\s(])\*([^*\n]+)\*/g,"$1<em>$2</em>").replace(/~~([^~]+)~~/g,"<del>$1</del>"),t.replace(/ (\d+) /g,(r,o)=>`<code>${S(e[Number(o)])}</code>`)},x=i=>{let e=String(i??"").replace(/\r\n?/g,`
 `).split(`
-`),t=[],r=[],o=0,a=()=>{r.length&&t.push(`<p>${C(r.join(" "))}</p>`),r.length=0};for(;o<e.length;){let s=e[o],l=s.match(/^\s*```(\w+)?\s*$/);if(l){a();let g=[];for(o++;o<e.length&&!/^\s*```\s*$/.test(e[o]);)g.push(e[o++]);o++,t.push(`<pre data-lang="${S(l[1]??"")}"><code>${S(g.join(`
-`))}</code></pre>`);continue}if(/^\s*\|/.test(s)&&/^\s*\|[\s:|-]+\|?\s*$/.test(e[o+1]??"")){a();let g=w=>w.trim().replace(/^\||\|$/g,"").split("|").map(D=>C(D.trim())),f=g(s);o+=2;let b=[];for(;o<e.length&&/^\s*\|/.test(e[o]);)b.push(g(e[o++]));t.push(`<table><thead><tr>${f.map(w=>`<th>${w}</th>`).join("")}</tr></thead><tbody>${b.map(w=>`<tr>${w.map(D=>`<td>${D}</td>`).join("")}</tr>`).join("")}</tbody></table>`);continue}let c=s.match(/^(#{1,6})\s+(.*)$/);if(c){a();let g=Math.min(c[1].length+2,6);t.push(`<h${g}>${C(c[2])}</h${g}>`),o++;continue}if(/^\s*(---|___|\*\*\*)\s*$/.test(s)){a(),t.push("<hr>"),o++;continue}if(/^\s*>\s?/.test(s)){a();let g=[];for(;o<e.length&&/^\s*>\s?/.test(e[o]);)g.push(e[o++].replace(/^\s*>\s?/,""));t.push(`<blockquote>${x(g.join(`
-`))}</blockquote>`);continue}let h=s.match(/^\s*([-*+]|\d+[.)])\s+/);if(h){a();let g=/\d/.test(h[1]),f=[];for(;o<e.length;){let w=e[o].match(/^\s*([-*+]|\d+[.)])\s+(.*)$/);if(!w){if(f.length&&/^\s{2,}\S/.test(e[o])){f[f.length-1]+=` ${e[o].trim()}`,o++;continue}break}f.push(w[2]),o++}let b=g?"ol":"ul";t.push(`<${b}>${f.map(w=>`<li>${C(w)}</li>`).join("")}</${b}>`);continue}if(!s.trim()){a(),o++;continue}r.push(s.trim()),o++}return a(),t.join(`
+`),t=[],r=[],o=0,a=()=>{r.length&&t.push(`<p>${T(r.join(" "))}</p>`),r.length=0};for(;o<e.length;){let s=e[o],l=s.match(/^\s*```(\w+)?\s*$/);if(l){a();let g=[];for(o++;o<e.length&&!/^\s*```\s*$/.test(e[o]);)g.push(e[o++]);o++,t.push(`<pre data-lang="${S(l[1]??"")}"><code>${S(g.join(`
+`))}</code></pre>`);continue}if(/^\s*\|/.test(s)&&/^\s*\|[\s:|-]+\|?\s*$/.test(e[o+1]??"")){a();let g=w=>w.trim().replace(/^\||\|$/g,"").split("|").map(B=>T(B.trim())),f=g(s);o+=2;let b=[];for(;o<e.length&&/^\s*\|/.test(e[o]);)b.push(g(e[o++]));t.push(`<table><thead><tr>${f.map(w=>`<th>${w}</th>`).join("")}</tr></thead><tbody>${b.map(w=>`<tr>${w.map(B=>`<td>${B}</td>`).join("")}</tr>`).join("")}</tbody></table>`);continue}let c=s.match(/^(#{1,6})\s+(.*)$/);if(c){a();let g=Math.min(c[1].length+2,6);t.push(`<h${g}>${T(c[2])}</h${g}>`),o++;continue}if(/^\s*(---|___|\*\*\*)\s*$/.test(s)){a(),t.push("<hr>"),o++;continue}if(/^\s*>\s?/.test(s)){a();let g=[];for(;o<e.length&&/^\s*>\s?/.test(e[o]);)g.push(e[o++].replace(/^\s*>\s?/,""));t.push(`<blockquote>${x(g.join(`
+`))}</blockquote>`);continue}let h=s.match(/^\s*([-*+]|\d+[.)])\s+/);if(h){a();let g=/\d/.test(h[1]),f=[];for(;o<e.length;){let w=e[o].match(/^\s*([-*+]|\d+[.)])\s+(.*)$/);if(!w){if(f.length&&/^\s{2,}\S/.test(e[o])){f[f.length-1]+=` ${e[o].trim()}`,o++;continue}break}f.push(w[2]),o++}let b=g?"ol":"ul";t.push(`<${b}>${f.map(w=>`<li>${T(w)}</li>`).join("")}</${b}>`);continue}if(!s.trim()){a(),o++;continue}r.push(s.trim()),o++}return a(),t.join(`
 `)},y=`
   .prosa {
     max-width: 100%;
@@ -199,13 +199,13 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       --spacing: 0.75em;
     }
   }
-`,ue=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric"}),pe=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}),$=(i,e=!1)=>{if(!i)return"";let t=String(i).trim();(t.startsWith('"')&&t.endsWith('"')||t.startsWith("'")&&t.endsWith("'"))&&(t=t.slice(1,-1).trim());let r=new Date(t);return Number.isNaN(r.getTime())?t:(e?pe:ue).format(r)},I=i=>{let e=Number(i);if(!Number.isFinite(e)||e<=0)return"";let t=Math.floor(e/60),r=Math.round(e%60);return t?r?`${t} h ${r} min`:`${t} h`:`${r} min`},ge={primary:"brand",brand:"brand",info:"info",success:"success",ok:"success",warning:"warning",warn:"warning",danger:"danger",error:"danger",violet:"brand",neutral:"neutral",default:"neutral"},Z=i=>ge[String(i??"").toLowerCase()]??"neutral",X=i=>{let e=String(i??"").toLowerCase();return e.includes("cerrad")||e.includes("solucion")?"success":e.includes("proceso")||e.includes("curso")?"warning":e.includes("abiert")||e.includes("nuevo")?"info":"neutral"},A={encode(i){let e=new TextEncoder().encode(i),t="";for(let r of e)t+=String.fromCharCode(r);return btoa(t).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},decode(i){let e=String(i).replace(/-/g,"+").replace(/_/g,"/");for(;e.length%4;)e+="=";let t=atob(e),r=new Uint8Array(t.length);for(let o=0;o<t.length;o++)r[o]=t.charCodeAt(o);return new TextDecoder().decode(r)}},m=(i,e)=>{customElements.get(i)||customElements.define(i,e)},p=(i,e)=>class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,i)}connectedCallback(){this.#i()}get payload(){return this.#t}set payload(t){this.#t=d(t),this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);e(this.#e,this.#t,this)}};var he=`
+`,Ae=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric"}),Ee=new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}),$=(i,e=!1)=>{if(!i)return"";let t=String(i).trim();(t.startsWith('"')&&t.endsWith('"')||t.startsWith("'")&&t.endsWith("'"))&&(t=t.slice(1,-1).trim());let r=new Date(t);return Number.isNaN(r.getTime())?t:(e?Ee:Ae).format(r)},R=i=>{let e=Number(i);if(!Number.isFinite(e)||e<=0)return"";let t=Math.floor(e/60),r=Math.round(e%60);return t?r?`${t} h ${r} min`:`${t} h`:`${r} min`},ze={primary:"brand",brand:"brand",info:"info",success:"success",ok:"success",warning:"warning",warn:"warning",danger:"danger",error:"danger",violet:"brand",neutral:"neutral",default:"neutral"},ae=i=>ze[String(i??"").toLowerCase()]??"neutral",ne=i=>{let e=String(i??"").toLowerCase();return e.includes("cerrad")||e.includes("solucion")?"success":e.includes("proceso")||e.includes("curso")?"warning":e.includes("abiert")||e.includes("nuevo")?"info":"neutral"},E={encode(i){let e=new TextEncoder().encode(i),t="";for(let r of e)t+=String.fromCharCode(r);return btoa(t).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},decode(i){let e=String(i).replace(/-/g,"+").replace(/_/g,"/");for(;e.length%4;)e+="=";let t=atob(e),r=new Uint8Array(t.length);for(let o=0;o<t.length;o++)r[o]=t.charCodeAt(o);return new TextDecoder().decode(r)}},m=(i,e)=>{customElements.get(i)||customElements.define(i,e)},p=(i,e)=>class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,i)}connectedCallback(){this.#i()}get payload(){return this.#t}set payload(t){this.#t=d(t),this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);e(this.#e,this.#t,this)}};var je=`
   ${u}
   ${y}
-`;m("tk-markdown",p(he,(i,e)=>{let t=String(e.text??e.body??e.content??"").trim();!t&&!e.title||i.append(n`
+`;m("tk-markdown",p(je,(i,e)=>{let t=String(e.text??e.body??e.content??"").trim();!t&&!e.title||i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     ${t&&n`<div class="prosa">${v(x(t))}</div>`}
-  `)}));var fe=`
+  `)}));var Me=`
   ${u}
   ${y}
   .prosa img { max-width: 100%; height: auto; border-radius: var(--tk-radius, 0.625rem); }
@@ -217,10 +217,10 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
   }
   .prosa a { color: var(--tk-link, #6fb2e8); }
   .prosa code { color: var(--tk-code-text, #a8d5ff); }
-`,be=["script","style","iframe","object","embed","form","link","meta","base"],ve=i=>i.replace(/(?:^|;)\s*width\s*:\s*\d{3,4}px\b/gi,";width:100%").replace(/(?:^|;)\s*max-width\s*:\s*\d{3,4}px\b/gi,";max-width:100%").replace(/(?:^|;)\s*min-width\s*:\s*\d{3,4}px\b/gi,";min-width:0").replace(/^;+/,"").trim(),ke=i=>i.replace(/(?:^|;)\s*color\s*:\s*(?:#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})\b|rgba?\([^)]*\)|hsla?\([^)]*\)|gray|grey|silver|currentcolor)\s*/gi,";").replace(/;{2,}/g,";").replace(/^;+|;+$/g,"").trim(),we=i=>{let e=new DOMParser().parseFromString(String(i??""),"text/html");e.body.querySelectorAll(be.join(",")).forEach(t=>t.remove());for(let t of e.body.querySelectorAll("*")){for(let s of[...t.attributes]){let l=s.name.toLowerCase(),c=s.value.trim().toLowerCase();(l.startsWith("on")||(l==="href"||l==="src")&&c.startsWith("javascript:"))&&t.removeAttribute(s.name)}t.tagName==="A"&&(t.setAttribute("target","_blank"),t.setAttribute("rel","noopener noreferrer"));let r=t.getAttribute("width");r&&/^\d{3,4}$/.test(r)&&Number(r)>=400&&(t.removeAttribute("width"),t.setAttribute("data-tk-fluid",""));let o=t.getAttribute("style");if(!o)continue;let a=o;/color\s*:/i.test(a)&&(a=ke(a)),/\d{3,4}px/.test(a)&&/(?:^|;)\s*(?:max-)?width\s*:/i.test(a)&&(a=ve(a)),a?a!==o&&t.setAttribute("style",a):t.removeAttribute("style")}return e.body.innerHTML};m("tk-html",p(fe,(i,e)=>{let t=String(e.html??"").trim();!t&&!e.title||i.append(n`
+`,Ie=["script","style","iframe","object","embed","form","link","meta","base"],Re=i=>i.replace(/(?:^|;)\s*width\s*:\s*\d{3,4}px\b/gi,";width:100%").replace(/(?:^|;)\s*max-width\s*:\s*\d{3,4}px\b/gi,";max-width:100%").replace(/(?:^|;)\s*min-width\s*:\s*\d{3,4}px\b/gi,";min-width:0").replace(/^;+/,"").trim(),Le=i=>i.replace(/(?:^|;)\s*color\s*:\s*(?:#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})\b|rgba?\([^)]*\)|hsla?\([^)]*\)|gray|grey|silver|currentcolor)\s*/gi,";").replace(/;{2,}/g,";").replace(/^;+|;+$/g,"").trim(),qe=i=>{let e=new DOMParser().parseFromString(String(i??""),"text/html");e.body.querySelectorAll(Ie.join(",")).forEach(t=>t.remove());for(let t of e.body.querySelectorAll("*")){for(let s of[...t.attributes]){let l=s.name.toLowerCase(),c=s.value.trim().toLowerCase();(l.startsWith("on")||(l==="href"||l==="src")&&c.startsWith("javascript:"))&&t.removeAttribute(s.name)}t.tagName==="A"&&(t.setAttribute("target","_blank"),t.setAttribute("rel","noopener noreferrer"));let r=t.getAttribute("width");r&&/^\d{3,4}$/.test(r)&&Number(r)>=400&&(t.removeAttribute("width"),t.setAttribute("data-tk-fluid",""));let o=t.getAttribute("style");if(!o)continue;let a=o;/color\s*:/i.test(a)&&(a=Le(a)),/\d{3,4}px/.test(a)&&/(?:^|;)\s*(?:max-)?width\s*:/i.test(a)&&(a=Re(a)),a?a!==o&&t.setAttribute("style",a):t.removeAttribute("style")}return e.body.innerHTML};m("tk-html",p(Me,(i,e)=>{let t=String(e.html??"").trim();!t&&!e.title||i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
-    ${t&&n`<div class="prosa">${v(we(t))}</div>`}
-  `)}));var ye=`
+    ${t&&n`<div class="prosa">${v(qe(t))}</div>`}
+  `)}));var De=`
   ${u}
   .fila {
     display: flex;
@@ -229,14 +229,14 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     align-items: center;
     font-size: 0.875rem;
   }
-`;m("tk-badges",p(ye,(i,e)=>{let r=(Array.isArray(e.items)?e.items:Array.isArray(e.badges)?e.badges:e.label?[e]:[]).map(d).map(o=>({texto:String(o.label??o.text??"").trim(),color:Z(o.tone??o.color)})).filter(o=>o.texto);r.length&&i.append(n`
+`;m("tk-badges",p(De,(i,e)=>{let r=(Array.isArray(e.items)?e.items:Array.isArray(e.badges)?e.badges:e.label?[e]:[]).map(d).map(o=>({texto:String(o.label??o.text??"").trim(),color:ae(o.tone??o.color)})).filter(o=>o.texto);r.length&&i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="fila">
       ${r.map(o=>n`
         <is-tag color="${o.color}" variant="filled-outlined" pill>${o.texto}</is-tag>
       `)}
     </div>
-  `)}));var xe=`
+  `)}));var Ne=`
   ${u}
   .ficha {
     display: grid;
@@ -273,20 +273,20 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     display: block;
     --is-grid-height: auto;
   }
-`,N=i=>{if(i==null)return"";if(typeof i=="object"){let e=d(i);return C(e.text??e.label??e.value??"")}return C(i)};m("tk-table",p(xe,(i,e)=>{let t=(Array.isArray(e.rows)?e.rows:[]).map(l=>Array.isArray(l)?l:[l]);if(!t.length)return;let r=(Array.isArray(e.headers)?e.headers:[]).map(String);if(t.every(l=>l.length===2)){i.append(n`
+`,P=i=>{if(i==null)return"";if(typeof i=="object"){let e=d(i);return T(e.text??e.label??e.value??"")}return T(i)};m("tk-table",p(Ne,(i,e)=>{let t=(Array.isArray(e.rows)?e.rows:[]).map(l=>Array.isArray(l)?l:[l]);if(!t.length)return;let r=(Array.isArray(e.headers)?e.headers:[]).map(String);if(t.every(l=>l.length===2)){i.append(n`
       ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
       <dl class="ficha">
         ${t.map(l=>n`
-          <dt>${v(N(l[0]))}</dt>
-          <dd>${v(N(l[1]))}</dd>
+          <dt>${v(P(l[0]))}</dt>
+          <dd>${v(P(l[1]))}</dd>
         `)}
       </dl>
       ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-    `);return}let o=Math.max(...t.map(l=>l.length),r.length),a=Array.from({length:o},(l,c)=>({field:`c${c}`,headerName:r[c]??`Columna ${c+1}`,flex:1,sortable:!0,renderCell:({value:h})=>({html:N(h)})})),s=Object.assign(document.createElement("is-data-grid"),{columns:a,rows:t.map((l,c)=>{let h={id:c};return l.forEach((g,f)=>{h[`c${f}`]=g}),h})});s.setAttribute("auto-height",""),s.setAttribute("hide-footer",""),s.setAttribute("density","compact"),s.setAttribute("disable-column-menu",""),s.setAttribute("toolbar-tools","false"),i.append(n`
+    `);return}let o=Math.max(...t.map(l=>l.length),r.length),a=Array.from({length:o},(l,c)=>({field:`c${c}`,headerName:r[c]??`Columna ${c+1}`,flex:1,sortable:!0,renderCell:({value:h})=>({html:P(h)})})),s=Object.assign(document.createElement("is-data-grid"),{columns:a,rows:t.map((l,c)=>{let h={id:c};return l.forEach((g,f)=>{h[`c${f}`]=g}),h})});s.setAttribute("auto-height",""),s.setAttribute("hide-footer",""),s.setAttribute("density","compact"),s.setAttribute("disable-column-menu",""),s.setAttribute("toolbar-tools","false"),i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     ${s}
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var $e=`
+  `)}));var Be=`
   ${u}
   /* auto-fill + tope fijo (no 1fr): con pocas evidencias las miniaturas
      quedan en celdas ~18rem, no estiradas al ancho del documento. */
@@ -347,7 +347,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     font-size: 0.8125em;
     text-align: center;
   }
-`,Se=`
+`,Pe=`
   :host {
     position: fixed;
     inset: 0;
@@ -436,7 +436,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     .nav.next { right: 0.15rem; }
     .cerrar { top: 0.15rem; right: 0.15rem; }
   }
-`,Q=i=>{let e=String(i.url??i.src??"").trim();return e?{url:e,alt:String(i.alt??i.caption??i.title??"Evidencia del tiquete"),caption:String(i.caption??"")}:null},R=class extends HTMLElement{#t;#e=[];#i=0;#o=e=>{this.hasAttribute("open")&&(e.key==="Escape"?this.cerrar():e.key==="ArrowRight"?this.#r(1):e.key==="ArrowLeft"&&this.#r(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});let e=new CSSStyleSheet;e.replaceSync(Se),this.#t.adoptedStyleSheets=[e]}connectedCallback(){document.addEventListener("keydown",this.#o),this.addEventListener("click",e=>{e.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#o)}abrir(e,t=0){this.#e=e,this.#i=Math.max(0,Math.min(t,e.length-1)),this.setAttribute("open",""),this.#a(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#r(e){this.#e.length<2||(this.#i=(this.#i+e+this.#e.length)%this.#e.length,this.#a())}#a(){let e=this.#e[this.#i];if(!e)return;let t=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(n`
+`,se=i=>{let e=String(i.url??i.src??"").trim();return e?{url:e,alt:String(i.alt??i.caption??i.title??"Evidencia del tiquete"),caption:String(i.caption??"")}:null},H=class extends HTMLElement{#t;#e=[];#i=0;#o=e=>{this.hasAttribute("open")&&(e.key==="Escape"?this.cerrar():e.key==="ArrowRight"?this.#r(1):e.key==="ArrowLeft"&&this.#r(-1))};constructor(){super(),this.#t=this.attachShadow({mode:"open"});let e=new CSSStyleSheet;e.replaceSync(Pe),this.#t.adoptedStyleSheets=[e]}connectedCallback(){document.addEventListener("keydown",this.#o),this.addEventListener("click",e=>{e.target===this&&this.cerrar()})}disconnectedCallback(){document.removeEventListener("keydown",this.#o)}abrir(e,t=0){this.#e=e,this.#i=Math.max(0,Math.min(t,e.length-1)),this.setAttribute("open",""),this.#n(),queueMicrotask(()=>this.#t.querySelector(".cerrar")?.focus())}cerrar(){this.removeAttribute("open")}#r(e){this.#e.length<2||(this.#i=(this.#i+e+this.#e.length)%this.#e.length,this.#n())}#n(){let e=this.#e[this.#i];if(!e)return;let t=this.#e.length>1;for(;this.#t.firstChild;)this.#t.removeChild(this.#t.firstChild);this.#t.append(n`
       <div class="marco" role="dialog" aria-modal="true" aria-label="${e.alt}">
         ${t?n`<span class="contador">${this.#i+1} / ${this.#e.length}</span>`:null}
         <button class="cerrar" type="button" aria-label="Cerrar" onclick=${()=>this.cerrar()}>
@@ -453,7 +453,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
         <img class="foto" src="${e.url}" alt="${e.alt}">
         ${e.caption||e.alt?n`<p class="leyenda">${e.caption||e.alt}</p>`:null}
       </div>
-    `)}};customElements.get("tk-lightbox")||customElements.define("tk-lightbox",R);var Ce=()=>{let i=document.querySelector("tk-lightbox");return i||(i=document.createElement("tk-lightbox"),document.body.append(i)),i},Te=i=>{let e=new Set;return i.filter(t=>{let r=t.url.split("?")[0]??t.url;return e.has(r)?!1:(e.add(r),!0)})},Ae=(i,e,t)=>{let r=a=>{a.target.removeAttribute("data-cargando")},o=a=>{let s=a.target;(s.closest(".lienzo")??s).replaceWith(n`
+    `)}};customElements.get("tk-lightbox")||customElements.define("tk-lightbox",H);var He=()=>{let i=document.querySelector("tk-lightbox");return i||(i=document.createElement("tk-lightbox"),document.body.append(i)),i},Oe=i=>{let e=new Set;return i.filter(t=>{let r=t.url.split("?")[0]??t.url;return e.has(r)?!1:(e.add(r),!0)})},Fe=(i,e,t)=>{let r=a=>{a.target.removeAttribute("data-cargando")},o=a=>{let s=a.target;(s.closest(".lienzo")??s).replaceWith(n`
       <p class="rota">La evidencia ya no está disponible.</p>
     `)};return n`
     <figure>
@@ -461,7 +461,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
         class="lienzo"
         type="button"
         aria-label="Ampliar: ${i.alt}"
-        onclick=${()=>Ce().abrir(e,t)}
+        onclick=${()=>He().abrir(e,t)}
       >
         <img
           src="${i.url}"
@@ -475,12 +475,12 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       </button>
       ${i.caption&&n`<figcaption>${i.caption}</figcaption>`}
     </figure>
-  `};m("tk-image",p($e,(i,e,t)=>{let r=t.bloques??[],o=Te((r.length?r.map(a=>Q(d(a.payload))):[Q(e)]).filter(a=>!!a));o.length&&i.append(n`
+  `};m("tk-image",p(Be,(i,e,t)=>{let r=t.bloques??[],o=Oe((r.length?r.map(a=>se(d(a.payload))):[se(e)]).filter(a=>!!a));o.length&&i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="rejilla">
-      ${o.map((a,s)=>Ae(a,o,s))}
+      ${o.map((a,s)=>Fe(a,o,s))}
     </div>
-  `)}));var ze=`
+  `)}));var _e=`
   ${u}
   .marco {
     overflow: hidden;
@@ -517,17 +517,17 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
   .str { color: var(--tk-code-str, #7ee0b8); }
   .num { color: var(--tk-code-num, #f0b775); }
   .key { color: var(--tk-code-key, #7fb2ff); font-weight: 600; }
-`,Ee=new RegExp("\\b("+["select","from","where","insert","into","values","update","set","delete","create","alter","drop","table","index","view","join","left","right","inner","outer","on","group","order","by","having","limit","offset","and","or","not","null","as","distinct","case","when","then","else","end","begin","commit","rollback","union","exists","between","like","in","const","let","var","function","return","if","for","while","await","async","class","extends","new","this","import","export","default","interface","type","try","catch","throw","typeof","true","false"].join("|")+")\\b","gi"),je=i=>{let e=[],t=o=>(e.push(o),`\0${e.length-1}\0`),r=S(i);return r=r.replace(/(--[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/|#[^\n]*)/g,o=>t(`<span class="com">${o}</span>`)),r=r.replace(/('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`)/g,o=>t(`<span class="str">${o}</span>`)),r=r.replace(/\b\d+(\.\d+)?\b/g,o=>t(`<span class="num">${o}</span>`)),r=r.replace(Ee,o=>t(`<span class="key">${o}</span>`)),r.replace(/ (\d+) /g,(o,a)=>e[Number(a)])};m("tk-code",p(ze,(i,e)=>{let t=String(e.code??e.sql??"").replace(/\s+$/,"");if(!t)return;let r=String(e.language??(e.sql?"sql":"")).trim();i.append(n`
+`,Ue=new RegExp("\\b("+["select","from","where","insert","into","values","update","set","delete","create","alter","drop","table","index","view","join","left","right","inner","outer","on","group","order","by","having","limit","offset","and","or","not","null","as","distinct","case","when","then","else","end","begin","commit","rollback","union","exists","between","like","in","const","let","var","function","return","if","for","while","await","async","class","extends","new","this","import","export","default","interface","type","try","catch","throw","typeof","true","false"].join("|")+")\\b","gi"),Ve=i=>{let e=[],t=o=>(e.push(o),`\0${e.length-1}\0`),r=S(i);return r=r.replace(/(--[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/|#[^\n]*)/g,o=>t(`<span class="com">${o}</span>`)),r=r.replace(/('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`)/g,o=>t(`<span class="str">${o}</span>`)),r=r.replace(/\b\d+(\.\d+)?\b/g,o=>t(`<span class="num">${o}</span>`)),r=r.replace(Ue,o=>t(`<span class="key">${o}</span>`)),r.replace(/ (\d+) /g,(o,a)=>e[Number(a)])};m("tk-code",p(_e,(i,e)=>{let t=String(e.code??e.sql??"").replace(/\s+$/,"");if(!t)return;let r=String(e.language??(e.sql?"sql":"")).trim();i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <div class="marco">
       <div class="barra">
         <span class="lenguaje">${r||"c\xF3digo"}</span>
         <is-copy-button value="${t}" aria-label="Copiar código"></is-copy-button>
       </div>
-      <pre><code>${v(je(t))}</code></pre>
+      <pre><code>${v(Ve(t))}</code></pre>
     </div>
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var Me=`
+  `)}));var Je=`
   ${u}
   a {
     display: inline-flex;
@@ -558,14 +558,14 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     white-space: nowrap;
   }
   is-icon { flex: none; font-size: 1.05em; }
-`;m("tk-url",p(Me,(i,e)=>{let t=String(e.href??e.url??"").trim();/^https?:\/\//i.test(t)&&i.append(n`
+`;m("tk-url",p(Je,(i,e)=>{let t=String(e.href??e.url??"").trim();/^https?:\/\//i.test(t)&&i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <a href="${t}" target="_blank" rel="noopener noreferrer">
       <is-icon icon="mdi:open-in-new" aria-hidden="true"></is-icon>
       <span class="etiqueta">${String(e.label??t)}</span>
     </a>
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var Ie="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js",Le=`
+  `)}));var Ke="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js",We=`
   ${u}
 
   /* Copia de lite-yt-embed.css (0.3.3). Tope de ancho + centrado: el visor
@@ -651,7 +651,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     max-width: min(100%, var(--tk-video-max, 36rem));
     text-align: start;
   }
-`,qe=/^[a-zA-Z0-9_-]{6,20}$/,ee=!1,De=()=>{if(ee||customElements.get("lite-youtube"))return;ee=!0;let i=document.createElement("script");i.src=Ie,i.async=!0,document.head.append(i)};m("tk-video",p(Le,(i,e)=>{let t=String(e.youtubeid??e.youtubeId??"").trim();if(!qe.test(t))return;De();let r=`Reproducir: ${String(e.title??"video")}`;i.append(n`
+`,Ge=/^[a-zA-Z0-9_-]{6,20}$/,le=!1,Ye=()=>{if(le||customElements.get("lite-youtube"))return;le=!0;let i=document.createElement("script");i.src=Ke,i.async=!0,document.head.append(i)};m("tk-video",p(We,(i,e)=>{let t=String(e.youtubeid??e.youtubeId??"").trim();if(!Ge.test(t))return;Ye();let r=`Reproducir: ${String(e.title??"video")}`;i.append(n`
     <lite-youtube videoid="${t}" params="rel=0&amp;modestbranding=1" playlabel="${r}">
       <a
         class="lty-playbtn"
@@ -661,7 +661,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       ><span class="lyt-visually-hidden">${r}</span></a>
     </lite-youtube>
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var Ne=`
+  `)}));var Ze=`
   ${u}
   ${y}
   .marco {
@@ -705,19 +705,19 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     + tk-code { display: block; padding: 0 0.95em 0.95em; }
   }
   dl { margin: 0; display: contents; }
-`,te=(i,e)=>e?n`<dl class="campo"><dt>${i}</dt><dd>${e}</dd></dl>`:null;m("tk-cambio-bd",p(Ne,(i,e)=>{let t=String(e.sql??"").trim(),r=String(e.tabla??"").trim(),o=String(e.registro??"").trim(),a=String(e.intencion??"").trim();if(!t&&!r&&!a)return;let s=t?Object.assign(document.createElement("tk-code"),{payload:{code:t,language:"sql"}}):null;i.append(n`
+`,ce=(i,e)=>e?n`<dl class="campo"><dt>${i}</dt><dd>${e}</dd></dl>`:null;m("tk-cambio-bd",p(Ze,(i,e)=>{let t=String(e.sql??"").trim(),r=String(e.tabla??"").trim(),o=String(e.registro??"").trim(),a=String(e.intencion??"").trim();if(!t&&!r&&!a)return;let s=t?Object.assign(document.createElement("tk-code"),{payload:{code:t,language:"sql"}}):null;i.append(n`
     <h2 class="titulo">${String(e.title??"Cambio en base de datos")}</h2>
     <div class="marco">
       ${(r||o)&&n`
         <div class="cabecera">
-          ${te("Tabla",r)}
-          ${te("Registro",o)}
+          ${ce("Tabla",r)}
+          ${ce("Registro",o)}
         </div>
       `}
       ${a&&n`<div class="intencion prosa">${v(x(a))}</div>`}
       ${s}
     </div>
-  `)}));var Re=`
+  `)}));var Xe=`
   ${u}
   ${y}
   ol { margin: 0; padding: 0; list-style: none; }
@@ -759,17 +759,17 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     &.prosa > :last-child { margin-bottom: 0; }
   }
   h3 { overflow-wrap: anywhere; }
-`,Be=(i,e)=>{let t=d(i),r=Array.isArray(t.items)?t.items:Array.isArray(t.steps)?t.steps:t.text?[t.text]:[];return{title:String(t.title??t.label??`Fase ${e+1}`),items:r}},He=i=>i==null?null:typeof i=="string"?n`<div class="hallazgo prosa">${v(x(i))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:i});m("tk-steps",p(Re,(i,e)=>{let r=(Array.isArray(e.phases)?e.phases:Array.isArray(e.steps)?e.steps:[]).map(Be).filter(o=>o.items.length||o.title);r.length&&i.append(n`
+`,Qe=(i,e)=>{let t=d(i),r=Array.isArray(t.items)?t.items:Array.isArray(t.steps)?t.steps:t.text?[t.text]:[];return{title:String(t.title??t.label??`Fase ${e+1}`),items:r}},et=i=>i==null?null:typeof i=="string"?n`<div class="hallazgo prosa">${v(x(i))}</div>`:Object.assign(document.createElement("tk-block"),{bloque:i});m("tk-steps",p(Xe,(i,e)=>{let r=(Array.isArray(e.phases)?e.phases:Array.isArray(e.steps)?e.steps:[]).map(Qe).filter(o=>o.items.length||o.title);r.length&&i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <ol>
       ${r.map(o=>n`
         <li class="fase">
           <h3>${o.title}</h3>
-          <div class="hallazgos">${o.items.map(He)}</div>
+          <div class="hallazgos">${o.items.map(et)}</div>
         </li>
       `)}
     </ol>
-  `)}));var Fe=`
+  `)}));var tt=`
   ${u}
   .arbol {
     box-sizing: border-box;
@@ -837,7 +837,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
   is-tooltip {
     --max-width: 22rem;
   }
-`,E=(i,e,t="")=>({nombre:i,path:e,hijos:new Map,pista:t||void 0}),Pe=(i,e)=>{let t=E("","");for(let r of i){let o=String(r).split(/[/\\]/).filter(Boolean),a=t,s=[];o.forEach((l,c)=>{s.push(l);let h=s.join("/");if(a.hijos.has(l)){if(c===o.length-1){let g=a.hijos.get(l),f=String(g.pista??e[h]??e[r]??e[l]??"");f&&!g.pista&&a.hijos.set(l,E(l,h,f))}}else{let f=c===o.length-1?String(e[h]??e[r]??e[l]??e[o.slice(0,c+1).join("/")]??""):"";a.hijos.set(l,E(l,h,f))}a=a.hijos.get(l)})}return t},ie=(i,e,t)=>{let r=d(i),o=String(r.name??r.nombre??"").trim();if(!o)return null;let a=String(r.path??(t?`${t}/${o}`:o)),s=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],l=E(o,a,String(r.hint??r.pista??e[a]??e[o]??""));for(let c of s){let h=ie(c,e,a);h&&l.hijos.set(h.nombre,h)}return l},Oe=(i,e)=>{let t=E("","");for(let r of i){let o=ie(r,e,"");o&&t.hijos.set(o.nombre,o)}return t},re=0,oe=i=>{let e=i.hijos.size===0,t=e?"mdi:file-document-outline":"mdi:folder-outline",r=i.pista?`ft-tip-${++re}`:"";return n`
+`,M=(i,e,t="")=>({nombre:i,path:e,hijos:new Map,pista:t||void 0}),it=(i,e)=>{let t=M("","");for(let r of i){let o=String(r).split(/[/\\]/).filter(Boolean),a=t,s=[];o.forEach((l,c)=>{s.push(l);let h=s.join("/");if(a.hijos.has(l)){if(c===o.length-1){let g=a.hijos.get(l),f=String(g.pista??e[h]??e[r]??e[l]??"");f&&!g.pista&&a.hijos.set(l,M(l,h,f))}}else{let f=c===o.length-1?String(e[h]??e[r]??e[l]??e[o.slice(0,c+1).join("/")]??""):"";a.hijos.set(l,M(l,h,f))}a=a.hijos.get(l)})}return t},de=(i,e,t)=>{let r=d(i),o=String(r.name??r.nombre??"").trim();if(!o)return null;let a=String(r.path??(t?`${t}/${o}`:o)),s=Array.isArray(r.children)?r.children:Array.isArray(r.hijos)?r.hijos:[],l=M(o,a,String(r.hint??r.pista??e[a]??e[o]??""));for(let c of s){let h=de(c,e,a);h&&l.hijos.set(h.nombre,h)}return l},rt=(i,e)=>{let t=M("","");for(let r of i){let o=de(r,e,"");o&&t.hijos.set(o.nombre,o)}return t},me=0,ue=i=>{let e=i.hijos.size===0,t=e?"mdi:file-document-outline":"mdi:folder-outline",r=i.pista?`ft-tip-${++me}`:"";return n`
     <li class="nodo ${e?"hoja":"carpeta"}">
       <div class="fila">
         <is-icon class="ico" icon="${t}" aria-hidden="true"></is-icon>
@@ -848,11 +848,11 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       </div>
       ${e?null:n`
         <ul>
-          ${[...i.hijos.values()].map(oe)}
+          ${[...i.hijos.values()].map(ue)}
         </ul>
       `}
     </li>
-  `};m("tk-file-tree",p(Fe,(i,e)=>{re=0;let t=d(e.hints??e.notes),r=d(e.fileTree??{}),o=Array.isArray(e.tree)?e.tree:Array.isArray(r.tree)?r.tree:[],a=(Array.isArray(e.paths)?e.paths:Array.isArray(e.files)?e.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!o.length&&!a.length)return;let s=o.length?Oe(o,{...d(r.hints),...t}):Pe(a,{...d(r.hints),...t}),l=String(e.rootLabel??e.root??r.rootLabel??"").trim(),c=[...s.hijos.values()].map(oe);i.append(n`
+  `};m("tk-file-tree",p(tt,(i,e)=>{me=0;let t=d(e.hints??e.notes),r=d(e.fileTree??{}),o=Array.isArray(e.tree)?e.tree:Array.isArray(r.tree)?r.tree:[],a=(Array.isArray(e.paths)?e.paths:Array.isArray(e.files)?e.files:Array.isArray(r.paths)?r.paths:[]).map(String).filter(Boolean);if(!o.length&&!a.length)return;let s=o.length?rt(o,{...d(r.hints),...t}):it(a,{...d(r.hints),...t}),l=String(e.rootLabel??e.root??r.rootLabel??"").trim(),c=[...s.hijos.values()].map(ue);i.append(n`
     <h2 class="titulo">${String(e.title??r.title??"Archivos intervenidos")}</h2>
     <ul class="arbol" role="tree" aria-label="Archivos intervenidos">
       ${l?n`
@@ -865,7 +865,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
         </li>
       `:c}
     </ul>
-  `)}));var _e=`
+  `)}));var ot=`
   ${u}
   .resumen {
     display: grid;
@@ -922,9 +922,9 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125em;
   }
-`,Ue=i=>i.map((e,t)=>{let r=d(e);return{id:String(r.key??r.id??`h${t}`),label:String(r.label??r.name??`Hito ${t+1}`),date:String(r.iso??r.date??""),hora:String(r.hora??""),desc:String(r.nota??r.description??"")}}).filter(e=>e.label);m("tk-timeline",p(_e,(i,e)=>{let t=d(e.timeline??e),r=Ue(Array.isArray(t.milestones)?t.milestones:Array.isArray(t.events)?t.events:[]),o=(Array.isArray(t.resumen)?t.resumen:[]).map(d);if(!r.length&&!o.length)return;let a=String(t.title??e.title??""),s=r.filter(c=>c.date&&!Number.isNaN(new Date(c.date).getTime())),l=s.length>=2?n`
+`,at=i=>i.map((e,t)=>{let r=d(e);return{id:String(r.key??r.id??`h${t}`),label:String(r.label??r.name??`Hito ${t+1}`),date:String(r.iso??r.date??""),hora:String(r.hora??""),desc:String(r.nota??r.description??"")}}).filter(e=>e.label);m("tk-timeline",p(ot,(i,e)=>{let t=d(e.timeline??e),r=at(Array.isArray(t.milestones)?t.milestones:Array.isArray(t.events)?t.events:[]),o=(Array.isArray(t.resumen)?t.resumen:[]).map(d);if(!r.length&&!o.length)return;let a=String(t.title??e.title??""),s=r.filter(c=>c.date&&!Number.isNaN(new Date(c.date).getTime())),l=s.length>=2?n`
       <is-timeline color="inline">
-        ${T({timeline:{title:a||void 0,orientation:"vertical",events:s.map(c=>({id:c.id,label:c.label,date:c.date,desc:c.desc}))}})}
+        ${A({timeline:{title:a||void 0,orientation:"vertical",events:s.map(c=>({id:c.id,label:c.label,date:c.date,desc:c.desc}))}})}
       </is-timeline>
     `:n`
       <ul class="hitos">
@@ -949,7 +949,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
       </div>
     `}
     ${r.length>0&&l}
-  `)}));var We=`
+  `)}));var nt=`
   ${u}
   .subtitulo {
     margin: -0.5em 0 0.75em;
@@ -964,16 +964,16 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     background: var(--is-bg-soft, #14181d);
   }
   is-sequence-diagram { display: block; min-width: 32rem; }
-`;m("tk-sequence",p(We,(i,e)=>{let t=d(e.sequence),r=Array.isArray(t.messages)?t.messages:[],o=String(e.preset??t.preset??"");if(!r.length&&!o)return;let a=String(e.subtitle??"");i.append(n`
+`;m("tk-sequence",p(nt,(i,e)=>{let t=d(e.sequence),r=Array.isArray(t.messages)?t.messages:[],o=String(e.preset??t.preset??"");if(!r.length&&!o)return;let a=String(e.subtitle??"");i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     ${a&&n`<p class="subtitulo">${a}</p>`}
     <div class="marco">
       <is-sequence-diagram color="inline">
-        ${T(o&&!r.length?{preset:o}:{sequence:t})}
+        ${A(o&&!r.length?{preset:o}:{sequence:t})}
       </is-sequence-diagram>
     </div>
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var Je=`
+  `)}));var st=`
   ${u}
   ${y}
   is-stepper { display: block; }
@@ -981,7 +981,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     color: var(--is-text, #e6edf3);
     font-size: 0.875em;
   }
-`;m("tk-stepper",p(Je,(i,e)=>{let t=d(e.stepper??e),r=(Array.isArray(t.steps)?t.steps:[]).map(d);r.length&&i.append(n`
+`;m("tk-stepper",p(st,(i,e)=>{let t=d(e.stepper??e),r=(Array.isArray(t.steps)?t.steps:[]).map(d);r.length&&i.append(n`
     ${e.title&&n`<h2 class="titulo">${e.title}</h2>`}
     <!-- active = total: el procedimiento está documentado, ningún paso queda pendiente. -->
     <is-stepper orientation="vertical" active="${r.length}">
@@ -995,7 +995,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
         `})}
     </is-stepper>
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var Ve=`
+  `)}));var lt=`
   ${u}
   .subtitulo {
     margin: -0.5em 0 0.9em;
@@ -1014,16 +1014,16 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     width: 100%;
     min-height: 16rem;
   }
-`;m("tk-chart",p(Ve,(i,e)=>{let t=d(e.chart??e),r=d(t.data);if(!(Array.isArray(r.datasets)?r.datasets:[]).length)return;let a=d(d(t.options).plugins),s=String(e.title??d(a.title).text??""),l=String(d(a.subtitle).text??""),c={...t,options:{...d(t.options),plugins:{...a,title:{display:!1},subtitle:{display:!1}}}};i.append(n`
+`;m("tk-chart",p(lt,(i,e)=>{let t=d(e.chart??e),r=d(t.data);if(!(Array.isArray(r.datasets)?r.datasets:[]).length)return;let a=d(d(t.options).plugins),s=String(e.title??d(a.title).text??""),l=String(d(a.subtitle).text??""),c={...t,options:{...d(t.options),plugins:{...a,title:{display:!1},subtitle:{display:!1}}}};i.append(n`
     ${s&&n`<h2 class="titulo">${s}</h2>`}
     ${l&&n`<p class="subtitulo">${l}</p>`}
     <div class="marco">
       <is-chart type="${String(t.type??"bar")}">
-        ${T(c)}
+        ${A(c)}
       </is-chart>
     </div>
     ${e.caption&&n`<p class="pie">${e.caption}</p>`}
-  `)}));var Ye=`
+  `)}));var ct=`
   ${u}
   .marco {
     display: grid;
@@ -1049,7 +1049,7 @@ var K=new Map,k=(i,e)=>{let t=K.get(e);t||(t=new CSSStyleSheet,t.replaceSync(e),
     font-size: 0.8125em;
     text-align: center;
   }
-`,Ke="https://mermaid.ink/svg/",Ge=()=>document.documentElement.dataset.theme!=="light";m("tk-diagram",p(Ye,(i,e)=>{let t=Ge(),r=String(t&&e.sourceDark||e.source||"").trim();if(!r)return;let o=String(e.engine??"mermaid").toLowerCase(),a=/^\s*%%\{/.test(r)?r:`%%{init: {"theme": "${t?"dark":"default"}"}}%%
+`,dt="https://mermaid.ink/svg/",mt=()=>document.documentElement.dataset.theme!=="light";m("tk-diagram",p(ct,(i,e)=>{let t=mt(),r=String(t&&e.sourceDark||e.source||"").trim();if(!r)return;let o=String(e.engine??"mermaid").toLowerCase(),a=/^\s*%%\{/.test(r)?r:`%%{init: {"theme": "${t?"dark":"default"}"}}%%
 ${r}`,s=l=>{l.target.replaceWith(n`
       <p class="fallo">El servicio de diagramas no respondió. La fuente está abajo.</p>
     `),i.querySelector("is-details")?.setAttribute("open","")};i.append(n`
@@ -1057,7 +1057,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     <div class="marco">
       ${o==="mermaid"?n`
         <img
-          src="${Ke+A.encode(a)}"
+          src="${dt+E.encode(a)}"
           alt="${String(e.alt??e.caption??"Diagrama del tiquete")}"
           loading="lazy"
           decoding="async"
@@ -1071,7 +1071,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     <is-details summary="Fuente ${o}" variant="filled-outlined">
       <pre><code>${r}</code></pre>
     </is-details>
-  `)}));var Ze=`
+  `)}));var ut=`
   :host {
     display: block;
     max-width: 100%;
@@ -1087,11 +1087,11 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     word-break: break-word;
     color: var(--tk-code-text, #a8d5ff);
   }
-`,Xe={markdown:"tk-markdown",md:"tk-markdown",text:"tk-markdown",html:"tk-html",badge:"tk-badges",badges:"tk-badges",table:"tk-table",image:"tk-image","image-group":"tk-image",steps:"tk-steps",timeline:"tk-timeline","metrics-timeline":"tk-timeline","file-tree":"tk-file-tree",code:"tk-code",sql:"tk-code",sequence:"tk-sequence","mui-stepper":"tk-stepper",stepper:"tk-stepper",url:"tk-url",link:"tk-url",video:"tk-video",youtube:"tk-video","cambio-bd":"tk-cambio-bd",chart:"tk-chart",diagram:"tk-diagram"},Qe=i=>{let e=d(i.payload);if(Array.isArray(i.blocks)&&i.blocks.length)return!0;for(let t of["text","body","html","code","sql","url","src","href","label","source","youtubeid","youtubeId"])if(String(e[t]??"").trim())return!0;for(let t of["rows","items","badges","paths","files","tree","phases","steps","milestones","events","resumen"])if(Array.isArray(e[t])&&e[t].length)return!0;for(let t of["timeline","sequence","stepper","chart","fileTree"])if(Object.keys(d(e[t])).length)return!0;return!1},B=class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,Ze)}connectedCallback(){this.#i()}get bloque(){return this.#t}set bloque(e){this.#t=e??{},this.isConnected&&this.#i()}get docLane(){return d(this.#t.payload).docLane??"otros"}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t,t=String(e.kind??"").toLowerCase();if(!Qe(e)){this.setAttribute("oculto","");return}this.removeAttribute("oculto");let r=Xe[t];if(!r){this.#e.append(n`
+`,pt={markdown:"tk-markdown",md:"tk-markdown",text:"tk-markdown",html:"tk-html",badge:"tk-badges",badges:"tk-badges",table:"tk-table",image:"tk-image","image-group":"tk-image",steps:"tk-steps",timeline:"tk-timeline","metrics-timeline":"tk-timeline","file-tree":"tk-file-tree",code:"tk-code",sql:"tk-code",sequence:"tk-sequence","mui-stepper":"tk-stepper",stepper:"tk-stepper",url:"tk-url",link:"tk-url",video:"tk-video",youtube:"tk-video","cambio-bd":"tk-cambio-bd",chart:"tk-chart",diagram:"tk-diagram"},gt=i=>{let e=d(i.payload);if(Array.isArray(i.blocks)&&i.blocks.length)return!0;for(let t of["text","body","html","code","sql","url","src","href","label","source","youtubeid","youtubeId"])if(String(e[t]??"").trim())return!0;for(let t of["rows","items","badges","paths","files","tree","phases","steps","milestones","events","resumen"])if(Array.isArray(e[t])&&e[t].length)return!0;for(let t of["timeline","sequence","stepper","chart","fileTree"])if(Object.keys(d(e[t])).length)return!0;return!1},O=class extends HTMLElement{#t={};#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,ut)}connectedCallback(){this.#i()}get bloque(){return this.#t}set bloque(e){this.#t=e??{},this.isConnected&&this.#i()}get docLane(){return d(this.#t.payload).docLane??"otros"}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t,t=String(e.kind??"").toLowerCase();if(!gt(e)){this.setAttribute("oculto","");return}this.removeAttribute("oculto");let r=pt[t];if(!r){this.#e.append(n`
         <is-callout color="warning" icon="mdi:puzzle-outline">
           Bloque <code>${t||"sin tipo"}</code> sin representación en este visor.
         </is-callout>
-      `);return}let o=document.createElement(r);Array.isArray(e.blocks)&&e.blocks.length&&(o.bloques=e.blocks),o.payload=d(e.payload),this.#e.append(o)}};m("tk-block",B);var et=`
+      `);return}let o=document.createElement(r);Array.isArray(e.blocks)&&e.blocks.length&&(o.bloques=e.blocks),o.payload=d(e.payload),this.#e.append(o)}};m("tk-block",O);var ht=`
   ${u}
   ${y}
   :host {
@@ -1201,7 +1201,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
   @media (max-width: 48rem) {
     .cifras { grid-template-columns: 1fr; }
   }
-`,tt={success:"var(--is-color-success-500, #2f9e44)",warning:"var(--is-color-warning-500, #f08c00)",info:"var(--is-accent, #1a6eb0)",neutral:"var(--is-text-muted, #9aa7b4)"},H=(i,e,t)=>i?n`
+`,ft={success:"var(--is-color-success-500, #2f9e44)",warning:"var(--is-color-warning-500, #f08c00)",info:"var(--is-accent, #1a6eb0)",neutral:"var(--is-text-muted, #9aa7b4)"},F=(i,e,t)=>i?n`
     <is-tag color="${e}" variant="filled-outlined" pill>
       <is-icon slot="start" icon="${t}" aria-hidden="true"></is-icon>
       ${i}
@@ -1214,29 +1214,29 @@ ${r}`,s=l=>{l.target.replaceWith(n`
       </span>
       <span class="cifra-valor">${e}</span>
     </div>
-  `:null,F=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,et)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e)return;let t=X(e.estado),r=String(e.resumen??"").trim(),o=(e.rootCommits?.length??(e.contexts??[]).reduce((a,s)=>a+(s.commits?.length??0),0))||0;this.#e.append(n`
+  `:null,_=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,ht)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e)return;let t=ne(e.estado),r=String(e.resumen??"").trim(),o=(e.rootCommits?.length??(e.contexts??[]).reduce((a,s)=>a+(s.commits?.length??0),0))||0;this.#e.append(n`
       <div class="cima">
         <div class="identidad">
           <p class="codigo">
-            <span class="punto" style="--punto: ${tt[t]}" aria-hidden="true"></span>
+            <span class="punto" style="--punto: ${ft[t]}" aria-hidden="true"></span>
             ${e.iticket}
           </p>
           <h1>${String(e.titulo??e.iticket)}</h1>
           <div class="chips">
-            ${H(String(e.estado??""),t,"mdi:circle-slice-8")}
-            ${H(e.space==="patyia"?"PatyIA":e.space==="isp-svelte"?"ISP Svelte":"Clientes","brand","mdi:folder-outline")}
-            ${H(String(e.solicitante??""),"neutral","mdi:account-outline")}
+            ${F(String(e.estado??""),t,"mdi:circle-slice-8")}
+            ${F(e.space==="patyia"?"PatyIA":e.space==="isp-svelte"?"ISP Svelte":"Clientes","brand","mdi:folder-outline")}
+            ${F(String(e.solicitante??""),"neutral","mdi:account-outline")}
           </div>
         </div>
       </div>
       <div class="cifras">
         ${L("Solicitado",$(e.fechasolicitud,!0),"mdi:calendar-arrow-right")}
         ${L("Entregado",$(e.fechaentrega,!0),"mdi:calendar-check")}
-        ${L("Tiempo total",I(e.tiempoTotalMinutos??e.diligenciaMinutos),"mdi:timer-outline")}
+        ${L("Tiempo total",R(e.tiempoTotalMinutos??e.diligenciaMinutos),"mdi:timer-outline")}
         ${L("Commits",o?String(o):"","mdi:source-commit")}
       </div>
       ${r&&n`<div class="resumen prosa">${v(x(r))}</div>`}
-    `)}};m("tk-ticket-head",F);var it=`
+    `)}};m("tk-ticket-head",_);var bt=`
   :host {
     display: block;
     width: 100%;
@@ -1315,7 +1315,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     background: color-mix(in srgb, #ef4444 16%, transparent);
   }
   .fecha { color: var(--is-text-muted, #9aa7b4); white-space: nowrap; }
-`,rt={ISS:"Dev-InSoft/ISS-AyudasCPIA","ISS-AyudasCPIA":"Dev-InSoft/ISS-AyudasCPIA",PatyIA:"Dev-InSoft/ISS-AyudasCPIA","ISA-DOC":"Dev-InSoft/ISA-DOC","isa-patyia":"Jeff-Aporta/isa-patyia",ISA:"Jeff-Aporta/isa-patyia","ISW-ClientesIS":"Dev-InSoft/ISW-ClientesIS","ISP-ClientesIS":"Dev-InSoft/ISP-ClientesIS","ISP-CLientesISServer":"Dev-InSoft/ISP-CLientesISServer","ISS-ClientesIS-ContaPymeU":"Dev-InSoft/ISS-ClientesIS-ContaPymeU","ISP-SvelteComponents":"Dev-InSoft/ISP-SvelteComponents"},ot=(i,e)=>{let t=e.trim();if(!t)return"#";let r=i.trim();return`https://github.com/${rt[r]??`Dev-InSoft/${r||"repo"}`}/commit/${t}`},at=i=>{let e=d(i.meta),t=String(i.fecha??e.fecha??"");if(!t)return"\u2014";let r=new Date(t);if(Number.isNaN(r.getTime()))return $(t);let o=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return`${r.getDate()} ${o[r.getMonth()]}`},nt=i=>{let e=d(i.meta);return String(e.repo??i.proyecto??"PatyIA")},P=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,it)}connectedCallback(){this.#i()}get commits(){return this.#t}set commits(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.filter(a=>String(a.hash??"").trim());if(!e.length)return;let t=0,r=0,o=0;for(let a of e)t+=Number(a.inscount??0),r+=Number(a.delcount??0),o+=Number(a.minutos??0);this.#e.append(n`
+`,vt={ISS:"Dev-InSoft/ISS-AyudasCPIA","ISS-AyudasCPIA":"Dev-InSoft/ISS-AyudasCPIA",PatyIA:"Dev-InSoft/ISS-AyudasCPIA","ISA-DOC":"Dev-InSoft/ISA-DOC","isa-patyia":"Jeff-Aporta/isa-patyia",ISA:"Jeff-Aporta/isa-patyia","ISW-ClientesIS":"Dev-InSoft/ISW-ClientesIS","ISP-ClientesIS":"Dev-InSoft/ISP-ClientesIS","ISP-CLientesISServer":"Dev-InSoft/ISP-CLientesISServer","ISS-ClientesIS-ContaPymeU":"Dev-InSoft/ISS-ClientesIS-ContaPymeU","ISP-SvelteComponents":"Dev-InSoft/ISP-SvelteComponents"},kt=(i,e)=>{let t=e.trim();if(!t)return"#";let r=i.trim();return`https://github.com/${vt[r]??`Dev-InSoft/${r||"repo"}`}/commit/${t}`},wt=i=>{let e=d(i.meta),t=String(i.fecha??e.fecha??"");if(!t)return"\u2014";let r=new Date(t);if(Number.isNaN(r.getTime()))return $(t);let o=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return`${r.getDate()} ${o[r.getMonth()]}`},yt=i=>{let e=d(i.meta);return String(e.repo??i.proyecto??"PatyIA")},U=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,bt)}connectedCallback(){this.#i()}get commits(){return this.#t}set commits(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.filter(a=>String(a.hash??"").trim());if(!e.length)return;let t=0,r=0,o=0;for(let a of e)t+=Number(a.inscount??0),r+=Number(a.delcount??0),o+=Number(a.minutos??0);this.#e.append(n`
       <div class="panel" role="region" aria-label="Commits del tiquete">
         <table>
           <thead>
@@ -1329,14 +1329,14 @@ ${r}`,s=l=>{l.target.replaceWith(n`
             </tr>
           </thead>
           <tbody>
-            ${e.map(a=>{let s=String(a.hash??""),l=ot(nt(a),s);return n`
+            ${e.map(a=>{let s=String(a.hash??""),l=kt(yt(a),s);return n`
                 <tr>
                   <td>
                     <a class="hash" href="${l}" target="_blank" rel="noopener noreferrer">
                       ${s.slice(0,9)}
                     </a>
                   </td>
-                  <td class="fecha">${at(a)}</td>
+                  <td class="fecha">${wt(a)}</td>
                   <td><span class="desc" title="${String(a.descripcion??"")}">${String(a.descripcion??"")}</span></td>
                   <td class="num"><span class="chip ins">+${Number(a.inscount??0)}</span></td>
                   <td class="num"><span class="chip del">−${Number(a.delcount??0)}</span></td>
@@ -1354,7 +1354,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
           </tbody>
         </table>
       </div>
-    `)}};m("tk-commits",P);var st=`
+    `)}};m("tk-commits",U);var xt=`
   :host {
     display: block;
     width: 100%;
@@ -1489,9 +1489,9 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     min-width: 0;
     padding: 0.35rem 0 0.85rem;
   }
-`,O={investigacion:{label:"Investigaci\xF3n y testing",bar:"linear-gradient(90deg, #7c3aed, #8b5cf6)",bg:"rgba(124,58,237,0.14)",fg:"#c4b5fd",border:"rgba(167,139,250,0.45)"},commits:{label:"Commits",bar:"linear-gradient(90deg, #06b6d4, #6366f1)",bg:"rgba(6,182,212,0.14)",fg:"#a5f3fc",border:"rgba(34,211,238,0.45)"},diligencia:{label:"Diligencia",bar:"linear-gradient(90deg, #f59e0b, #fbbf24)",bg:"rgba(245,158,11,0.14)",fg:"#fde68a",border:"rgba(251,191,36,0.45)"},otro:{label:"Otro",bar:"linear-gradient(90deg, #059669, #10b981)",bg:"rgba(16,185,129,0.12)",fg:"#a7f3d0",border:"rgba(52,211,153,0.4)"}},lt=i=>{let e=Math.round(Number(i??0));return e<=0?0:Math.round(e/5)*5},ae=i=>{let e=String(i.phase??"").trim().toLowerCase();if(e&&O[e])return e;let t=`${i.name??""} ${i.detail??""}`.toLowerCase();return/^diligencia\b|\bdiligencia del\b|evidencias \+|documentaci[oó]n tk/i.test(t)?"diligencia":/investigaci|testing\b|\bpruebas\b|verificaci|reproducci|matriz de prueba|diagn[oó]stico/i.test(t)?"investigacion":/commit|repositorio|codigo|c[oó]digo|servidor|front|desarrollo|entrega|bd\b|fix\b|feat\b/i.test(t)?"commits":"otro"},_=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,st)}connectedCallback(){this.#i()}get tiempos(){return this.#t}set tiempos(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.map(r=>({...r,minutos:lt(r.minutos)})).filter(r=>r.minutos>0&&String(r.name??"").trim());if(!e.length)return;let t=e.reduce((r,o)=>r+o.minutos,0)||1;this.#e.append(n`
+`,V={investigacion:{label:"Investigaci\xF3n y testing",bar:"linear-gradient(90deg, #7c3aed, #8b5cf6)",bg:"rgba(124,58,237,0.14)",fg:"#c4b5fd",border:"rgba(167,139,250,0.45)"},commits:{label:"Commits",bar:"linear-gradient(90deg, #06b6d4, #6366f1)",bg:"rgba(6,182,212,0.14)",fg:"#a5f3fc",border:"rgba(34,211,238,0.45)"},diligencia:{label:"Diligencia",bar:"linear-gradient(90deg, #f59e0b, #fbbf24)",bg:"rgba(245,158,11,0.14)",fg:"#fde68a",border:"rgba(251,191,36,0.45)"},otro:{label:"Otro",bar:"linear-gradient(90deg, #059669, #10b981)",bg:"rgba(16,185,129,0.12)",fg:"#a7f3d0",border:"rgba(52,211,153,0.4)"}},$t=i=>{let e=Math.round(Number(i??0));return e<=0?0:Math.round(e/5)*5},pe=i=>{let e=String(i.phase??"").trim().toLowerCase();if(e&&V[e])return e;let t=`${i.name??""} ${i.detail??""}`.toLowerCase();return/^diligencia\b|\bdiligencia del\b|evidencias \+|documentaci[oó]n tk/i.test(t)?"diligencia":/investigaci|testing\b|\bpruebas\b|verificaci|reproducci|matriz de prueba|diagn[oó]stico/i.test(t)?"investigacion":/commit|repositorio|codigo|c[oó]digo|servidor|front|desarrollo|entrega|bd\b|fix\b|feat\b/i.test(t)?"commits":"otro"},J=class extends HTMLElement{#t=[];#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,xt)}connectedCallback(){this.#i()}get tiempos(){return this.#t}set tiempos(e){this.#t=Array.isArray(e)?e:[],this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t.map(r=>({...r,minutos:$t(r.minutos)})).filter(r=>r.minutos>0&&String(r.name??"").trim());if(!e.length)return;let t=e.reduce((r,o)=>r+o.minutos,0)||1;this.#e.append(n`
       <div class="linea" aria-label="Línea de tiempo de métricas">
-        ${e.map(r=>{let o=ae(r),a=O[o];return n`
+        ${e.map(r=>{let o=pe(r),a=V[o];return n`
             <div
               class="pista"
               style="${`--fase-bar:${a.bar}`}"
@@ -1513,7 +1513,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
           `})}
       </div>
       <div class="panel" role="region" aria-label="Resumen de tiempos InSoft">
-        ${e.map(r=>{let o=ae(r),a=O[o],s=Math.min(100,r.minutos/t*100);return n`
+        ${e.map(r=>{let o=pe(r),a=V[o],s=Math.min(100,r.minutos/t*100);return n`
             <div
               class="fila"
               style="${`--fase-bar:${a.bar};--fase-bg:${a.bg};--fase-fg:${a.fg};--fase-border:${a.border}`}"
@@ -1538,7 +1538,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
           <span class="total-chip">${t} min</span>
         </div>
       </div>
-    `)}};m("tk-tiempos",_);var ct=`
+    `)}};m("tk-tiempos",J);var St=`
   :host {
     display: block;
     width: 100%;
@@ -1685,7 +1685,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     }
     .fila { grid-template-columns: 1fr; gap: 0.15rem; }
   }
-`,dt=i=>{let e=d(i.detallesextra),t=d(i.meta),r=d(e.metricas),a={...d(t.metricas),...r},s=d(a.documentacion);return s.metricasHabilesMinutos&&!a.metricasHabilesMinutos&&(a.metricasHabilesMinutos=d(s.metricasHabilesMinutos)),a},z=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e):0},ne=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e*60):0},mt=(i,e)=>{let t=d(e.metricasHabilesMinutos),r=d(e.documentacion),o=d(r.metricasHabilesMinutos),a=z(t.hastaAtencion??o.hastaAtencion)||z(i.diligenciaMinutos),s=d(e.reporteEmpresa),l=z(t.atencionActiva??o.atencionActiva)||ne(s.horasAtencion),c=z(t.totalSolucion??o.totalSolucion??i.tiempoTotalMinutos)||ne(s.horasSolucion)||z(i.tiempoestimacionminutos)||a+l+z(i.commitminutos);return[{icon:"mdi:clock-start",label:"Hasta atenci\xF3n",minutos:a,sub:"Creaci\xF3n \u2192 inicio atenci\xF3n"},{icon:"mdi:head-cog-outline",label:"Atenci\xF3n activa",minutos:l,sub:"Inicio atenci\xF3n \u2192 cierre"},{icon:"mdi:check-decagram",label:"Total soluci\xF3n h\xE1bil",minutos:c,sub:"Tiempo real laborado / estimado"}]},U=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,ct)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e?.iticket){this.#e.append(n`<p class="vacio">Sin tiquete para métricas.</p>`);return}let t=dt(e),r=d(t.documentacion),o=d(t.reporteEmpresa),a=mt(e,t),s=[...e.tiempos??[]].filter(b=>Number(b.minutos??0)>0),l=!t.fechaCierre&&String(r.cierreEmpresa??e.estado??"").toLowerCase().includes("abierto")||!t.fechaCierre&&!e.fechaentrega,c=String(r.tiposolicitudapertura??d(e.normativa).tiposolicitudapertura??d(e.normativa).tipoSolicitud??"").trim(),h=[];t.fechaCreacion?(l||!t.fechaCierre)&&h.push(n`
+`,Tt=i=>{let e=d(i.detallesextra),t=d(i.meta),r=d(e.metricas),a={...d(t.metricas),...r},s=d(a.documentacion);return s.metricasHabilesMinutos&&!a.metricasHabilesMinutos&&(a.metricasHabilesMinutos=d(s.metricasHabilesMinutos)),a},z=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e):0},ge=i=>{let e=Number(i);return Number.isFinite(e)&&e>0?Math.round(e*60):0},Ct=(i,e)=>{let t=d(e.metricasHabilesMinutos),r=d(e.documentacion),o=d(r.metricasHabilesMinutos),a=z(t.hastaAtencion??o.hastaAtencion)||z(i.diligenciaMinutos),s=d(e.reporteEmpresa),l=z(t.atencionActiva??o.atencionActiva)||ge(s.horasAtencion),c=z(t.totalSolucion??o.totalSolucion??i.tiempoTotalMinutos)||ge(s.horasSolucion)||z(i.tiempoestimacionminutos)||a+l+z(i.commitminutos);return[{icon:"mdi:clock-start",label:"Hasta atenci\xF3n",minutos:a,sub:"Creaci\xF3n \u2192 inicio atenci\xF3n"},{icon:"mdi:head-cog-outline",label:"Atenci\xF3n activa",minutos:l,sub:"Inicio atenci\xF3n \u2192 cierre"},{icon:"mdi:check-decagram",label:"Total soluci\xF3n h\xE1bil",minutos:c,sub:"Tiempo real laborado / estimado"}]},K=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,St)}connectedCallback(){this.#i()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#i()}#i(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);let e=this.#t;if(!e?.iticket){this.#e.append(n`<p class="vacio">Sin tiquete para métricas.</p>`);return}let t=Tt(e),r=d(t.documentacion),o=d(t.reporteEmpresa),a=Ct(e,t),s=[...e.tiempos??[]].filter(b=>Number(b.minutos??0)>0),l=!t.fechaCierre&&String(r.cierreEmpresa??e.estado??"").toLowerCase().includes("abierto")||!t.fechaCierre&&!e.fechaentrega,c=String(r.tiposolicitudapertura??d(e.normativa).tiposolicitudapertura??d(e.normativa).tipoSolicitud??"").trim(),h=[];t.fechaCreacion?(l||!t.fechaCierre)&&h.push(n`
         <is-callout color="info" icon="mdi:information-outline">
           Ticket abierto — sin cierre InSoft. Las métricas de atención activa y total se completan al registrar el cierre.
         </is-callout>
@@ -1711,7 +1711,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
                 <is-icon icon="${b.icon}" aria-hidden="true"></is-icon>
                 <span>${b.label}</span>
               </div>
-              <div class="kpi-val">${b.minutos>0?I(b.minutos):"\u2014"}</div>
+              <div class="kpi-val">${b.minutos>0?R(b.minutos):"\u2014"}</div>
               <div class="kpi-sub">${b.sub}</div>
             </div>
           `)}
@@ -1754,13 +1754,13 @@ ${r}`,s=l=>{l.target.replaceWith(n`
           ${s.length?Object.assign(document.createElement("tk-tiempos"),{tiempos:s}):n`<p class="vacio">Sin filas de tiempo estimadas en este tiquete.</p>`}
         </section>
       </article>
-    `)}};m("tk-metrics",U);var Xt=new URL(".",document.baseURI).href,se=()=>{let e=new URLSearchParams(location.search).get("s");if(!e)return{};try{return JSON.parse(A.decode(e))}catch{return{}}},ut=(i,e=!1)=>{let t={...se(),...i},r=Object.fromEntries(Object.entries(t).filter(([,a])=>a!=null&&a!==""&&a!==!1)),o=new URL(location.href);return Object.keys(r).length?o.searchParams.set("s",A.encode(JSON.stringify(r))):o.searchParams.delete("s"),history[e?"replaceState":"pushState"]({},"",o),r},pt=i=>{let e=new URL(location.href);return e.searchParams.set("s",A.encode(JSON.stringify(i))),e.href},le={leer:se,escribir:ut,enlace:pt},j=(i,e="brand")=>{let t=document.querySelector("is-toast");if(t?.create){t.create(i,{color:e,duration:e==="warning"||e==="danger"?8e3:4e3});return}e==="danger"||e==="warning"?console.warn(`[tk] ${i}`):console.info(`[tk] ${i}`)};var q="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn";var gt="Jeff-Aporta/jagudeloe-tks-front",ht="03b625043f50705b81423faf429a15e568f77dab",de=`https://cdn.jsdelivr.net/gh/${gt}@${ht}/dist/cdn`,ce=i=>i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),ft=i=>{let e=`${i.iticket} \xB7 ${i.titulo??"Tiquete"}`,t=JSON.stringify(i).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
+    `)}};m("tk-metrics",K);var Ai=(()=>{try{return new URL(".",document.baseURI).href}catch{return""}})(),he=()=>{let e=new URLSearchParams(location.search).get("s");if(!e)return{};try{return JSON.parse(E.decode(e))}catch{return{}}},At=(i,e=!1)=>{let t={...he(),...i},r=Object.fromEntries(Object.entries(t).filter(([,a])=>a!=null&&a!==""&&a!==!1)),o=new URL(location.href);return Object.keys(r).length?o.searchParams.set("s",E.encode(JSON.stringify(r))):o.searchParams.delete("s"),history[e?"replaceState":"pushState"]({},"",o),r},Et=i=>{let e=new URL(location.href);return e.searchParams.set("s",E.encode(JSON.stringify(i))),e.href},fe={leer:he,escribir:At,enlace:Et},C=(i,e="brand")=>{let t=document.querySelector("is-toast");if(t?.create){t.create(i,{color:e,duration:e==="warning"||e==="danger"?8e3:4e3});return}e==="danger"||e==="warning"?console.warn(`[tk] ${i}`):console.info(`[tk] ${i}`)};var q="https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn";var zt="Jeff-Aporta/jagudeloe-tks-front",jt="03b625043f50705b81423faf429a15e568f77dab",ve=`https://cdn.jsdelivr.net/gh/${zt}@${jt}/dist/cdn`,be=i=>i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),Mt=i=>{let e=`${i.iticket} \xB7 ${i.titulo??"Tiquete"}`,t=JSON.stringify(i).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
 <html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="jagudeloe \xB7 visor de tiquetes">
-<title>${ce(e)}</title>
+<title>${be(e)}</title>
 
 <!-- Kit is-* (versi\xF3n fijada) -->
 <link rel="stylesheet" href="${q}/is-base.min.css">
@@ -1768,7 +1768,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
 <script type="module" src="${q}/all.min.js"><\/script>
 
 <!-- Componentes tk-* (bundle \xFAnico, CDN de este repo) -->
-<script type="module" src="${de}/tk.all.js"><\/script>
+<script type="module" src="${ve}/tk.all.js"><\/script>
 
 <style>
   :root {
@@ -1800,7 +1800,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
 </head>
 <body>
   <div class="tk-barra">
-    <span><strong>${ce(i.iticket)}</strong> \xB7 documentaci\xF3n descargada</span>
+    <span><strong>${be(i.iticket)}</strong> \xB7 documentaci\xF3n descargada</span>
     <is-theme-toggle></is-theme-toggle>
   </div>
 
@@ -1814,7 +1814,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
   <\/script>
 </body>
 </html>
-`},W={cdn:de,async html(i){return ft(i)},async descargar(i){let e=await W.html(i),t=new Blob([e],{type:"text/html;charset=utf-8"}),r=URL.createObjectURL(t),o=document.createElement("a");o.href=r,o.download=`${i.iticket}.html`,document.body.append(o),o.click(),o.remove(),setTimeout(()=>URL.revokeObjectURL(r),3e4)}};var bt=`
+`},W={cdn:ve,async html(i){return Mt(i)},async descargar(i){let e=await W.html(i),t=new Blob([e],{type:"text/html;charset=utf-8"}),r=URL.createObjectURL(t),o=document.createElement("a");o.href=r,o.download=`${i.iticket}.html`,document.body.append(o),o.click(),o.remove(),setTimeout(()=>URL.revokeObjectURL(r),3e4)}};var It=`
   :host {
     display: none;
     flex-wrap: nowrap;
@@ -1827,7 +1827,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
   is-button {
     min-width: 2.25rem;
   }
-`,J=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,bt)}connectedCallback(){this.#r()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.toggleAttribute("activo",!!e?.iticket),this.isConnected&&this.#r()}async#i(){let e=this.#t;if(!e)return;let t=le.enlace({space:e.space,tk:e.iticket,full:!0}),r=navigator;if(r.share)try{await r.share({title:`${e.iticket} \xB7 ${e.titulo??""}`.trim(),url:t});return}catch{}try{await navigator.clipboard.writeText(t),j("Enlace copiado al portapapeles.","success")}catch{j("No se pudo copiar el enlace. C\xF3pialo de la barra de direcciones.","warning")}}async#o(e){let t=this.#t;if(t){e.setAttribute("loading","");try{await W.descargar(t),j(`${t.iticket}.html descargado.`,"success")}catch(r){j(`No se pudo generar el HTML: ${r instanceof Error?r.message:r}`,"danger")}finally{e.removeAttribute("loading")}}}#r(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);this.#t?.iticket&&this.#e.append(n`
+`,G=class extends HTMLElement{#t=null;#e;constructor(){super(),this.#e=this.attachShadow({mode:"open"}),k(this.#e,It)}connectedCallback(){this.#r()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.toggleAttribute("activo",!!e?.iticket),this.isConnected&&this.#r()}async#i(){let e=this.#t;if(!e)return;let t=fe.enlace({space:e.space,tk:e.iticket,full:!0}),r=navigator;if(r.share)try{await r.share({title:`${e.iticket} \xB7 ${e.titulo??""}`.trim(),url:t});return}catch{}try{await navigator.clipboard.writeText(t),C("Enlace copiado al portapapeles.","success")}catch{C("No se pudo copiar el enlace. C\xF3pialo de la barra de direcciones.","warning")}}async#o(e){let t=this.#t;if(t){e.setAttribute("loading","");try{await W.descargar(t),C(`${t.iticket}.html descargado.`,"success")}catch(r){C(`No se pudo generar el HTML: ${r instanceof Error?r.message:r}`,"danger")}finally{e.removeAttribute("loading")}}}#r(){for(;this.#e.firstChild;)this.#e.removeChild(this.#e.firstChild);this.#t?.iticket&&this.#e.append(n`
       <is-button
         variant="text"
         color="neutral"
@@ -1850,7 +1850,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
       >
         <is-icon icon="mdi:download-outline" aria-hidden="true"></is-icon>
       </is-button>
-    `)}};m("tk-actions",J);var vt=`
+    `)}};m("tk-actions",G);var Rt="jagudeloe-tks";var D="tickets";var ke=null,Lt=()=>(ke??=new Promise((i,e)=>{let t=indexedDB.open(Rt,1);t.onupgradeneeded=()=>{let r=t.result;r.objectStoreNames.contains(D)||r.createObjectStore(D,{keyPath:"clave"})},t.onsuccess=()=>i(t.result),t.onerror=()=>e(t.error??new Error("IndexedDB no disponible"))}),ke),Y=async(i,e)=>{let t=await Lt();return new Promise((r,o)=>{let a=t.transaction(D,i),s=e(a.objectStore(D));s.onsuccess=()=>r(s.result),s.onerror=()=>o(s.error??new Error("Fallo de IndexedDB"))})},N={vigenciaMs:9e5,async leer(i,e=9e5){try{let t=await Y("readonly",r=>r.get(i));return t?{data:t.data,guardadoEn:t.guardadoEn,vencida:Date.now()-t.guardadoEn>e}:null}catch{return null}},async escribir(i,e){let t=Date.now();try{await Y("readwrite",r=>r.put({clave:i,data:e,guardadoEn:t}))}catch{}return t},async limpiar(){try{await Y("readwrite",i=>i.clear())}catch{}}};var we=[["\xD4\xC7\xAA","\u2026"],["\xD4\xC7\xD8","\u201D"],["\xD4\xC7\xF3","\u2022"],["\xD4\xC7\xF4","\u2013"],["\xD4\xC7\xF6","\u2014"],["\xD4\xE9\xBC","\u20AC"],["\u251C\xA1","\xED"],["\u251C\xA3","\xDC"],["\u251C\xAB","\xEE"],["\u251C\xAC","\xEA"],["\u251C\xAE","\xE9"],["\u251C\xBA","\xE7"],["\u251C\xBB","\xEF"],["\u251C\xBC","\xEC"],["\u251C\xBD","\xEB"],["\u251C\xBF","\xE8"],["\u251C\xC2","\xF6"],["\u251C\xDC","\xDA"],["\u251C\xE1","\xE0"],["\u251C\xE6","\xD1"],["\u251C\xE7","\xC7"],["\u251C\xEB","\xC9"],["\u251C\xEC","\xCD"],["\u251C\xED","\xE1"],["\u251C\xF1","\xE4"],["\u251C\xF3","\xE2"],["\u251C\xF4","\xD3"],["\u251C\xFC","\xC1"],["\u251C\u2502","\xF3"],["\u251C\u2510","\xFF"],["\u251C\u2524","\xF4"],["\u251C\u2551","\xFA"],["\u251C\u2557","\xFB"],["\u251C\u255D","\xFC"],["\u251C\u2563","\xF9"],["\u251C\u2592","\xF1"],["\u251C\u2593","\xF2"],["\u252C\xBD","\xAB"],["\u252C\xED","\xA1"],["\u252C\u2510","\xBF"],["\u252C\u2557","\xBB"],["\u252C\u2591","\xB0"]];var qt=/[\u2500-\u257FÔ]|Ã[\x80-\xBF]|Â[\x80-\xBF]/;function Dt(i){if(!i||!qt.test(i))return i;let e=i;for(let[t,r]of we)e.includes(t)&&(e=e.split(t).join(r));return e}function j(i){if(typeof i=="string")return Dt(i);if(Array.isArray(i))return i.map(e=>j(e));if(i&&typeof i=="object"){let e={};for(let[t,r]of Object.entries(i))e[t]=j(r);return e}return i}var Nt="https://jagudeloe-tks.jeffaporta.workers.dev",Bt=12e3,$e=new URLSearchParams(location.search).get("api")??Nt,ye=["patyia","clientesis","isp-svelte"],Z=!1,Pt=i=>{if(Z)return;Z=!0;let e=Math.round((Date.now()-i)/6e4);C(`El servidor de tiquetes no respondi\xF3. Se muestra la copia local de hace ${e} min.`,"warning")},Ht=async i=>{let e=new AbortController,t=setTimeout(()=>e.abort(),Bt);try{let r=await fetch(`${$e}${i}`,{signal:e.signal,headers:{accept:"application/json"}});if(!r.ok){let o=`HTTP ${r.status}`;try{let a=await r.json();a?.error&&(o=`${o}: ${a.error}`)}catch{}throw new Error(o)}return await r.json()}finally{clearTimeout(t)}},xe=async(i,e,t,r)=>{let o=await N.leer(i,r);if(o&&!o.vencida)return{data:j(o.data),origen:"cache",guardadoEn:o.guardadoEn};try{let a=await Ht(e);if(!t(a))throw new Error("Respuesta inesperada del worker");let s=j(a),l=await N.escribir(i,s);return{data:s,origen:"red",guardadoEn:l}}catch(a){let s=a instanceof Error?a.message:String(a);if(o)return Pt(o.guardadoEn),{data:j(o.data),origen:"cache-vencida",guardadoEn:o.guardadoEn,error:s};throw new Error(`No se pudo obtener ${e}: ${s}`)}},X={base:$e,spaces:ye,async listar(i){let e=await xe(`lista:${i}`,`/api/tk/${i}/tickets?limit=200`,t=>!!t?.ok&&Array.isArray(t.rows));return{...e,data:e.data.rows}},async listarTodos(){let e=(await Promise.allSettled(ye.map(a=>X.listar(a)))).filter(a=>a.status==="fulfilled");if(!e.length)throw new Error("Ning\xFAn espacio de tiquetes respondi\xF3");let t=new Map;for(let a of e)for(let s of a.value.data){let l=String(s.iticket??"");!l||t.has(l)||t.set(l,s)}let r=[...t.values()],o=e.some(a=>a.value.origen==="cache-vencida")?"cache-vencida":e.every(a=>a.value.origen==="red")?"red":"cache";return r.sort((a,s)=>String(s.fechasolicitud??"").localeCompare(String(a.fechasolicitud??""))),{data:r,origen:o,guardadoEn:Math.min(...e.map(a=>a.value.guardadoEn))}},async ticket(i,e,t){let r=e.trim(),o=/^TK-/i.test(r)?r:`TK-${r}`,a=await xe(`tk:${o}`,`/api/tk/${i}/tickets/${encodeURIComponent(o)}`,s=>!!s?.ok&&!!s.ticket?.iticket,t?.vigenciaMs);return{...a,data:a.data.ticket}},async refrescar(){await N.limpiar(),Z=!1}};var Q=/\b(jeffrey|agudelo|viviana|restrepo|camilo|jagudeloe|vrestrepo)\b/i,Se="el \xE1rea solicitante",Ot=[[/\bVRESTREPO\b/g,"el perfil solicitante"],[/\bJAGUDELOE\b/g,"el perfil de ingenier\xEDa"]],Ft=/https?:\/\/[^\s)"'<>]+/g;var _t=/\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)+\b/g,Ut=i=>{let e=[],t=String(i).replace(Ft,r=>(e.push(r),`\uF8FF${e.length-1}\uF8FF`));for(let[r,o]of Ot)t=t.replace(r,o);return Q.test(t)&&(t=t.replace(_t,r=>Q.test(r)?Se:r),t=t.replace(Q,Se)),t.replace(new RegExp("\uF8FF(\\d+)\uF8FF","g"),(r,o)=>e[Number(o)]??"")},ee=i=>{if(typeof i=="string")return Ut(i);if(Array.isArray(i))return i.map(ee);if(i&&typeof i=="object"){let e={};for(let[t,r]of Object.entries(i))e[t]=ee(r);return e}return i},Te=i=>ee(i);var Vt=`
   :host {
     display: block;
     position: relative;
@@ -1931,6 +1931,11 @@ ${r}`,s=l=>{l.target.replaceWith(n`
     color: var(--is-text, #e6edf3);
     text-align: center;
   }
+  .vacio .detalle {
+    margin: 0;
+    color: var(--is-text-muted, #9aa7b4);
+    font-size: 0.8125rem;
+  }
   .firma {
     margin-top: 0.5rem;
     padding-top: 1.25rem;
@@ -1990,7 +1995,7 @@ ${r}`,s=l=>{l.target.replaceWith(n`
   .fab-btn[aria-pressed="true"] {
     color: var(--is-accent, #1a6eb0);
   }
-`,kt=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],wt=i=>{let e=new Set;return i.filter(t=>{let r=String(t.kind??"").toLowerCase();if(r!=="image"&&r!=="image-group")return!0;let o=d(t.payload),a=String(o.url??o.src??"").trim().split("?")[0]??"";return a?e.has(a)?!1:(e.add(a),!0):!0})},yt=i=>{let e=Array.isArray(i.content)&&i.content.length?[...i.content]:[...i.doc?.blocks??[]],t=(i.contexts??[]).flatMap(r=>[...r.content??[]]);return wt([...e,...t].filter(r=>r&&typeof r=="object").sort((r,o)=>(r.sortkey??0)-(o.sortkey??0)))},xt=(i,e)=>{let t=d(i.payload),r=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(r==="solicitud"||r==="evidencias"||r==="causa"||r==="solucion"||r==="verificacion"||r==="otros")return r;let o=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(o))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(o))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(o))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(o))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(o))return"solucion";let a=String(i.kind??"").toLowerCase();return a==="html"||a==="image"||a==="image-group"?e==="otros"?"evidencias":e:a==="badge"||a==="badges"?e==="otros"?"solicitud":e:a==="code"||a==="sql"||a==="cambio-bd"||a==="file-tree"?e==="otros"?"solucion":e:a==="steps"||a==="stepper"?e==="otros"?"verificacion":e:a==="table"&&e==="otros"?"evidencias":a==="markdown"||a==="md"||a==="text"?o?"otros":e:"otros"},$t=i=>{let e="solicitud";return i.map(t=>{let r=xt(t,e);return e=r,{b:t,lane:r}})},St=i=>{let e=String(i.kind??"").toLowerCase();return e==="image"||e==="image-group"},me=i=>{let e=d(i.payload),t=String(e.caption??"").trim()||String(e.title??"").trim(),r=Array.isArray(i.blocks)?i.blocks:[];return String(i.kind??"").toLowerCase()==="image-group"&&r.length?i:{...i,kind:"image",payload:{...e,caption:t,title:""},blocks:void 0}},Ct=i=>{let e=[],t=[],r=()=>{if(t.length){if(t.length===1)e.push(t[0]);else{let o=t.flatMap(s=>String(s.kind??"").toLowerCase()==="image-group"&&Array.isArray(s.blocks)&&s.blocks.length?s.blocks.map(me):[me(s)]),a=d(t[0].payload).docLane;e.push({kind:"image-group",sortkey:t[0].sortkey,payload:a?{docLane:a}:{},blocks:o})}t=[]}};for(let o of i)St(o)?t.push(o):(r(),e.push(o));return r(),e},Tt=i=>{let e=[...i.rootCommits??[]];return e.length?e:(i.contexts??[]).flatMap(t=>[...t.commits??[]])},V=i=>String(i||"").trim().toLowerCase()==="metrics"?"metrics":"doc",Y=class extends HTMLElement{static get observedAttributes(){return["embebido","modo"]}#t=null;#e="doc";#i;constructor(){super(),this.#i=this.attachShadow({mode:"open"}),k(this.#i,vt)}connectedCallback(){this.#e=V(this.getAttribute("modo")),this.#n()}attributeChangedCallback(e,t,r){e==="modo"&&(this.#e=V(r)),this.isConnected&&this.#n()}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#n()}set json(e){let t=d(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){let t=V(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#n())}#o=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#r(e){let t=$t(yt(e)),r=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),o=Tt(e),a=kt.map(({lane:l,rotulo:c})=>{let h=Ct(t.filter(g=>g.lane===l).map(g=>g.b));return h.length?n`
+`,Jt=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],Kt=i=>{let e=new Set;return i.filter(t=>{let r=String(t.kind??"").toLowerCase();if(r!=="image"&&r!=="image-group")return!0;let o=d(t.payload),a=String(o.url??o.src??"").trim().split("?")[0]??"";return a?e.has(a)?!1:(e.add(a),!0):!0})},Wt=i=>{let e=Array.isArray(i.content)&&i.content.length?[...i.content]:[...i.doc?.blocks??[]],t=(i.contexts??[]).flatMap(r=>[...r.content??[]]);return Kt([...e,...t].filter(r=>r&&typeof r=="object").sort((r,o)=>(r.sortkey??0)-(o.sortkey??0)))},Gt=(i,e)=>{let t=d(i.payload),r=String(t.docLane??t.section??t.lane??"").trim().toLowerCase();if(r==="solicitud"||r==="evidencias"||r==="causa"||r==="solucion"||r==="verificacion"||r==="otros")return r;let o=String(t.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(o))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(o))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(o))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(o))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(o))return"solucion";let a=String(i.kind??"").toLowerCase();return a==="html"||a==="image"||a==="image-group"?e==="otros"?"evidencias":e:a==="badge"||a==="badges"?e==="otros"?"solicitud":e:a==="code"||a==="sql"||a==="cambio-bd"||a==="file-tree"?e==="otros"?"solucion":e:a==="steps"||a==="stepper"?e==="otros"?"verificacion":e:a==="table"&&e==="otros"?"evidencias":a==="markdown"||a==="md"||a==="text"?o?"otros":e:"otros"},Yt=i=>{let e="solicitud";return i.map(t=>{let r=Gt(t,e);return e=r,{b:t,lane:r}})},Zt=i=>{let e=String(i.kind??"").toLowerCase();return e==="image"||e==="image-group"},Ce=i=>{let e=d(i.payload),t=String(e.caption??"").trim()||String(e.title??"").trim(),r=Array.isArray(i.blocks)?i.blocks:[];return String(i.kind??"").toLowerCase()==="image-group"&&r.length?i:{...i,kind:"image",payload:{...e,caption:t,title:""},blocks:void 0}},Xt=i=>{let e=[],t=[],r=()=>{if(t.length){if(t.length===1)e.push(t[0]);else{let o=t.flatMap(s=>String(s.kind??"").toLowerCase()==="image-group"&&Array.isArray(s.blocks)&&s.blocks.length?s.blocks.map(Ce):[Ce(s)]),a=d(t[0].payload).docLane;e.push({kind:"image-group",sortkey:t[0].sortkey,payload:a?{docLane:a}:{},blocks:o})}t=[]}};for(let o of i)Zt(o)?t.push(o):(r(),e.push(o));return r(),e},Qt=i=>{let e=[...i.rootCommits??[]];return e.length?e:(i.contexts??[]).flatMap(t=>[...t.commits??[]])},te=i=>String(i||"").trim().toLowerCase()==="metrics"?"metrics":"doc",ei=24,ti=i=>{let e=String(i||"").trim().toLowerCase();return e==="clientesis"||e==="isp-svelte"?e:"patyia"},ie=class extends HTMLElement{static get observedAttributes(){return["embebido","modo","tk","space"]}#t=null;#e="doc";#i;#o="inicial";#r="";#n=0;constructor(){super(),this.#i=this.attachShadow({mode:"open"}),k(this.#i,Vt)}connectedCallback(){this.#e=te(this.getAttribute("modo")),this.getAttribute("tk")&&!this.#t?this.cargar():this.#a()}attributeChangedCallback(e,t,r){if(e==="modo"&&(this.#e=te(r)),!!this.isConnected){if((e==="tk"||e==="space")&&t!==r&&this.getAttribute("tk")){this.cargar();return}this.#a()}}async cargar(){let e=String(this.getAttribute("tk")||"").trim();if(!e)return;let t=ti(this.getAttribute("space")),r=Number(this.getAttribute("cache-horas"))||ei,o=++this.#n;this.#o="cargando",this.#a();let a=(l,c)=>{o===this.#n&&(this.#t=this.hasAttribute("sanear")?Te(l):l,this.#o="listo",this.#a(),this.dispatchEvent(new CustomEvent("tk-datos",{bubbles:!0,composed:!0,detail:{origen:c,ticket:this.#t}})))};try{let l=await X.ticket(t,e,{vigenciaMs:r*60*60*1e3});a(l.data,l.origen);return}catch(l){this.#r=l instanceof Error?l.message:String(l)}let s=this.getAttribute("fallback");if(s)try{let l=await fetch(s,{headers:{accept:"application/json"}});if(!l.ok)throw new Error(`HTTP ${l.status}`);let c=d(await l.json());a(c.ticket?c.ticket:c,"archivo local");return}catch(l){this.#r+=` \xB7 fallback: ${l instanceof Error?l.message:String(l)}`}o===this.#n&&(this.#o="error",this.#a(),this.dispatchEvent(new CustomEvent("tk-error",{bubbles:!0,composed:!0,detail:{error:this.#r}})))}get ticket(){return this.#t}set ticket(e){this.#t=e,this.isConnected&&this.#a()}set json(e){let t=d(e);this.ticket=t.ticket?t.ticket:t}get embebido(){return this.hasAttribute("embebido")}set embebido(e){this.toggleAttribute("embebido",!!e)}get modo(){return this.#e}set modo(e){let t=te(String(e));this.#e!==t&&(this.#e=t,this.setAttribute("modo",t),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:t}})),this.isConnected&&this.#a())}#s=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#l(e){let t=Yt(Wt(e)),r=Object.assign(document.createElement("tk-ticket-head"),{ticket:e}),o=Qt(e),a=Jt.map(({lane:l,rotulo:c})=>{let h=Xt(t.filter(g=>g.lane===l).map(g=>g.b));return h.length?n`
         <section aria-label="${c}" data-lane="${l}">
           <h2 class="rotulo">${c}</h2>
           ${h.map(g=>Object.assign(document.createElement("tk-block"),{bloque:g}))}
@@ -2014,18 +2019,32 @@ ${r}`,s=l=>{l.target.replaceWith(n`
           documentación generada desde jagudeloe-tks
         </footer>
       </article>
-    `}#a(e){return n`
+    `}#c(e){return n`
       <div class="documento" data-modo="metrics">
         ${Object.assign(document.createElement("tk-metrics"),{ticket:e})}
       </div>
-    `}#n(){for(;this.#i.firstChild;)this.#i.removeChild(this.#i.firstChild);let e=this.#t;if(!e?.iticket){this.#i.append(n`
+    `}#a(){for(;this.#i.firstChild;)this.#i.removeChild(this.#i.firstChild);let e=this.#t;if(!e?.iticket){if(this.#o==="cargando"){this.#i.append(n`
+          <div class="vacio">
+            <is-icon icon="mdi:progress-clock" style="font-size:2rem" aria-hidden="true"></is-icon>
+            <p>Cargando ${this.getAttribute("tk")??"el tiquete"}…</p>
+          </div>
+        `);return}if(this.#o==="error"){let a=location.protocol==="file:";this.#i.append(n`
+          <div class="vacio">
+            <is-icon icon="mdi:cloud-off-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
+            <p>No se pudo obtener ${this.getAttribute("tk")??"el tiquete"}.</p>
+            <p class="detalle">${this.#r}</p>
+            ${a?n`<p class="detalle">
+              La página está abierta como archivo local: el respaldo en disco necesita servirse por HTTP.
+            </p>`:null}
+          </div>
+        `);return}this.#i.append(n`
         <div class="vacio">
           <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
           <p>Selecciona un tiquete para ver su documentación.</p>
         </div>
       `);return}let t=this.#e==="metrics",r=t?"mdi:file-document-outline":"mdi:chart-timeline-variant",o=t?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#i.append(n`
       <div class="shell">
-        ${t?this.#a(e):this.#r(e)}
+        ${t?this.#c(e):this.#l(e)}
         <div class="fab">
           <button
             type="button"
@@ -2033,10 +2052,10 @@ ${r}`,s=l=>{l.target.replaceWith(n`
             aria-label="${o}"
             title="${o}"
             aria-pressed="${t?"true":"false"}"
-            onclick=${this.#o}
+            onclick=${this.#s}
           >
             <is-icon icon="${r}" aria-hidden="true"></is-icon>
           </button>
         </div>
       </div>
-    `)}};m("tk-view",Y);
+    `)}};m("tk-view",ie);

@@ -1,10 +1,27 @@
 /**
  * <tk-view> — documento completo de un tiquete a partir de su JSON.
  *
- * Propiedades
- *   ticket    TkTicket
- *   embebido  boolean (attr)  — sin acciones de compartir/descargar
- *   modo      'doc' | 'metrics' (attr) — dimensión activa
+ * Se le puede dar el ticket ya resuelto (`ticket` / `json`) o dejar que lo
+ * cargue él mismo declarando `tk`:
+ *
+ *   <tk-view embebido tk="TK-1453428" space="patyia" sanear></tk-view>
+ *
+ * Cuando trae `tk`, resuelve en tres pasos —caché local vigente, worker de
+ * tks-system, y `fallback` si el worker no responde— sin que la página que lo
+ * embebe tenga que escribir una línea de JavaScript.
+ *
+ * Atributos
+ *   tk           id del tiquete; activa la autocarga
+ *   space        patyia | clientesis | isp-svelte (default: patyia)
+ *   fallback     URL de un JSON local; último recurso si el worker falla
+ *   cache-horas  vigencia de la caché (default 24)
+ *   sanear       aplica R51 (nombres propios → cargo/rol) al dato del worker
+ *   embebido     sin acciones de compartir/descargar
+ *   modo         'doc' | 'metrics' — dimensión activa
+ *
+ * Eventos
+ *   tk-datos     { origen, ticket } cuando termina de resolver
+ *   tk-error     { error } si no hubo forma de obtenerlo
  *
  * Dos dimensiones visuales:
  *   - doc      — diligen cia / solución (bloques, commits)
@@ -14,6 +31,8 @@
  */
 
 import { css, define, html, rec } from './_shared.js';
+import { api } from '../../js/api.js';
+import { sanearTicket } from '../../js/sanear.js';
 // Dependencias de createElement: sin import, el tag queda sin upgrade en el shell.
 import './tk-metrics.js';
 import './tk-ticket-head.js';
@@ -102,6 +121,11 @@ const CSS = /* css */ `
     padding: 3rem 1rem;
     color: var(--is-text, #e6edf3);
     text-align: center;
+  }
+  .vacio .detalle {
+    margin: 0;
+    color: var(--is-text-muted, #9aa7b4);
+    font-size: 0.8125rem;
   }
   .firma {
     margin-top: 0.5rem;
@@ -338,12 +362,23 @@ const commitsDe = (tk: TkTicket): TkCommit[] => {
 const parseModo = (raw: string | null | undefined): TkVistaModo =>
   String(raw || '').trim().toLowerCase() === 'metrics' ? 'metrics' : 'doc';
 
+const HORAS_CACHE_DEFAULT = 24;
+
+const parseSpace = (raw: string | null): TkSpace => {
+  const s = String(raw || '').trim().toLowerCase();
+  return s === 'clientesis' || s === 'isp-svelte' ? s : 'patyia';
+};
+
 class TkView extends HTMLElement {
-  static get observedAttributes(): string[] { return ['embebido', 'modo']; }
+  static get observedAttributes(): string[] { return ['embebido', 'modo', 'tk', 'space']; }
 
   #ticket: TkTicket | null = null;
   #modo: TkVistaModo = 'doc';
   #root: ShadowRoot;
+  #estado: 'inicial' | 'cargando' | 'listo' | 'error' = 'inicial';
+  #detalle = '';
+  /** Descarta la respuesta de una carga anterior si el `tk` cambió a mitad. */
+  #cargaId = 0;
 
   constructor() {
     super();
@@ -353,12 +388,74 @@ class TkView extends HTMLElement {
 
   connectedCallback(): void {
     this.#modo = parseModo(this.getAttribute('modo'));
+    if (this.getAttribute('tk') && !this.#ticket) void this.cargar();
+    else this.#render();
+  }
+
+  attributeChangedCallback(name: string, prev: string | null, next: string | null): void {
+    if (name === 'modo') this.#modo = parseModo(next);
+    if (!this.isConnected) return;
+    if ((name === 'tk' || name === 'space') && prev !== next) {
+      if (this.getAttribute('tk')) { void this.cargar(); return; }
+    }
     this.#render();
   }
 
-  attributeChangedCallback(name: string, _prev: string | null, next: string | null): void {
-    if (name === 'modo') this.#modo = parseModo(next);
-    if (this.isConnected) this.#render();
+  /**
+   * Resuelve el tiquete: caché vigente → worker → `fallback`. `api.ticket` ya
+   * hace los dos primeros pasos (y sirve la copia vencida si la red cae), así
+   * que aquí solo queda encadenar el archivo local como último recurso.
+   */
+  async cargar(): Promise<void> {
+    const id = String(this.getAttribute('tk') || '').trim();
+    if (!id) return;
+    const space = parseSpace(this.getAttribute('space'));
+    const horas = Number(this.getAttribute('cache-horas')) || HORAS_CACHE_DEFAULT;
+    const carga = ++this.#cargaId;
+
+    this.#estado = 'cargando';
+    this.#render();
+
+    const publicar = (tk: TkTicket, origen: string): void => {
+      if (carga !== this.#cargaId) return;
+      this.#ticket = this.hasAttribute('sanear') ? sanearTicket(tk) : tk;
+      this.#estado = 'listo';
+      this.#render();
+      this.dispatchEvent(new CustomEvent('tk-datos', {
+        bubbles: true, composed: true, detail: { origen, ticket: this.#ticket },
+      }));
+    };
+
+    try {
+      const r = await api.ticket(space, id, { vigenciaMs: horas * 60 * 60 * 1000 });
+      publicar(r.data, r.origen);
+      return;
+    } catch (e) {
+      this.#detalle = e instanceof Error ? e.message : String(e);
+    }
+
+    const fallback = this.getAttribute('fallback');
+    if (fallback) {
+      try {
+        const res = await fetch(fallback, { headers: { accept: 'application/json' } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const crudo = rec(await res.json());
+        publicar((crudo.ticket ? crudo.ticket : crudo) as TkTicket, 'archivo local');
+        return;
+      } catch (e) {
+        // Con la página abierta como archivo (file://) el navegador bloquea esta
+        // vía; el worker sí funciona ahí, así que el fallback solo hace falta
+        // servido por HTTP. Se deja dicho en el mensaje en vez de fingir un bug.
+        this.#detalle += ` · fallback: ${e instanceof Error ? e.message : String(e)}`;
+      }
+    }
+
+    if (carga !== this.#cargaId) return;
+    this.#estado = 'error';
+    this.#render();
+    this.dispatchEvent(new CustomEvent('tk-error', {
+      bubbles: true, composed: true, detail: { error: this.#detalle },
+    }));
   }
 
   get ticket(): TkTicket | null { return this.#ticket; }
@@ -454,6 +551,29 @@ class TkView extends HTMLElement {
     const tk = this.#ticket;
 
     if (!tk?.iticket) {
+      if (this.#estado === 'cargando') {
+        this.#root.append(html`
+          <div class="vacio">
+            <is-icon icon="mdi:progress-clock" style="font-size:2rem" aria-hidden="true"></is-icon>
+            <p>Cargando ${this.getAttribute('tk') ?? 'el tiquete'}…</p>
+          </div>
+        `);
+        return;
+      }
+      if (this.#estado === 'error') {
+        const porFile = location.protocol === 'file:';
+        this.#root.append(html`
+          <div class="vacio">
+            <is-icon icon="mdi:cloud-off-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
+            <p>No se pudo obtener ${this.getAttribute('tk') ?? 'el tiquete'}.</p>
+            <p class="detalle">${this.#detalle}</p>
+            ${porFile ? html`<p class="detalle">
+              La página está abierta como archivo local: el respaldo en disco necesita servirse por HTTP.
+            </p>` : null}
+          </div>
+        `);
+        return;
+      }
       this.#root.append(html`
         <div class="vacio">
           <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>

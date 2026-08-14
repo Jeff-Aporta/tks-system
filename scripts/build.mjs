@@ -10,7 +10,7 @@
  * que empaqueta `js/export.ts` en el HTML descargable — ninguno de los dos
  * necesita Babel en el navegador.
  */
-import { readdirSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { copyFileSync, existsSync, readdirSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import esbuild from 'esbuild';
 
@@ -74,4 +74,14 @@ writeFileSync(join(OUT, 'tk.all.js'), bundle.outputFiles[0].text);
 // enlaces ya publicados (export.ts, index.html) mientras se migran.
 writeFileSync(join(OUT, 'all.min.js'), bundle.outputFiles[0].text);
 
-console.log(`dist/cdn: ${archivos.length} módulos + tk.all.js + all.min.js compilados.`);
+// CSS de página para fichas sueltas: se publica tal cual (son tokens y cuatro
+// reglas; minificarlo no compensa perder legibilidad al depurar un documento).
+const CSS_PUBLICO = ['documento.css'];
+for (const nombre of CSS_PUBLICO) {
+  const origen = join(SRC, 'css', nombre);
+  if (existsSync(origen)) copyFileSync(origen, join(OUT, nombre));
+}
+
+console.log(
+  `dist/cdn: ${archivos.length} módulos + tk.all.js + all.min.js + ${CSS_PUBLICO.length} css compilados.`,
+);

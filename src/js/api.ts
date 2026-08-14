@@ -69,8 +69,9 @@ const conCache = async <T>(
   clave: string,
   ruta: string,
   valido: (data: T) => boolean,
+  vigenciaMs?: number,
 ): Promise<TkResultado<T>> => {
-  const guardado = await cache.leer<T>(clave);
+  const guardado = await cache.leer<T>(clave, vigenciaMs);
 
   if (guardado && !guardado.vencida) {
     return { data: fixMojibakeDeep(guardado.data), origen: 'cache', guardadoEn: guardado.guardadoEn };
@@ -139,7 +140,7 @@ export const api: TkApiCliente = {
     };
   },
 
-  async ticket(space: TkSpace, iticket: string): Promise<TkResultado<TkTicket>> {
+  async ticket(space: TkSpace, iticket: string, opciones?: TkLecturaOpciones): Promise<TkResultado<TkTicket>> {
     // No uppercasing: en PG `TK-ISP-Svelte` ≠ `TK-ISP-SVELTE` (seed preservó casing).
     const trimmed = iticket.trim();
     const id = /^TK-/i.test(trimmed) ? trimmed : `TK-${trimmed}`;
@@ -147,6 +148,7 @@ export const api: TkApiCliente = {
       `tk:${id}`,
       `/api/tk/${space}/tickets/${encodeURIComponent(id)}`,
       (d) => !!d?.ok && !!d.ticket?.iticket,
+      opciones?.vigenciaMs,
     );
     return { ...r, data: r.data.ticket! };
   },

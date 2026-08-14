@@ -219,9 +219,15 @@ interface TkCacheEntrada<T> {
 
 interface TkCacheApi {
   readonly vigenciaMs: number;
-  leer<T>(clave: string): Promise<TkCacheEntrada<T> | null>;
+  /** `vigenciaMs` permite un plazo distinto al de la app (p. ej. 24 h en una ficha). */
+  leer<T>(clave: string, vigenciaMs?: number): Promise<TkCacheEntrada<T> | null>;
   escribir(clave: string, data: unknown): Promise<number>;
   limpiar(): Promise<void>;
+}
+
+interface TkLecturaOpciones {
+  /** Vigencia de la caché para esta lectura. Default: `cache.vigenciaMs`. */
+  readonly vigenciaMs?: number;
 }
 
 interface TkApiCliente {
@@ -229,7 +235,7 @@ interface TkApiCliente {
   readonly spaces: readonly TkSpace[];
   listar(space: TkSpace): Promise<TkResultado<readonly TkTicketRow[]>>;
   listarTodos(): Promise<TkResultado<readonly TkTicketRow[]>>;
-  ticket(space: TkSpace, iticket: string): Promise<TkResultado<TkTicket>>;
+  ticket(space: TkSpace, iticket: string, opciones?: TkLecturaOpciones): Promise<TkResultado<TkTicket>>;
   /** Vacía la caché para forzar lectura de red en la próxima consulta. */
   refrescar(): Promise<void>;
 }
