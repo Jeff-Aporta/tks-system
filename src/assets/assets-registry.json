@@ -36,7 +36,7 @@
     "uploadedAt": "2026-08-05T22:08:15.399Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1433179-analisis-de-imagenes-en-paty-ia-v4-solicitud.png",
+    "localPath": "tiquetes/2026-06/TK-1433179/analisis-de-imagenes-en-paty-ia-v4-solicitud.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1433179-analisis-de-imagenes-en-paty-ia-v4-solicitud.png",
     "ticket": "TK-1433179",
     "fechaAperturaAprox": "2026-06-01",
@@ -47,7 +47,7 @@
     "uploadedAt": "2026-08-05T22:08:19.692Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1433179-analisis-de-imagenes-en-paty-ia-v4-resultado-evaluacion.png",
+    "localPath": "tiquetes/2026-06/TK-1433179/analisis-de-imagenes-en-paty-ia-v4-resultado-evaluacion.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1433179-analisis-de-imagenes-en-paty-ia-v4-resultado-evaluacion.png",
     "ticket": "TK-1433179",
     "fechaAperturaAprox": "2026-06-01",
@@ -58,7 +58,7 @@
     "uploadedAt": "2026-08-05T22:08:25.485Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1436248-creacion-de-tabla-en-bd-para-system-prompts.png",
+    "localPath": "tiquetes/2026-06/TK-1436248/creacion-de-tabla-en-bd-para-system-prompts.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1436248-creacion-de-tabla-en-bd-para-system-prompts.png",
     "ticket": "TK-1436248",
     "fechaAperturaAprox": "2026-06-01",
@@ -69,7 +69,7 @@
     "uploadedAt": "2026-08-05T22:08:33.614Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1436259-proceso-para-actualizacion-de-contenido-de-prompts.png",
+    "localPath": "tiquetes/2026-06/TK-1436259/proceso-para-actualizacion-de-contenido-de-prompts.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1436259-proceso-para-actualizacion-de-contenido-de-prompts.png",
     "ticket": "TK-1436259",
     "fechaAperturaAprox": "2026-06-01",
@@ -80,7 +80,7 @@
     "uploadedAt": "2026-08-05T22:08:39.307Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1437191-vincular-mensaje-calificado-con-mensajes-openai.png",
+    "localPath": "tiquetes/2026-06/TK-1437191/vincular-mensaje-calificado-con-mensajes-openai.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1437191-vincular-mensaje-calificado-con-mensajes-openai.png",
     "ticket": "TK-1437191",
     "fechaAperturaAprox": "2026-06-01",
@@ -91,7 +91,7 @@
     "uploadedAt": "2026-08-05T22:08:44.322Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1431662-seleccion-de-modelo-ia-por-tipo-de-consulta.png",
+    "localPath": "tiquetes/2026-05/TK-1431662/seleccion-de-modelo-ia-por-tipo-de-consulta.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1431662-seleccion-de-modelo-ia-por-tipo-de-consulta.png",
     "ticket": "TK-1431662",
     "fechaAperturaAprox": "2026-05-01",
@@ -102,7 +102,7 @@
     "uploadedAt": "2026-08-05T22:08:49.268Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1439822-ajustar-generacion-del-titulo-de-conversacion.png",
+    "localPath": "tiquetes/2026-06/TK-1439822/ajustar-generacion-del-titulo-de-conversacion.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1439822-ajustar-generacion-del-titulo-de-conversacion.png",
     "ticket": "TK-1439822",
     "fechaAperturaAprox": "2026-06-01",
@@ -113,7 +113,7 @@
     "uploadedAt": "2026-08-05T22:08:54.081Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1432903-registro-de-log-de-peticiones-del-sistema-de-chat.png",
+    "localPath": "tiquetes/2026-06/TK-1432903/registro-de-log-de-peticiones-del-sistema-de-chat.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1432903-registro-de-log-de-peticiones-del-sistema-de-chat.png",
     "ticket": "TK-1432903",
     "fechaAperturaAprox": "2026-06-01",
@@ -124,7 +124,7 @@
     "uploadedAt": "2026-08-05T22:08:59.014Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1441246-pruebas-con-imagenes-se-pierde-la-trazabilidad.png",
+    "localPath": "tiquetes/2026-06/TK-1441246/pruebas-con-imagenes-se-pierde-la-trazabilidad.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1441246-pruebas-con-imagenes-se-pierde-la-trazabilidad.png",
     "ticket": "TK-1441246",
     "fechaAperturaAprox": "2026-06-01",
@@ -135,7 +135,7 @@
     "uploadedAt": "2026-08-05T22:09:09.315Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1441252-ajustar-parametro-max-num-results.png",
+    "localPath": "tiquetes/2026-06/TK-1441252/ajustar-parametro-max-num-results.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1441252-ajustar-parametro-max-num-results.png",
     "ticket": "TK-1441252",
     "fechaAperturaAprox": "2026-06-01",
@@ -146,7 +146,7 @@
     "uploadedAt": "2026-08-05T22:09:15.750Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1442417-permisos-de-especialistas-en-la-app-qa-testing.png",
+    "localPath": "tiquetes/2026-06/TK-1442417/permisos-de-especialistas-en-la-app-qa-testing.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1442417-permisos-de-especialistas-en-la-app-qa-testing.png",
     "ticket": "TK-1442417",
     "fechaAperturaAprox": "2026-06-01",
@@ -157,7 +157,7 @@
     "uploadedAt": "2026-08-05T22:09:21.136Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1444190-implementacion-de-audio-paty-ia-v4.png",
+    "localPath": "tiquetes/2026-07/TK-1444190/implementacion-de-audio-paty-ia-v4.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1444190-implementacion-de-audio-paty-ia-v4.png",
     "ticket": "TK-1444190",
     "fechaAperturaAprox": "2026-07-01",
@@ -168,7 +168,7 @@
     "uploadedAt": "2026-08-05T22:09:25.872Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion.png",
+    "localPath": "tiquetes/2026-07/TK-1444317/no-toma-la-instruccion-segun-la-clasificacion.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion.png",
     "ticket": "TK-1444317",
     "fechaAperturaAprox": "2026-07-01",
@@ -179,7 +179,7 @@
     "uploadedAt": "2026-08-05T22:09:38.051Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes.png",
+    "localPath": "tiquetes/2026-07/TK-1446339/optimizacion-del-clasificador-para-imagenes.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes.png",
     "ticket": "TK-1446339",
     "fechaAperturaAprox": "2026-07-01",
@@ -190,7 +190,7 @@
     "uploadedAt": "2026-08-05T22:09:48.464Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1447428-conversaciones-no-obtiene-el-modulo.png",
+    "localPath": "tiquetes/2026-07/TK-1447428/conversaciones-no-obtiene-el-modulo.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447428-conversaciones-no-obtiene-el-modulo.png",
     "ticket": "TK-1447428",
     "fechaAperturaAprox": "2026-07-01",
@@ -201,7 +201,7 @@
     "uploadedAt": "2026-08-05T22:07:38.607Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1447446-consultas-no-se-alimenta.png",
+    "localPath": "tiquetes/2026-07/TK-1447446/consultas-no-se-alimenta.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447446-consultas-no-se-alimenta.png",
     "ticket": "TK-1447446",
     "fechaAperturaAprox": "2026-07-01",
@@ -212,7 +212,7 @@
     "uploadedAt": "2026-08-05T22:09:53.719Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1447460-mensajescalificados-no-registra.png",
+    "localPath": "tiquetes/2026-07/TK-1447460/mensajescalificados-no-registra.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447460-mensajescalificados-no-registra.png",
     "ticket": "TK-1447460",
     "fechaAperturaAprox": "2026-07-01",
@@ -223,7 +223,7 @@
     "uploadedAt": "2026-08-05T22:10:02.184Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion.png",
+    "localPath": "tiquetes/2026-07/TK-1447467/novedad-al-registrar-en-la-tabla-tiquetesconversacion.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion.png",
     "ticket": "TK-1447467",
     "fechaAperturaAprox": "2026-07-01",
@@ -234,7 +234,7 @@
     "uploadedAt": "2026-08-05T22:10:21.624Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1447812-cierre-de-conversacion-antes-de-tiempo.png",
+    "localPath": "tiquetes/2026-07/TK-1447812/cierre-de-conversacion-antes-de-tiempo.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447812-cierre-de-conversacion-antes-de-tiempo.png",
     "ticket": "TK-1447812",
     "fechaAperturaAprox": "2026-07-01",
@@ -245,7 +245,7 @@
     "uploadedAt": "2026-08-05T22:10:37.087Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1450247-plataforma-qa-paty-ia-para-produccion.png",
+    "localPath": "tiquetes/2026-07/TK-1450247/plataforma-qa-paty-ia-para-produccion.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1450247-plataforma-qa-paty-ia-para-produccion.png",
     "ticket": "TK-1450247",
     "fechaAperturaAprox": "2026-07-01",
@@ -256,7 +256,7 @@
     "uploadedAt": "2026-08-05T22:10:41.714Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1451725-referencias-internas-en-la-respuesta.png",
+    "localPath": "tiquetes/2026-07/TK-1451725/referencias-internas-en-la-respuesta.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1451725-referencias-internas-en-la-respuesta.png",
     "ticket": "TK-1451725",
     "fechaAperturaAprox": "2026-07-01",
@@ -267,7 +267,7 @@
     "uploadedAt": "2026-08-05T22:10:49.927Z"
   },
   {
-    "localPath": "tiquetes/2026-08/tk1456744-compuerta-de-audio-respuesta-incorrecta.png",
+    "localPath": "tiquetes/2026-08/TK-1456744/compuerta-de-audio-respuesta-incorrecta.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1456744-compuerta-de-audio-respuesta-incorrecta.png",
     "ticket": "TK-1456744",
     "fechaAperturaAprox": "2026-08-01",
@@ -278,7 +278,7 @@
     "uploadedAt": "2026-08-05T22:10:54.446Z"
   },
   {
-    "localPath": "tiquetes/2026-08/tk1457955-extractor-de-consultas-duplica-registros.png",
+    "localPath": "tiquetes/2026-08/TK-1457955/extractor-de-consultas-duplica-registros.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1457955-extractor-de-consultas-duplica-registros.png",
     "ticket": "TK-1457955",
     "fechaAperturaAprox": "2026-08-01",
@@ -289,7 +289,7 @@
     "uploadedAt": "2026-08-05T22:11:00.868Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1453428-creacion-tipo-de-consulta-consulta-mcp-contapyme.png",
+    "localPath": "tiquetes/2026-07/TK-1453428/creacion-tipo-de-consulta-consulta-mcp-contapyme.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1453428-creacion-tipo-de-consulta-consulta-mcp-contapyme.png",
     "ticket": "TK-1453428",
     "fechaAperturaAprox": "2026-07-01",
@@ -300,7 +300,7 @@
     "uploadedAt": "2026-08-05T22:11:06.537Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1436238-modificacion-flujo-de-clasificacion-tipo-consulta.png",
+    "localPath": "tiquetes/2026-06/TK-1436238/modificacion-flujo-de-clasificacion-tipo-consulta.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1436238-modificacion-flujo-de-clasificacion-tipo-consulta.png",
     "ticket": "TK-1436238",
     "fechaAperturaAprox": "2026-06-01",
@@ -311,7 +311,7 @@
     "uploadedAt": "2026-08-05T22:11:12.468Z"
   },
   {
-    "localPath": "tiquetes/2026-06/tk1437976-integracion-mcp-de-prueba-para-paty-ia.png",
+    "localPath": "tiquetes/2026-06/TK-1437976/integracion-mcp-de-prueba-para-paty-ia.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-06/tk1437976-integracion-mcp-de-prueba-para-paty-ia.png",
     "ticket": "TK-1437976",
     "fechaAperturaAprox": "2026-06-16",
@@ -322,7 +322,7 @@
     "uploadedAt": "2026-08-05T22:22:55.506Z"
   },
   {
-    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador.png",
+    "localPath": "tiquetes/2026-08/TK-1458818/transcripcion-de-nota-de-voz-no-llega-al-clasificador.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador.png",
     "ticket": "TK-1458818",
     "fechaAperturaAprox": "2026-08-05",
@@ -333,7 +333,7 @@
     "uploadedAt": "2026-08-05T22:44:09.874Z"
   },
   {
-    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-respuesta-patyia.png",
+    "localPath": "tiquetes/2026-08/TK-1458818/transcripcion-de-nota-de-voz-no-llega-al-clasificador-respuesta-patyia.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-respuesta-patyia.png",
     "ticket": "TK-1458818",
     "fechaAperturaAprox": "2026-08-05",
@@ -344,7 +344,7 @@
     "uploadedAt": "2026-08-05T22:44:13.032Z"
   },
   {
-    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-trazas-operaciones.png",
+    "localPath": "tiquetes/2026-08/TK-1458818/transcripcion-de-nota-de-voz-no-llega-al-clasificador-trazas-operaciones.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-trazas-operaciones.png",
     "ticket": "TK-1458818",
     "fechaAperturaAprox": "2026-08-05",
@@ -355,7 +355,7 @@
     "uploadedAt": "2026-08-05T22:44:17.426Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1453428-solicitud-tipo-consulta-mcp-contapyme-en-staging.png",
+    "localPath": "tiquetes/2026-07/TK-1453428/solicitud-tipo-consulta-mcp-contapyme-en-staging.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1453428-solicitud-tipo-consulta-mcp-contapyme-en-staging.png",
     "ticket": "TK-1453428",
     "fechaAperturaAprox": "2026-07-24",
@@ -366,7 +366,7 @@
     "uploadedAt": "2026-08-06T04:38:56.820Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion-cierre.png",
+    "localPath": "tiquetes/2026-07/TK-1444317/no-toma-la-instruccion-segun-la-clasificacion-cierre.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1444317-no-toma-la-instruccion-segun-la-clasificacion-cierre.png",
     "ticket": "TK-1444317",
     "fechaAperturaAprox": "2026-07-01",
@@ -377,7 +377,7 @@
     "uploadedAt": "2026-08-09T01:13:39.973Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes-cierre.png",
+    "localPath": "tiquetes/2026-07/TK-1446339/optimizacion-del-clasificador-para-imagenes-cierre.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1446339-optimizacion-del-clasificador-para-imagenes-cierre.png",
     "ticket": "TK-1446339",
     "fechaAperturaAprox": "2026-07-01",
@@ -388,7 +388,7 @@
     "uploadedAt": "2026-08-09T01:13:43.564Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion-cierre.png",
+    "localPath": "tiquetes/2026-07/TK-1447467/novedad-al-registrar-en-la-tabla-tiquetesconversacion-cierre.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1447467-novedad-al-registrar-en-la-tabla-tiquetesconversacion-cierre.png",
     "ticket": "TK-1447467",
     "fechaAperturaAprox": "2026-07-01",
@@ -399,7 +399,7 @@
     "uploadedAt": "2026-08-09T01:13:46.620Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1449482-refactor-en-isw-clientes-is.png",
+    "localPath": "tiquetes/2026-07/TK-1449482/refactor-en-isw-clientes-is.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1449482-refactor-en-isw-clientes-is.png",
     "ticket": "TK-1449482",
     "fechaAperturaAprox": "2026-07-01",
@@ -410,7 +410,7 @@
     "uploadedAt": "2026-08-09T01:13:49.745Z"
   },
   {
-    "localPath": "tiquetes/2026-07/tk1449483-refactor-en-isp-svelte-components.png",
+    "localPath": "tiquetes/2026-07/TK-1449483/refactor-en-isp-svelte-components.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-07/tk1449483-refactor-en-isp-svelte-components.png",
     "ticket": "TK-1449483",
     "fechaAperturaAprox": "2026-07-01",
@@ -421,7 +421,7 @@
     "uploadedAt": "2026-08-09T01:13:52.748Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido.png",
+    "localPath": "tiquetes/2026-05/TK-1426728/informacion-vacia-del-curso-en-pestana-contenido.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido.png",
     "ticket": "TK-1426728",
     "fechaAperturaAprox": "2026-05-19",
@@ -432,7 +432,7 @@
     "uploadedAt": "2026-08-09T01:13:55.692Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido-cierre.png",
+    "localPath": "tiquetes/2026-05/TK-1426728/informacion-vacia-del-curso-en-pestana-contenido-cierre.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1426728-informacion-vacia-del-curso-en-pestana-contenido-cierre.png",
     "ticket": "TK-1426728",
     "fechaAperturaAprox": "2026-05-19",
@@ -443,7 +443,7 @@
     "uploadedAt": "2026-08-09T01:13:58.902Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-commits.png",
+    "localPath": "tiquetes/2026-05/TK-1428161/guardar-visualizacion-de-columnas-en-catalogo-de-cursos-commits.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-commits.png",
     "ticket": "TK-1428161",
     "fechaAperturaAprox": "2026-05-21",
@@ -454,7 +454,7 @@
     "uploadedAt": "2026-08-09T01:14:02.271Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-cierre.png",
+    "localPath": "tiquetes/2026-05/TK-1428161/guardar-visualizacion-de-columnas-en-catalogo-de-cursos-cierre.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1428161-guardar-visualizacion-de-columnas-en-catalogo-de-cursos-cierre.png",
     "ticket": "TK-1428161",
     "fechaAperturaAprox": "2026-05-21",
@@ -465,7 +465,7 @@
     "uploadedAt": "2026-08-09T01:14:05.825Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-commits.png",
+    "localPath": "tiquetes/2026-05/TK-1429349/modificacion-de-controladores-de-server-commits.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-commits.png",
     "ticket": "TK-1429349",
     "fechaAperturaAprox": "2026-05-25",
@@ -476,7 +476,7 @@
     "uploadedAt": "2026-08-09T01:14:08.991Z"
   },
   {
-    "localPath": "tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-cierre.png",
+    "localPath": "tiquetes/2026-05/TK-1429349/modificacion-de-controladores-de-server-cierre.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-05/tk1429349-modificacion-de-controladores-de-server-cierre.png",
     "ticket": "TK-1429349",
     "fechaAperturaAprox": "2026-05-25",
@@ -487,7 +487,7 @@
     "uploadedAt": "2026-08-09T01:14:12.213Z"
   },
   {
-    "localPath": "tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-ficha-y-consola.png",
+    "localPath": "tiquetes/2026-08/TK-1458818/transcripcion-de-nota-de-voz-no-llega-al-clasificador-ficha-y-consola.png",
     "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1458818-transcripcion-de-nota-de-voz-no-llega-al-clasificador-ficha-y-consola.png",
     "ticket": "TK-1458818",
     "fechaAperturaAprox": "2026-08-05",
@@ -496,5 +496,60 @@
     "sha256": "f9c757998a9faa2e479f84a922267d18bedaac24143c35bc60f6e12b85203597",
     "uploadedR2": true,
     "uploadedAt": "2026-08-09T01:14:15.544Z"
+  },
+  {
+    "localPath": "tiquetes/2026-08/TK-1460429/distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-ficha-del-tiquete.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1460429-distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-ficha-del-tiquete.png",
+    "ticket": "TK-1460429",
+    "fechaAperturaAprox": "2026-08-12",
+    "descripcion": "Ficha del TK 1460429 (PQR, asignado a JAGUDELOE, ING-35 Sop Ing - Portal de clientes, ING-PCL-13 Ayudas CP IA): el distribuidor no puede consultar las conversaciones de Paty de sus clientes y recibe error 500, aun cuando el cliente autorizo el acceso",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "53dad3d1c4bca053858e5d5273f109eb1d3f80800997bfc1fd0045a72f2272ae",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-08/TK-1460429/distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-pantalla-conversacion-6581.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1460429-distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-pantalla-conversacion-6581.png",
+    "ticket": "TK-1460429",
+    "fechaAperturaAprox": "2026-08-12",
+    "descripcion": "Portal de soporte en /soporte/?seccion=conversacion&id=6581 mostrando \"No se pudo cargar la conversacion: HTTP Error: 500\" cuando entra el distribuidor",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "73cd61c271fa878ca05e442aa722f8a3520f8d336726da7788dd598ddab0942f",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-08/TK-1460429/distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-contactos-del-cliente-correos-autorizados.png",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1460429-distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-contactos-del-cliente-correos-autorizados.png",
+    "ticket": "TK-1460429",
+    "fechaAperturaAprox": "2026-08-12",
+    "descripcion": "Registro de cliente (codigo 37944895, Olga Patricia Bohorquez Cabrejo - Dinamica Empresarial) en la pestana Contactos, con los correos que usa el distribuidor para ingresar resaltados",
+    "sourceProject": "app/src/assets (captura directa)",
+    "sha256": "8eff3d90f95a450a7aaa5d9adc2c80c47da0a8edc4237347c46b3211c3142382",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-08/TK-1460429/distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-nota-de-voz.m4a",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1460429-distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-nota-de-voz.m4a",
+    "ticket": "TK-1460429",
+    "fechaAperturaAprox": "2026-08-12",
+    "descripcion": "Nota de voz de la reunion del 2026-08-12 (7:28) donde se define la regla de permisos del distribuidor: iddistribuidor = 3 y la relacion contactos_por_tercero",
+    "sourceProject": "app/src/assets (grabacion directa)",
+    "sha256": "06075218a3c0b6427b3b531f443584f1a988ad328812a3bae5731d53c5315482",
+    "uploadedR2": false,
+    "uploadedAt": null
+  },
+  {
+    "localPath": "tiquetes/2026-08/TK-1460429/distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-nota-de-voz-transcripcion-bruta.txt",
+    "r2Key": "jagudeloe-tks/assets/tiquetes/2026-08/tk1460429-distribuidor-no-puede-consultar-conversaciones-de-sus-clientes-error-500-nota-de-voz-transcripcion-bruta.txt",
+    "ticket": "TK-1460429",
+    "fechaAperturaAprox": "2026-08-12",
+    "descripcion": "Transcripcion en bruto (sin editar) de la nota de voz, generada con Groq whisper-large-v3 en espanol",
+    "sourceProject": "app/src/assets (transcripcion automatica)",
+    "sha256": "72b527c2d490424e14557c9a04ea1390a3a29d9ae3b9f938d7d626db19b64ace",
+    "uploadedR2": false,
+    "uploadedAt": null
   }
 ]
