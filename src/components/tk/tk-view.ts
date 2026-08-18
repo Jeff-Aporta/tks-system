@@ -127,15 +127,6 @@ const CSS = /* css */ `
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125rem;
   }
-  .firma {
-    margin-top: 0.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--is-border-soft, #1f242b);
-    color: var(--is-text, #e6edf3);
-    font-size: 0.75rem;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-  }
   .fab {
     position: sticky;
     bottom: 1.15rem;
@@ -550,14 +541,6 @@ class TkView extends HTMLElement {
           </is-callout>
         `}
         ${seccionCommits}
-        <footer class="firma">
-          ${tk.iticket} · ${
-            tk.space === 'patyia' ? 'PatyIA'
-              : tk.space === 'isp-svelte' ? 'ISP Svelte'
-                : 'Clientes'
-          } ·
-          documentación generada desde jagudeloe-tks
-        </footer>
       </article>
     `;
   }

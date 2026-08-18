@@ -2,24 +2,35 @@
  * export.ts — descarga de un tiquete como HTML portable.
  *
  * El archivo generado:
- *   - enlaza el kit `is-*` por CDN (`@main`, tip actual),
- *   - carga `tk.all.js` por CDN (commit fijo de este repo),
+ *   - carga `all.min.js` por CDN (tip de `main` de este repo): define los
+ *     `tk-*` y exporta `IS_TAGS`, la lista de componentes del kit que este
+ *     documento usa de verdad,
+ *   - pide esos `is-*` al loader del kit (`@main`, tip actual). El
+ *     `all.min.js` del kit son 211 módulos (2,1 MB) para pintar trece.
  *   - lleva el JSON del tiquete quemado en un <script type="application/json">.
  *
  * Resultado: se abre con doble clic (`file://`) porque todos los módulos son
  * URLs `https://` absolutas. No usa import maps ni `data:` URIs: Chrome trata
  * `file:` como origen único y falla al resolver `./_shared.js`.
  *
- * El pin de este repo se actualiza tras cada release a `main` (ver README).
  */
 import { IS_CDN } from './is-cdn.js';
 
-/** Repo público del visor · pin de commit (actualizar tras publicar). */
-export const TK_REPO = 'Jeff-Aporta/jagudeloe-tks-front';
-/** Commit fijado de `main` (actualizar tras cada release del CDN). */
-export const TK_PIN = '03b625043f50705b81423faf429a15e568f77dab';
+/** Repo público del visor (`origin`; `jagudeloe-tks-front` es su espejo). */
+export const TK_REPO = 'Jeff-Aporta/tks-system';
+/**
+ * Referencia del CDN: el tip de `main`, no un SHA.
+ *
+ * Con pin, una ficha ya distribuida quedaba clavada al bundle del día en que
+ * se generó: no se rompía, pero tampoco recibía un arreglo sin regenerarla y
+ * volver a publicarla en la unidad oficial — y son decenas de fichas. Con
+ * `@main` el arreglo llega solo. El precio es que un cambio incompatible en
+ * el bundle rompe fichas ya repartidas, así que `IS_TAGS` y los `tk-*` son
+ * contrato público: se agregan, no se renombran ni se quitan.
+ */
+export const TK_REF = 'main';
 
-const TK_CDN = `https://cdn.jsdelivr.net/gh/${TK_REPO}@${TK_PIN}/dist/cdn`;
+const TK_CDN = `https://cdn.jsdelivr.net/gh/${TK_REPO}@${TK_REF}/dist/cdn`;
 
 const escapar = (s: string): string => s
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -39,10 +50,14 @@ const plantilla = (tk: TkTicket): string => {
 <!-- Kit is-* (versión fijada) -->
 <link rel="stylesheet" href="${IS_CDN}/is-base.min.css">
 <link rel="stylesheet" href="${IS_CDN}/palettes.min.css">
-<script type="module" src="${IS_CDN}/all.min.js"><\/script>
 
-<!-- Componentes tk-* (bundle único, CDN de este repo) -->
-<script type="module" src="${TK_CDN}/tk.all.js"><\/script>
+<!-- Un solo módulo: define los tk-* y pide al loader del kit los is-* que
+     este documento usa (~255 kB) en vez del all.min.js del kit (2,1 MB). -->
+<script type="module">
+  import { IS_TAGS } from "${TK_CDN}/all.min.js";
+  import { ISWebComponentsLoader as L } from "${IS_CDN}/loader.min.js";
+  await L.load(...IS_TAGS);
+<\/script>
 
 <style>
   :root {

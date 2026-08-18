@@ -32,3 +32,8 @@ import './tk-tiempos.js';
 import './tk-metrics.js';
 import './tk-actions.js';
 import './tk-view.js';
+
+// La lista de componentes `is-*` viaja con el barril: el HTML descargable
+// resuelve en un solo import los `tk-*` y lo que hay que pedirle al loader
+// del kit (ver `js/is-tags.ts`).
+export { IS_TAGS, IS_TAGS_CUBIERTOS } from '../../js/is-tags.js';

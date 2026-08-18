@@ -7,7 +7,7 @@ HTML descargables que se abren con doble clic (`file://`).
 | | |
 |---|---|
 | **GitHub Pages** | https://jeff-aporta.github.io/jagudeloe-tks-front/ |
-| **CDN (jsDelivr)** | `https://cdn.jsdelivr.net/gh/Jeff-Aporta/jagudeloe-tks-front@PIN/dist/cdn/` |
+| **CDN (jsDelivr)** | `https://cdn.jsdelivr.net/gh/Jeff-Aporta/tks-system@main/dist/cdn/` |
 | **API** | `jagudeloe-tks-back` (`GET /api/tk/:space/tickets…`) |
 | **Kit UI** | [`is-webcomponents`](https://github.com/Jeff-Aporta/is-webcomponents) |
 
@@ -34,19 +34,30 @@ payload de la BD al componente `is-*` correspondiente.
 
 ## CDN y HTML descargable
 
-El HTML que genera **Descargar** carga un único bundle:
+El HTML que genera **Descargar** carga un único módulo: el bundle de este
+repo define los `tk-*` y exporta `IS_TAGS`, la lista de componentes del kit
+que el documento usa de verdad; el loader del kit baja solo esos.
 
 ```html
-<script type="module"
-  src="https://cdn.jsdelivr.net/gh/Jeff-Aporta/jagudeloe-tks-front@PIN/dist/cdn/tk.all.js">
+<script type="module">
+  import { IS_TAGS } from
+    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/tks-system@main/dist/cdn/all.min.js";
+  import { ISWebComponentsLoader as L } from
+    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/loader.min.js";
+  await L.load(...IS_TAGS);
 </script>
 ```
+
+Antes cargaba el `all.min.js` del kit: 211 módulos, 2,1 MB para pintar catorce
+componentes. Ahora son ~255 kB.
 
 No usa import maps ni `data:` URIs: en `file://` Chrome no resuelve
 `./_shared.js` (origen único). Con URL `https://` absoluta sí.
 
-Tras publicar un cambio que afecte al bundle, actualiza el pin en
-`src/js/export.ts` (`TK_PIN`) al SHA de `main` y vuelve a build/push.
+El HTML descargable sigue el tip de `main` (`TK_REF` en `src/js/export.ts`),
+así que no hay pin que actualizar tras publicar. A cambio, `IS_TAGS` y los
+`tk-*` son contrato público: se agregan, no se renombran ni se quitan, o las
+fichas ya repartidas dejan de pintar.
 
 ## Bloques soportados
 

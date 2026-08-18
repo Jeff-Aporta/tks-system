@@ -1,4 +1,4 @@
-import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/jagudeloe-tks-front",l="03b625043f50705b81423faf429a15e568f77dab",i=`https://cdn.jsdelivr.net/gh/${c}@${l}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),d=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,o=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
+import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/tks-system",l="main",r=`https://cdn.jsdelivr.net/gh/${c}@${l}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),d=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,o=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
 <html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
 <head>
 <meta charset="utf-8">
@@ -9,10 +9,14 @@ import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/jagudeloe-tks-front",l
 <!-- Kit is-* (versi\xF3n fijada) -->
 <link rel="stylesheet" href="${a}/is-base.min.css">
 <link rel="stylesheet" href="${a}/palettes.min.css">
-<script type="module" src="${a}/all.min.js"><\/script>
 
-<!-- Componentes tk-* (bundle \xFAnico, CDN de este repo) -->
-<script type="module" src="${i}/tk.all.js"><\/script>
+<!-- Un solo m\xF3dulo: define los tk-* y pide al loader del kit los is-* que
+     este documento usa (~255 kB) en vez del all.min.js del kit (2,1 MB). -->
+<script type="module">
+  import { IS_TAGS } from "${r}/all.min.js";
+  import { ISWebComponentsLoader as L } from "${a}/loader.min.js";
+  await L.load(...IS_TAGS);
+<\/script>
 
 <style>
   :root {
@@ -58,4 +62,4 @@ import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/jagudeloe-tks-front",l
   <\/script>
 </body>
 </html>
-`},m={cdn:i,async html(t){return d(t)},async descargar(t){const s=await m.html(t),o=new Blob([s],{type:"text/html;charset=utf-8"}),r=URL.createObjectURL(o),e=document.createElement("a");e.href=r,e.download=`${t.iticket}.html`,document.body.append(e),e.click(),e.remove(),setTimeout(()=>URL.revokeObjectURL(r),3e4)}};export{l as TK_PIN,c as TK_REPO,m as exportar};
+`},m={cdn:r,async html(t){return d(t)},async descargar(t){const s=await m.html(t),o=new Blob([s],{type:"text/html;charset=utf-8"}),i=URL.createObjectURL(o),e=document.createElement("a");e.href=i,e.download=`${t.iticket}.html`,document.body.append(e),e.click(),e.remove(),setTimeout(()=>URL.revokeObjectURL(i),3e4)}};export{l as TK_REF,c as TK_REPO,m as exportar};

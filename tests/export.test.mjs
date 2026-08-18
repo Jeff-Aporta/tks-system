@@ -63,10 +63,14 @@ test('el JSON del ticket queda saneado', () => {
   assert.match(conCierre, /whenDefined\('tk-view'\)/);
 });
 
-test('src/js/export.ts apunta al repo y al bundle tk.all.js', () => {
+test('src/js/export.ts apunta al repo y al bundle all.min.js', () => {
   const exportTs = readFileSync(join(raiz, 'src/js/export.ts'), 'utf8');
-  assert.match(exportTs, /jagudeloe-tks-front/);
-  assert.match(exportTs, /tk\.all\.js/);
-  assert.match(exportTs, /TK_PIN/);
+  assert.match(exportTs, /Jeff-Aporta\/tks-system/);
+  // El documento carga el bundle de ESTE repo (define los tk-* y exporta
+  // IS_TAGS); del kit solo baja el loader y los is-* de esa lista.
+  assert.match(exportTs, /\$\{TK_CDN\}\/all\.min\.js/);
+  // `@main`, no un SHA: una ficha ya repartida recibe los arreglos del bundle.
+  assert.match(exportTs, /TK_REF = 'main'/);
+  assert.doesNotMatch(exportTs, /TK_PIN/, 'volvió el pin de commit');
   assert.ok(readFileSync(join(raiz, 'dist/cdn/tk.all.js'), 'utf8').length > 1000, 'falta dist/cdn/tk.all.js (npm run build)');
 });

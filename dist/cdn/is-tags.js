@@ -1,0 +1,1 @@
+const i=["is-button","is-callout","is-chart","is-copy-button","is-data-grid","is-details","is-icon","is-lightbox","is-sequence-diagram","is-stepper","is-tag","is-theme-toggle","is-timeline","is-tooltip"],s=["is-stepper-step"];export{i as IS_TAGS,s as IS_TAGS_CUBIERTOS};

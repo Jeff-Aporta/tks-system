@@ -1,4 +1,4 @@
-import{css as g,define as b,html as c,rec as d}from"./_shared.js";import{api as f}from"./api.js";import{sanearTicket as k}from"./sanear.js";import"./tk-metrics.js";import"./tk-ticket-head.js";import"./tk-commits.js";import"./tk-block.js";const v=`
+import{css as b,define as g,html as c,rec as d}from"./_shared.js";import{api as f}from"./api.js";import{sanearTicket as k}from"./sanear.js";import"./tk-metrics.js";import"./tk-ticket-head.js";import"./tk-commits.js";import"./tk-block.js";const v=`
   :host {
     display: block;
     position: relative;
@@ -84,15 +84,6 @@ import{css as g,define as b,html as c,rec as d}from"./_shared.js";import{api as 
     color: var(--is-text-muted, #9aa7b4);
     font-size: 0.8125rem;
   }
-  .firma {
-    margin-top: 0.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--is-border-soft, #1f242b);
-    color: var(--is-text, #e6edf3);
-    font-size: 0.75rem;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-  }
   .fab {
     position: sticky;
     bottom: 1.15rem;
@@ -143,29 +134,25 @@ import{css as g,define as b,html as c,rec as d}from"./_shared.js";import{api as 
   .fab-btn[aria-pressed="true"] {
     color: var(--is-accent, #1a6eb0);
   }
-`,w=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],T=r=>{const t=new Set;return r.filter(e=>{const a=String(e.kind??"").toLowerCase();if(a!=="image"&&a!=="image-group")return!0;const i=d(e.payload),o=String(i.url??i.src??"").trim().split("?")[0]??"";return o?t.has(o)?!1:(t.add(o),!0):!0})},x=new Set(["video","youtube"]),y=()=>{try{return new URLSearchParams(location.search).get("mode-tkt")==="free"}catch{return!1}},C=r=>{const t=Array.isArray(r.content)&&r.content.length?[...r.content]:[...r.doc?.blocks??[]],e=(r.contexts??[]).flatMap(i=>[...i.content??[]]),a=y();return T([...t,...e].filter(i=>i&&typeof i=="object").filter(i=>a||!x.has(String(i.kind??"").toLowerCase())).sort((i,o)=>(i.sortkey??0)-(o.sortkey??0)))},S=(r,t)=>{const e=d(r.payload),a=String(e.docLane??e.section??e.lane??"").trim().toLowerCase();if(a==="solicitud"||a==="evidencias"||a==="causa"||a==="solucion"||a==="verificacion"||a==="otros")return a;const i=String(e.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(i))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(i))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(i))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(i))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(i))return"solucion";const o=String(r.kind??"").toLowerCase();return o==="html"||o==="image"||o==="image-group"?t==="otros"?"evidencias":t:o==="badge"||o==="badges"?t==="otros"?"solicitud":t:o==="code"||o==="sql"||o==="cambio-bd"||o==="file-tree"?t==="otros"?"solucion":t:o==="steps"||o==="stepper"?t==="otros"?"verificacion":t:o==="table"&&t==="otros"?"evidencias":o==="markdown"||o==="md"||o==="text"?i?"otros":t:"otros"},A=r=>{let t="solicitud";return r.map(e=>{const a=S(e,t);return t=a,{b:e,lane:a}})},L=r=>{const t=String(r.kind??"").toLowerCase();return t==="image"||t==="image-group"},h=r=>{const t=d(r.payload),e=String(t.caption??"").trim()||String(t.title??"").trim(),a=Array.isArray(r.blocks)?r.blocks:[];return String(r.kind??"").toLowerCase()==="image-group"&&a.length?r:{...r,kind:"image",payload:{...t,caption:e,title:""},blocks:void 0}},$=r=>{const t=[];let e=[];const a=()=>{if(e.length){if(e.length===1)t.push(e[0]);else{const i=e.flatMap(n=>String(n.kind??"").toLowerCase()==="image-group"&&Array.isArray(n.blocks)&&n.blocks.length?n.blocks.map(h):[h(n)]),o=d(e[0].payload).docLane;t.push({kind:"image-group",sortkey:e[0].sortkey,payload:o?{docLane:o}:{},blocks:i})}e=[]}};for(const i of r)L(i)?e.push(i):(a(),t.push(i));return a(),t},E=r=>{const t=[...r.rootCommits??[]];return t.length?t:(r.contexts??[]).flatMap(e=>[...e.commits??[]])},m=r=>String(r||"").trim().toLowerCase()==="metrics"?"metrics":"doc",z=24,j=r=>{const t=String(r||"").trim().toLowerCase();return t==="clientesis"||t==="isp-svelte"?t:"patyia"};class D extends HTMLElement{static get observedAttributes(){return["embebido","modo","tk","space"]}#o=null;#e="doc";#t;#r="inicial";#a="";#s=0;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),g(this.#t,v)}connectedCallback(){this.#e=m(this.getAttribute("modo")),this.getAttribute("tk")&&!this.#o?this.cargar():this.#i()}attributeChangedCallback(t,e,a){if(t==="modo"&&(this.#e=m(a)),!!this.isConnected){if((t==="tk"||t==="space")&&e!==a&&this.getAttribute("tk")){this.cargar();return}this.#i()}}async cargar(){const t=String(this.getAttribute("tk")||"").trim();if(!t)return;const e=j(this.getAttribute("space")),a=Number(this.getAttribute("cache-horas"))||z,i=++this.#s;this.#r="cargando",this.#i();const o=(s,l)=>{i===this.#s&&(this.#o=this.hasAttribute("sanear")?k(s):s,this.#r="listo",this.#i(),this.dispatchEvent(new CustomEvent("tk-datos",{bubbles:!0,composed:!0,detail:{origen:l,ticket:this.#o}})))};try{const s=await f.ticket(e,t,{vigenciaMs:a*60*60*1e3});o(s.data,s.origen);return}catch(s){this.#a=s instanceof Error?s.message:String(s)}const n=this.getAttribute("fallback");if(n)try{const s=await fetch(n,{headers:{accept:"application/json"}});if(!s.ok)throw new Error(`HTTP ${s.status}`);const l=d(await s.json());o(l.ticket?l.ticket:l,"archivo local");return}catch(s){this.#a+=` \xB7 fallback: ${s instanceof Error?s.message:String(s)}`}i===this.#s&&(this.#r="error",this.#i(),this.dispatchEvent(new CustomEvent("tk-error",{bubbles:!0,composed:!0,detail:{error:this.#a}})))}get ticket(){return this.#o}set ticket(t){this.#o=t,this.isConnected&&this.#i()}set json(t){const e=d(t);this.ticket=e.ticket?e.ticket:e}get embebido(){return this.hasAttribute("embebido")}set embebido(t){this.toggleAttribute("embebido",!!t)}get modo(){return this.#e}set modo(t){const e=m(String(t));this.#e!==e&&(this.#e=e,this.setAttribute("modo",e),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:e}})),this.isConnected&&this.#i())}#n=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#c(t){const e=A(C(t)),a=Object.assign(document.createElement("tk-ticket-head"),{ticket:t}),i=E(t),o=w.map(({lane:s,rotulo:l})=>{const p=$(e.filter(u=>u.lane===s).map(u=>u.b));return p.length?c`
+`,T=[{lane:"solicitud",rotulo:"Solicitud"},{lane:"evidencias",rotulo:"Evidencias"},{lane:"causa",rotulo:"Causa"},{lane:"solucion",rotulo:"Soluci\xF3n"},{lane:"verificacion",rotulo:"Verificaci\xF3n"},{lane:"otros",rotulo:"Detalle"}],w=r=>{const t=new Set;return r.filter(e=>{const n=String(e.kind??"").toLowerCase();if(n!=="image"&&n!=="image-group")return!0;const i=d(e.payload),o=String(i.url??i.src??"").trim().split("?")[0]??"";return o?t.has(o)?!1:(t.add(o),!0):!0})},x=new Set(["video","youtube"]),y=()=>{try{return new URLSearchParams(location.search).get("mode-tkt")==="free"}catch{return!1}},C=r=>{const t=Array.isArray(r.content)&&r.content.length?[...r.content]:[...r.doc?.blocks??[]],e=(r.contexts??[]).flatMap(i=>[...i.content??[]]),n=y();return w([...t,...e].filter(i=>i&&typeof i=="object").filter(i=>n||!x.has(String(i.kind??"").toLowerCase())).sort((i,o)=>(i.sortkey??0)-(o.sortkey??0)))},S=(r,t)=>{const e=d(r.payload),n=String(e.docLane??e.section??e.lane??"").trim().toLowerCase();if(n==="solicitud"||n==="evidencias"||n==="causa"||n==="solucion"||n==="verificacion"||n==="otros")return n;const i=String(e.title??"").toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");if(/^solicitud|^objetivo|requerimiento insoft|^requerimiento\b/.test(i))return"solicitud";if(/^evidencia|informacion del tiquete|pantallazo|captura/.test(i))return"evidencias";if(/hipotesis|causa identificada|causa del problema|^causa\b|antecedente|analisis realizado|diagnostico|raiz del problema/.test(i))return"causa";if(/verificacion\b|validacion\b|investigacion y pruebas|como probar|pruebas realizadas/.test(i))return"verificacion";if(/solucion aplicada|solucion entregada|^solucion\b|cambios en base de datos|resultado\b|conclusion|catalogo por tipo|resumen de tiempos/.test(i))return"solucion";const o=String(r.kind??"").toLowerCase();return o==="html"||o==="image"||o==="image-group"?t==="otros"?"evidencias":t:o==="badge"||o==="badges"?t==="otros"?"solicitud":t:o==="code"||o==="sql"||o==="cambio-bd"||o==="file-tree"?t==="otros"?"solucion":t:o==="steps"||o==="stepper"?t==="otros"?"verificacion":t:o==="table"&&t==="otros"?"evidencias":o==="markdown"||o==="md"||o==="text"?i?"otros":t:"otros"},A=r=>{let t="solicitud";return r.map(e=>{const n=S(e,t);return t=n,{b:e,lane:n}})},L=r=>{const t=String(r.kind??"").toLowerCase();return t==="image"||t==="image-group"},h=r=>{const t=d(r.payload),e=String(t.caption??"").trim()||String(t.title??"").trim(),n=Array.isArray(r.blocks)?r.blocks:[];return String(r.kind??"").toLowerCase()==="image-group"&&n.length?r:{...r,kind:"image",payload:{...t,caption:e,title:""},blocks:void 0}},E=r=>{const t=[];let e=[];const n=()=>{if(e.length){if(e.length===1)t.push(e[0]);else{const i=e.flatMap(a=>String(a.kind??"").toLowerCase()==="image-group"&&Array.isArray(a.blocks)&&a.blocks.length?a.blocks.map(h):[h(a)]),o=d(e[0].payload).docLane;t.push({kind:"image-group",sortkey:e[0].sortkey,payload:o?{docLane:o}:{},blocks:i})}e=[]}};for(const i of r)L(i)?e.push(i):(n(),t.push(i));return n(),t},$=r=>{const t=[...r.rootCommits??[]];return t.length?t:(r.contexts??[]).flatMap(e=>[...e.commits??[]])},m=r=>String(r||"").trim().toLowerCase()==="metrics"?"metrics":"doc",z=24,D=r=>{const t=String(r||"").trim().toLowerCase();return t==="clientesis"||t==="isp-svelte"?t:"patyia"};class j extends HTMLElement{static get observedAttributes(){return["embebido","modo","tk","space"]}#o=null;#e="doc";#t;#r="inicial";#n="";#s=0;constructor(){super(),this.#t=this.attachShadow({mode:"open"}),b(this.#t,v)}connectedCallback(){this.#e=m(this.getAttribute("modo")),this.getAttribute("tk")&&!this.#o?this.cargar():this.#i()}attributeChangedCallback(t,e,n){if(t==="modo"&&(this.#e=m(n)),!!this.isConnected){if((t==="tk"||t==="space")&&e!==n&&this.getAttribute("tk")){this.cargar();return}this.#i()}}async cargar(){const t=String(this.getAttribute("tk")||"").trim();if(!t)return;const e=D(this.getAttribute("space")),n=Number(this.getAttribute("cache-horas"))||z,i=++this.#s;this.#r="cargando",this.#i();const o=(s,l)=>{i===this.#s&&(this.#o=this.hasAttribute("sanear")?k(s):s,this.#r="listo",this.#i(),this.dispatchEvent(new CustomEvent("tk-datos",{bubbles:!0,composed:!0,detail:{origen:l,ticket:this.#o}})))};try{const s=await f.ticket(e,t,{vigenciaMs:n*60*60*1e3});o(s.data,s.origen);return}catch(s){this.#n=s instanceof Error?s.message:String(s)}const a=this.getAttribute("fallback");if(a)try{const s=await fetch(a,{headers:{accept:"application/json"}});if(!s.ok)throw new Error(`HTTP ${s.status}`);const l=d(await s.json());o(l.ticket?l.ticket:l,"archivo local");return}catch(s){this.#n+=` \xB7 fallback: ${s instanceof Error?s.message:String(s)}`}i===this.#s&&(this.#r="error",this.#i(),this.dispatchEvent(new CustomEvent("tk-error",{bubbles:!0,composed:!0,detail:{error:this.#n}})))}get ticket(){return this.#o}set ticket(t){this.#o=t,this.isConnected&&this.#i()}set json(t){const e=d(t);this.ticket=e.ticket?e.ticket:e}get embebido(){return this.hasAttribute("embebido")}set embebido(t){this.toggleAttribute("embebido",!!t)}get modo(){return this.#e}set modo(t){const e=m(String(t));this.#e!==e&&(this.#e=e,this.setAttribute("modo",e),this.dispatchEvent(new CustomEvent("tk-modo",{bubbles:!0,composed:!0,detail:{modo:e}})),this.isConnected&&this.#i())}#a=()=>{this.modo=this.#e==="doc"?"metrics":"doc"};#c(t){const e=A(C(t)),n=Object.assign(document.createElement("tk-ticket-head"),{ticket:t}),i=$(t),o=T.map(({lane:s,rotulo:l})=>{const p=E(e.filter(u=>u.lane===s).map(u=>u.b));return p.length?c`
         <section aria-label="${l}" data-lane="${s}">
           <h2 class="rotulo">${l}</h2>
           ${p.map(u=>Object.assign(document.createElement("tk-block"),{bloque:u}))}
         </section>
-      `:null}).filter(Boolean),n=i.length?c`
+      `:null}).filter(Boolean),a=i.length?c`
         <section aria-label="Commits">
           <h2 class="rotulo">Commits</h2>
           ${Object.assign(document.createElement("tk-commits"),{commits:i})}
         </section>
       `:null;return c`
       <article class="documento" data-modo="doc">
-        <header class="encabezado">${a}</header>
+        <header class="encabezado">${n}</header>
         ${o.length>0?o:c`
           <is-callout color="neutral" icon="mdi:text-box-remove-outline">
             Este tiquete todavía no tiene documentación publicada.
           </is-callout>
         `}
-        ${n}
-        <footer class="firma">
-          ${t.iticket} · ${t.space==="patyia"?"PatyIA":t.space==="isp-svelte"?"ISP Svelte":"Clientes"} ·
-          documentación generada desde jagudeloe-tks
-        </footer>
+        ${a}
       </article>
     `}#l(t){return c`
       <div class="documento" data-modo="metrics">
@@ -180,7 +167,7 @@ import{css as g,define as b,html as c,rec as d}from"./_shared.js";import{api as 
           <div class="vacio">
             <is-icon icon="mdi:cloud-off-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
             <p>No se pudo obtener ${this.getAttribute("tk")??"el tiquete"}.</p>
-            <p class="detalle">${this.#a}</p>
+            <p class="detalle">${this.#n}</p>
             ${o?c`<p class="detalle">
               La página está abierta como archivo local: el respaldo en disco necesita servirse por HTTP.
             </p>`:null}
@@ -190,7 +177,7 @@ import{css as g,define as b,html as c,rec as d}from"./_shared.js";import{api as 
           <is-icon icon="mdi:file-document-outline" style="font-size:2rem" aria-hidden="true"></is-icon>
           <p>Selecciona un tiquete para ver su documentación.</p>
         </div>
-      `);return}const e=this.#e==="metrics",a=e?"mdi:file-document-outline":"mdi:chart-timeline-variant",i=e?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#t.append(c`
+      `);return}const e=this.#e==="metrics",n=e?"mdi:file-document-outline":"mdi:chart-timeline-variant",i=e?"Ver documentaci\xF3n":"Ver m\xE9tricas InSoft";this.#t.append(c`
       <div class="shell">
         ${e?this.#l(t):this.#c(t)}
         <div class="fab">
@@ -200,10 +187,10 @@ import{css as g,define as b,html as c,rec as d}from"./_shared.js";import{api as 
             aria-label="${i}"
             title="${i}"
             aria-pressed="${e?"true":"false"}"
-            onclick=${this.#n}
+            onclick=${this.#a}
           >
-            <is-icon icon="${a}" aria-hidden="true"></is-icon>
+            <is-icon icon="${n}" aria-hidden="true"></is-icon>
           </button>
         </div>
       </div>
-    `)}}b("tk-view",D);
+    `)}}g("tk-view",j);
