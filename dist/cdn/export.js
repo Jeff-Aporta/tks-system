@@ -1,21 +1,28 @@
-import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/tks-system",l="main",r=`https://cdn.jsdelivr.net/gh/${c}@${l}/dist/cdn`,n=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),d=t=>{const s=`${t.iticket} \xB7 ${t.titulo??"Tiquete"}`,o=JSON.stringify(t).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
+import{IS_CDN as s}from"./is-cdn.js";import{IS_TAGS as c}from"./is-tags.js";const d="Jeff-Aporta/tks-system",l="main",n=`https://cdn.jsdelivr.net/gh/${d}@${l}/dist/cdn`,r=e=>e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),m=e=>{const a=`${e.iticket} \xB7 ${e.titulo??"Tiquete"}`,o=JSON.stringify(e).replace(/<\/(script)/gi,"<\\/$1");return`<!doctype html>
 <html lang="es" class="theme-dark" data-theme="dark" data-palette="contapyme">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="jagudeloe \xB7 visor de tiquetes">
-<title>${n(s)}</title>
+<title>${r(a)}</title>
 
 <!-- Kit is-* (versi\xF3n fijada) -->
-<link rel="stylesheet" href="${a}/is-base.min.css">
-<link rel="stylesheet" href="${a}/palettes.min.css">
+<link rel="stylesheet" href="${s}/is-base.min.css">
+<link rel="stylesheet" href="${s}/palettes.min.css">
 
 <!-- Un solo m\xF3dulo: define los tk-* y pide al loader del kit los is-* que
-     este documento usa (~255 kB) en vez del all.min.js del kit (2,1 MB). -->
+     este documento usa (~255 kB) en vez del all.min.js del kit (2,1 MB).
+
+     La lista va ESCRITA en el HTML, no importada del bundle. Con un
+     import nombrado de IS_TAGS el documento moria con un SyntaxError
+     ("does not provide an export named 'IS_TAGS'") cada vez que jsDelivr
+     servia de su cache una revision anterior a esa exportacion: la ref
+     "main" se cachea por edge, asi que hay una ventana en la que la ficha
+     recien generada se encuentra el bundle viejo y queda en blanco. -->
 <script type="module">
-  import { IS_TAGS } from "${r}/all.min.js";
-  import { ISWebComponentsLoader as L } from "${a}/loader.min.js";
-  await L.load(...IS_TAGS);
+  import "${n}/all.min.js";
+  import { ISWebComponentsLoader as L } from "${s}/loader.min.js";
+  await L.load(...${JSON.stringify(c)});
 <\/script>
 
 <style>
@@ -48,7 +55,7 @@ import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/tks-system",l="main",r
 </head>
 <body>
   <div class="tk-barra">
-    <span><strong>${n(t.iticket)}</strong> \xB7 documentaci\xF3n descargada</span>
+    <span><strong>${r(e.iticket)}</strong> \xB7 documentaci\xF3n descargada</span>
     <is-theme-toggle></is-theme-toggle>
   </div>
 
@@ -62,4 +69,4 @@ import{IS_CDN as a}from"./is-cdn.js";const c="Jeff-Aporta/tks-system",l="main",r
   <\/script>
 </body>
 </html>
-`},m={cdn:r,async html(t){return d(t)},async descargar(t){const s=await m.html(t),o=new Blob([s],{type:"text/html;charset=utf-8"}),i=URL.createObjectURL(o),e=document.createElement("a");e.href=i,e.download=`${t.iticket}.html`,document.body.append(e),e.click(),e.remove(),setTimeout(()=>URL.revokeObjectURL(i),3e4)}};export{l as TK_REF,c as TK_REPO,m as exportar};
+`},p={cdn:n,async html(e){return m(e)},async descargar(e){const a=await p.html(e),o=new Blob([a],{type:"text/html;charset=utf-8"}),i=URL.createObjectURL(o),t=document.createElement("a");t.href=i,t.download=`${e.iticket}.html`,document.body.append(t),t.click(),t.remove(),setTimeout(()=>URL.revokeObjectURL(i),3e4)}};export{l as TK_REF,d as TK_REPO,p as exportar};

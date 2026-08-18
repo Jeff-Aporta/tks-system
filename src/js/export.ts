@@ -15,6 +15,7 @@
  *
  */
 import { IS_CDN } from './is-cdn.js';
+import { IS_TAGS } from './is-tags.js';
 
 /** Repo público del visor (`origin`; `jagudeloe-tks-front` es su espejo). */
 export const TK_REPO = 'Jeff-Aporta/tks-system';
@@ -52,11 +53,18 @@ const plantilla = (tk: TkTicket): string => {
 <link rel="stylesheet" href="${IS_CDN}/palettes.min.css">
 
 <!-- Un solo módulo: define los tk-* y pide al loader del kit los is-* que
-     este documento usa (~255 kB) en vez del all.min.js del kit (2,1 MB). -->
+     este documento usa (~255 kB) en vez del all.min.js del kit (2,1 MB).
+
+     La lista va ESCRITA en el HTML, no importada del bundle. Con un
+     import nombrado de IS_TAGS el documento moria con un SyntaxError
+     ("does not provide an export named 'IS_TAGS'") cada vez que jsDelivr
+     servia de su cache una revision anterior a esa exportacion: la ref
+     "main" se cachea por edge, asi que hay una ventana en la que la ficha
+     recien generada se encuentra el bundle viejo y queda en blanco. -->
 <script type="module">
-  import { IS_TAGS } from "${TK_CDN}/all.min.js";
+  import "${TK_CDN}/all.min.js";
   import { ISWebComponentsLoader as L } from "${IS_CDN}/loader.min.js";
-  await L.load(...IS_TAGS);
+  await L.load(...${JSON.stringify(IS_TAGS)});
 <\/script>
 
 <style>

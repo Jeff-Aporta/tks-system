@@ -12,6 +12,7 @@
  */
 import { copyFileSync, existsSync, readdirSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, basename } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import esbuild from 'esbuild';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
@@ -74,6 +75,13 @@ writeFileSync(join(OUT, 'tk.all.js'), bundle.outputFiles[0].text);
 // enlaces ya publicados (export.ts, index.html) mientras se migran.
 writeFileSync(join(OUT, 'all.min.js'), bundle.outputFiles[0].text);
 
+// `is-tags.json` — la misma lista de `js/is-tags.ts`, en un archivo que
+// cualquier generador de HTML pueda leer sin parsear el bundle minificado.
+// `gen-docs-tk.mjs` (otro repo) la embebe en cada ficha al generarla.
+const { IS_TAGS } = await import(pathToFileURL(join(OUT, 'is-tags.js')).href);
+writeFileSync(join(OUT, 'is-tags.json'), `${JSON.stringify(IS_TAGS, null, 2)}
+`);
+
 // CSS de página para fichas sueltas: se publica tal cual (son tokens y cuatro
 // reglas; minificarlo no compensa perder legibilidad al depurar un documento).
 const CSS_PUBLICO = ['documento.css'];
@@ -83,5 +91,5 @@ for (const nombre of CSS_PUBLICO) {
 }
 
 console.log(
-  `dist/cdn: ${archivos.length} módulos + tk.all.js + all.min.js + ${CSS_PUBLICO.length} css compilados.`,
+  `dist/cdn: ${archivos.length} módulos + tk.all.js + all.min.js + is-tags.json + ${CSS_PUBLICO.length} css compilados.`,
 );
